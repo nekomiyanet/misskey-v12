@@ -2,10 +2,12 @@
 ## 12.x.x (unreleased)
 
 ### Improvements
-- 
+-
 
 ### Bugfixes
-- 
+- API: improved validation and documentation for endpoints that accept different variants of input @Johann150
+- API: `notes/create`: The `mediaIds` property is now deprecated. @Johann150
+  - Use `fileIds` instead, it has the same behaviour.
 
 You should also include the user name that made the change.
 -->
