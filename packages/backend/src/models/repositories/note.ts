@@ -60,16 +60,22 @@ export class NoteRepository extends Repository<Note> {
 				return true;
 			} else {
 				// フォロワーかどうか
-				const following = await Followings.findOne({
-					followeeId: note.userId,
-					followerId: meId,
-				});
+				const [following, user] = await Promise.all([
+					Followings.findOne({
+						followeeId: note.userId,
+						followerId: meId,
+					}),
+					Users.findOneOrFail({ id: meId }),
+				]);
 
-				if (following == null) {
-					return false;
-				} else {
-					return true;
-				}
+				/* If we know the following, everyhting is fine.
+
+				But if we do not know the following, it might be that both the
+				author of the note and the author of the like are remote users,
+				in which case we can never know the following. Instead we have
+				to assume that the users are following each other.
+				*/
+				return following != null || (note.userHost != null && user.host != null);
 			}
 		}
 
