@@ -941,6 +941,7 @@ deleted: "Deleted"
 typeToConfirm: "Please enter {x} to confirm"
 deleteAccount: "Delete Account"
 deleteAccountFederation: "Send Account Deletion to Remote Instances"
+rateLimitExceeded: "Rate limit exceeded"
 
 _emailUnavailable:
   used: "This email address is already being used"

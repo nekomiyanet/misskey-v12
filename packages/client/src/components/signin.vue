@@ -214,6 +214,14 @@ export default defineComponent({
 					showDisabledDialog();
 					break;
 				}
+				case '22d05606-fbcf-421a-a2db-b32610dcfd1b': {
+					os.alert({
+						type: 'error',
+						title: this.$ts.loginFailed,
+						text: this.$ts.rateLimitExceeded,
+					});
+					break;
+				}
 				default: {
 					os.alert({
 						type: 'error',
