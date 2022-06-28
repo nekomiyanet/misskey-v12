@@ -76,7 +76,6 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	generateVisibilityQuery(query, me);
 	if (me) generateMutedUserQuery(query, me, user);
-	if (me) generateBlockedUserQuery(query, me);
 	if (me) generateMutedInstanceQuery(query, me);
 
 	if (ps.withFiles) {
