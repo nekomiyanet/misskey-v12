@@ -27,12 +27,7 @@
 				<MkTime v-if="enableAbsoluteTime" :time="note.createdAt" mode="absolute"/>
 				<MkTime v-else-if="!enableAbsoluteTime" :time="note.createdAt" mode="relative"/>
 			</button>
-			<span v-if="note.visibility !== 'public'" class="visibility">
-				<i v-if="note.visibility === 'home'" class="fas fa-home"></i>
-				<i v-else-if="note.visibility === 'followers'" class="fas fa-unlock"></i>
-				<i v-else-if="note.visibility === 'specified'" class="fas fa-envelope"></i>
-			</span>
-			<span v-if="note.localOnly" class="localOnly"><i class="fas fa-biohazard"></i></span>
+			<MkVisibility :note="note"/>
 		</div>
 	</div>
 	<article class="article" @contextmenu.stop="onContextmenu">
@@ -44,12 +39,9 @@
 						<MkUserName :user="appearNote.user"/>
 					</MkA>
 					<span v-if="appearNote.user.isBot" class="is-bot">bot</span>
-					<span v-if="appearNote.visibility !== 'public'" class="visibility">
-						<i v-if="appearNote.visibility === 'home'" class="fas fa-home"></i>
-						<i v-else-if="appearNote.visibility === 'followers'" class="fas fa-unlock"></i>
-						<i v-else-if="appearNote.visibility === 'specified'" class="fas fa-envelope"></i>
-					</span>
-					<span v-if="appearNote.localOnly" class="localOnly"><i class="fas fa-biohazard"></i></span>
+					<div class="info">
+						<MkVisibility :note="appearNote"/>
+					</div>
 				</div>
 				<div class="username"><MkAcct :user="appearNote.user"/></div>
 				<MkInstanceTicker v-if="showTicker" class="ticker" :instance="appearNote.user.instance" force-type="normal"/>
@@ -140,6 +132,7 @@ import XRenoteButton from './renote-button.vue';
 import XQuoteButton from './quote-button.vue';
 import MkUrlPreview from '@/components/url-preview.vue';
 import MkInstanceTicker from '@/components/instance-ticker.vue';
+import MkVisibility from '@/components/visibility.vue';
 import { pleaseLogin } from '@/scripts/please-login';
 import { checkWordMute } from '@/scripts/check-word-mute';
 import { userPage } from '@/filters/user';
@@ -410,14 +403,6 @@ if (appearNote.replyId) {
 					margin-right: 4px;
 				}
 			}
-
-			> .visibility {
-				margin-left: 8px;
-			}
-
-			> .localOnly {
-				margin-left: 8px;
-			}
 		}
 	}
 
@@ -462,6 +447,10 @@ if (appearNote.replyId) {
 						font-size: 80%;
 						border: solid 0.5px var(--divider);
 						border-radius: 4px;
+					}
+
+					> .info {
+						float: right;
 					}
 				}
 			}
