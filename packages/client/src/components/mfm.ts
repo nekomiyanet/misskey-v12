@@ -310,6 +310,10 @@ export default defineComponent({
 					})];
 				}
 
+				case 'plain': {
+					return [h('span', genEl(token.children))];
+				}
+
 				default: {
 					console.error('unrecognized ast type:', token.type);
 
