@@ -33,7 +33,7 @@ export async function fetchInstanceMetadata(instance: Instance, force = false): 
 		const [favicon, icon, themeColor, name, description] = await Promise.all([
 			fetchFaviconUrl(instance, dom).catch(() => null),
 			fetchIconUrl(instance, dom, manifest).catch(() => null),
-			getThemeColor(dom, manifest).catch(() => null),
+			getThemeColor(info, dom, manifest).catch(() => null),
 			getSiteName(info, dom, manifest).catch(() => null),
 			getDescription(info, dom, manifest).catch(() => null),
 		]);
@@ -190,7 +190,7 @@ async function fetchIconUrl(instance: Instance, doc: DOMWindow['document'] | nul
 		// https://github.com/misskey-dev/misskey/pull/8220#issuecomment-1025104043
 		const links = Array.from(doc.getElementsByTagName('link')).reverse();
 		// https://github.com/misskey-dev/misskey/pull/8220/files/0ec4eba22a914e31b86874f12448f88b3e58dd5a#r796487559
-		const href = 
+		const href =
 			[
 				links.find(link => link.relList.contains('apple-touch-icon-precomposed'))?.href,
 				links.find(link => link.relList.contains('apple-touch-icon'))?.href,
@@ -206,9 +206,9 @@ async function fetchIconUrl(instance: Instance, doc: DOMWindow['document'] | nul
 	return null;
 }
 
-async function getThemeColor(doc: DOMWindow['document'] | null, manifest: Record<string, any> | null): Promise<string | null> {
+async function getThemeColor(info: NodeInfo | null, doc: DOMWindow['document'] | null, manifest: Record<string, any> | null): Promise<string | null> {
 	if (doc) {
-		const themeColor = doc.querySelector('meta[name="theme-color"]')?.getAttribute('content');
+		const themeColor = info?.metadata?.themeColor || doc.querySelector('meta[name="theme-color"]')?.getAttribute('content');
 
 		if (themeColor) {
 			return themeColor;
