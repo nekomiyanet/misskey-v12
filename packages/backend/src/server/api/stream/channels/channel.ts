@@ -19,6 +19,7 @@ export default class extends Channel {
 	constructor(id: string, connection: Channel['connection']) {
 		super(id, connection);
 		this.onNote = this.onNote.bind(this);
+		this.emitTypers = this.emitTypers.bind(this);
 	}
 
 	public async init(params: any) {
