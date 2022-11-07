@@ -73,6 +73,97 @@
 
 				<FormButton v-if="user.host != null" class="_formBlock" @click="updateRemoteUser"><i class="fas fa-sync"></i> {{ $ts.updateRemoteUser }}</FormButton>
 			</FormSection>
+				<FormSection>
+					<template #label>ActivityPub</template>
+
+					<div class="_formBlock">
+						<MkKeyValue v-if="user.host" oneline style="margin: 1em 0;">
+							<template #key>{{ i18n.ts.instanceInfo }}</template>
+							<template #value><MkA :to="`/instance-info/${user.host}`" class="_link">{{ user.host }} <i class="fas fa-angle-right"></i></MkA></template>
+						</MkKeyValue>
+						<MkKeyValue v-else oneline style="margin: 1em 0;">
+							<template #key>{{ i18n.ts.instanceInfo }}</template>
+							<template #value>(Local user)</template>
+						</MkKeyValue>
+						<MkKeyValue oneline style="margin: 1em 0;">
+							<template #key>{{ i18n.ts.updatedAt }}</template>
+							<template #value><MkTime v-if="user.lastFetchedAt" mode="detail" :time="user.lastFetchedAt"/><span v-else>N/A</span></template>
+						</MkKeyValue>
+						<MkKeyValue v-if="ap" oneline style="margin: 1em 0;">
+							<template #key>Type</template>
+							<template #value><span class="_monospace">{{ ap.type }}</span></template>
+						</MkKeyValue>
+					</div>
+
+					<FormButton v-if="user.host != null" class="_formBlock" @click="updateRemoteUser"><i class="fas fa-sync"></i> {{ i18n.ts.updateRemoteUser }}</FormButton>
+
+					<FormFolder class="_formBlock">
+						<template #label>Raw</template>
+
+						<MkObjectView v-if="ap" tall :value="ap">
+						</MkObjectView>
+					</FormFolder>
+				</FormSection>
+			</div>
+			<div v-else-if="tab === 'moderation'" class="_formRoot">
+				<FormSwitch v-if="user.host == null && $i.isAdmin && (moderator || !user.isAdmin)" v-model="moderator" class="_formBlock" @update:modelValue="toggleModerator">{{ i18n.ts.moderator }}</FormSwitch>
+				<FormSwitch v-if="user.host == null && $i.isAdmin && (admin || !user.isModerator)" v-model="admin" class="_formBlock" @update:modelValue="toggleAdmin">{{ i18n.ts.administrator }}</FormSwitch>
+				<FormSwitch v-model="silenced" class="_formBlock" @update:modelValue="toggleSilence">{{ i18n.ts.silence }}</FormSwitch>
+				<FormSwitch v-model="suspended" class="_formBlock" @update:modelValue="toggleSuspend">{{ i18n.ts.suspend }}</FormSwitch>
+				{{ i18n.ts.reflectMayTakeTime }}
+				<div class="_formBlock">
+					<FormButton v-if="user.host == null && iAmModerator" inline style="margin-right: 8px;" @click="resetPassword"><i class="fas fa-key"></i> {{ i18n.ts.resetPassword }}</FormButton>
+					<FormButton v-if="$i.isAdmin" inline danger @click="deleteAccount">{{ i18n.ts.deleteAccount }}</FormButton>
+				</div>
+				<FormTextarea v-model="moderationNote" manual-save class="_formBlock">
+					<template #label>Moderation note</template>
+				</FormTextarea>
+				<FormFolder class="_formBlock">
+					<template #label>IP</template>
+					<MkInfo v-if="!iAmAdmin" warn>{{ i18n.ts.requireAdminForView }}</MkInfo>
+					<MkInfo v-else>The date is the IP address was first acknowledged.</MkInfo>
+					<template v-if="iAmAdmin && ips">
+						<div v-for="record in ips" :key="record.ip" class="_monospace" :class="$style.ip" style="margin: 1em 0;">
+							<span class="date">{{ record.createdAt }}</span>
+							<span class="ip">{{ record.ip }}</span>
+						</div>
+					</template>
+				</FormFolder>
+				<FormFolder class="_formBlock">
+					<template #label>{{ i18n.ts.files }}</template>
+
+					<MkFileListForAdmin :pagination="filesPagination" view-mode="grid"/>
+				</FormFolder>
+				<FormSection>
+					<template #label>Drive Capacity Override</template>
+
+					<FormInput v-if="user.host == null" v-model="driveCapacityOverrideMb" inline :manual-save="true" type="number" :placeholder="i18n.t('defaultValueIs', { value: instance.driveCapacityPerLocalUserMb })" @update:model-value="applyDriveCapacityOverride">
+						<template #label>{{ i18n.ts.driveCapOverrideLabel }}</template>
+						<template #suffix>MB</template>
+						<template #caption>
+							{{ i18n.ts.driveCapOverrideCaption }}
+						</template>
+					</FormInput>
+				</FormSection>
+			</div>
+			<div v-else-if="tab === 'chart'" class="_formRoot">
+				<div class="cmhjzshm">
+					<div class="selects">
+						<MkSelect v-model="chartSrc" style="margin: 0 10px 0 0; flex: 1;">
+							<option value="per-user-notes">{{ i18n.ts.notes }}</option>
+						</MkSelect>
+					</div>
+					<div class="charts">
+						<div class="label">{{ i18n.t('recentNHours', { n: 90 }) }}</div>
+						<MkChart class="chart" :src="chartSrc" span="hour" :limit="90" :args="{ user, withoutAll: true }" :detailed="true"></MkChart>
+						<div class="label">{{ i18n.t('recentNDays', { n: 90 }) }}</div>
+						<MkChart class="chart" :src="chartSrc" span="day" :limit="90" :args="{ user, withoutAll: true }" :detailed="true"></MkChart>
+					</div>
+				</div>
+			</div>
+			<div v-else-if="tab === 'raw'" class="_formRoot">
+				<MkObjectView v-if="info && $i.isAdmin" tall :value="info">
+				</MkObjectView>
 
 			<MkObjectView tall :value="user">
 			</MkObjectView>
@@ -97,6 +188,7 @@ import bytes from '@/filters/bytes';
 import * as symbols from '@/symbols';
 import { url } from '@/config';
 import { userPage, acct } from '@/filters/user';
+<<<<<<< HEAD
 
 export default defineComponent({
 	components: {
@@ -164,6 +256,60 @@ export default defineComponent({
 				uri: this.user.uri || `${url}/users/${this.user.id}`
 			}).then(res => {
 				this.ap = res;
+=======
+import { definePageMetadata } from '@/scripts/page-metadata';
+import { i18n } from '@/i18n';
+import { iAmAdmin, iAmModerator } from '@/account';
+import { instance } from '@/instance';
+
+const props = defineProps<{
+	userId: string;
+}>();
+
+let tab = $ref('overview');
+let chartSrc = $ref('per-user-notes');
+let user = $ref<null | misskey.entities.UserDetailed>();
+let init = $ref<ReturnType<typeof createFetcher>>();
+let info = $ref();
+let ips = $ref(null);
+let ap = $ref(null);
+let moderator = $ref(false);
+let admin = $ref(false);
+let silenced = $ref(false);
+let suspended = $ref(false);
+let driveCapacityOverrideMb: number | null = $ref(0);
+let moderationNote = $ref('');
+const filesPagination = {
+	endpoint: 'admin/drive/files' as const,
+	limit: 10,
+	params: computed(() => ({
+		userId: props.userId,
+	})),
+};
+
+function createFetcher() {
+	if (iAmModerator) {
+		return () => Promise.all([os.api('users/show', {
+			userId: props.userId,
+		}), os.api('admin/show-user', {
+			userId: props.userId,
+		}), iAmAdmin ? os.api('admin/get-user-ips', {
+			userId: props.userId,
+		}) : Promise.resolve(null)]).then(([_user, _info, _ips]) => {
+			user = _user;
+			info = _info;
+			ips = _ips;
+			moderator = info.isModerator;
+			admin = info.isAdmin;
+			silenced = info.isSilenced;
+			suspended = info.isSuspended;
+			driveCapacityOverrideMb = user.driveCapacityOverrideMb;
+			moderationNote = info.moderationNote;
+
+			watch($$(moderationNote), async () => {
+				await os.api('admin/update-user-note', { userId: user.id, text: moderationNote });
+				await refreshUser();
+>>>>>>> cca06e878 (GUIからadminを切り替えれるようにした (#5))
 			});
 		}
 	},
@@ -280,6 +426,7 @@ export default defineComponent({
 			}
 		},
 
+<<<<<<< HEAD
 		async toggleDisable(v) {
 			const confirm = await os.confirm({
 				type: 'warning',
@@ -292,6 +439,32 @@ export default defineComponent({
 				await this.refreshUser();
 			}
 		},
+=======
+async function toggleAdmin(v) {
+	await os.api(v ? 'admin/admin/add' : 'admin/admin/remove', { userId: user.id });
+	await refreshUser();
+}
+
+
+async function deleteAllFiles() {
+	const confirm = await os.confirm({
+		type: 'warning',
+		text: i18n.ts.deleteAllFilesConfirm,
+	});
+	if (confirm.canceled) return;
+	const process = async () => {
+		await os.api('admin/delete-all-files-of-a-user', { userId: user.id });
+		os.success();
+	};
+	await process().catch(err => {
+		os.alert({
+			type: 'error',
+			text: err.toString(),
+		});
+	});
+	await refreshUser();
+}
+>>>>>>> cca06e878 (GUIからadminを切り替えれるようにした (#5))
 
 		async toggleHide(v) {
 			const confirm = await os.confirm({

@@ -45,6 +45,7 @@ export default define(meta, paramDef, async (ps, me) => {
 	if (!me.isAdmin) {
 		return {
 			isModerator: user.isModerator,
+			isAdmin: user.isAdmin,
 			isSilenced: user.isSilenced,
 			isSuspended: user.isSuspended,
 			emailVerified: profile.emailVerified,
@@ -70,6 +71,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		mutedInstances: profile.mutedInstances,
 		mutingNotificationTypes: profile.mutingNotificationTypes,
 		isModerator: user.isModerator,
+		isAdmin: user.isAdmin,
 		isSilenced: user.isSilenced,
 		isSuspended: user.isSuspended,
 		isLocalSilenced: user.isLocalSilenced,
