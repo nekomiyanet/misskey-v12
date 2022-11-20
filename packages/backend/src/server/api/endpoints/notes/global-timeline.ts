@@ -76,6 +76,10 @@ export default define(meta, paramDef, async (ps, user) => {
 	if (user) generateMutedNoteQuery(query, user);
 	if (user) generateMutedInstanceQuery(query, user);
 
+	if (user && !user.isAdmin && !user.isModerator) {
+		generateBlockedUserQuery(query, user);
+	}
+
 	if (ps.withFiles) {
 		query.andWhere('note.fileIds != \'{}\'');
 	}

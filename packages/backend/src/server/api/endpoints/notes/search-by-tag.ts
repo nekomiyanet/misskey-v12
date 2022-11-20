@@ -59,7 +59,9 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	generateVisibilityQuery(query, me);
 	if (me) generateMutedUserQuery(query, me);
-	if (me) generateBlockedUserQuery(query, me);
+	if (me && !me.isAdmin && !me.isModerator) {
+		generateBlockedUserQuery(query, me);
+	}
 
 	try {
 		if (ps.tag) {

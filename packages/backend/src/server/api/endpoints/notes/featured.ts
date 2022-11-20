@@ -52,7 +52,9 @@ export default define(meta, paramDef, async (ps, user) => {
 		.leftJoinAndSelect('renoteUser.banner', 'renoteUserBanner');
 
 	if (user) generateMutedUserQuery(query, user);
-	if (user) generateBlockedUserQuery(query, user);
+	if (user && !user.isAdmin && !user.isModerator) {
+		generateBlockedUserQuery(query, user);
+	}
 
 	let notes = await query
 		.orderBy('note.score', 'DESC')

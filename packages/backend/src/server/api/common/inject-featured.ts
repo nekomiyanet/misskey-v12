@@ -30,7 +30,9 @@ export async function injectFeatured(timeline: Note[], user?: User | null) {
 		query.andWhere('note.userId != :userId', { userId: user.id });
 
 		generateMutedUserQuery(query, user);
+		if (!user.isAdmin && !user.isModerator) {
 		generateBlockedUserQuery(query, user);
+		}
 
 		const reactionQuery = NoteReactions.createQueryBuilder('reaction')
 			.select('reaction.noteId')
