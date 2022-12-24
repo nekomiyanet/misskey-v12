@@ -206,7 +206,6 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 				isBot,
 				isCat: (person as any).isCat === true,
 				isFox: (person as any).isFox === true,
-				showTimelineReplies: false,
 				movedToUri: person.movedTo,
 				alsoKnownAs: person.alsoKnownAs,
 			})) as IRemoteUser;
