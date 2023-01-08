@@ -2,6 +2,7 @@ import define from '../../define.js';
 import { UserProfiles, Users } from '@/models/index.js';
 import { User } from '@/models/entities/user.js';
 import { Brackets } from 'typeorm';
+import { sqlLikeEscape } from '@/misc/sql-like-escape.js';
 
 export const meta = {
 	tags: ['users'],
@@ -41,7 +42,7 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (isUsername) {
 		const usernameQuery = Users.createQueryBuilder('user')
-			.where('user.usernameLower LIKE :username', { username: ps.query.replace('@', '').toLowerCase() + '%' })
+			.where('user.usernameLower LIKE :username', { username: sqlLikeEscape(ps.query.replace('@', '').toLowerCase()) + '%' })
 			.andWhere(new Brackets(qb => { qb
 				.where('user.updatedAt IS NULL')
 				.orWhere('user.updatedAt > :activeThreshold', { activeThreshold: activeThreshold });
@@ -61,7 +62,7 @@ export default define(meta, paramDef, async (ps, me) => {
 			.getMany();
 	} else {
 		const nameQuery = Users.createQueryBuilder('user')
-			.where('user.name ILIKE :query', { query: '%' + ps.query + '%' })
+			.where('user.name ILIKE :query', { query: '%' + sqlLikeEscape(ps.query) + '%' })
 			.andWhere(new Brackets(qb => { qb
 				.where('user.updatedAt IS NULL')
 				.orWhere('user.updatedAt > :activeThreshold', { activeThreshold: activeThreshold });
@@ -83,7 +84,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		if (users.length < ps.limit) {
 			const profQuery = UserProfiles.createQueryBuilder('prof')
 				.select('prof.userId')
-				.where('prof.description ILIKE :query', { query: '%' + ps.query + '%' });
+				.where('prof.description ILIKE :query', { query: '%' + sqlLikeEscape(ps.query) + '%' });
 
 			if (ps.origin === 'local') {
 				profQuery.andWhere('prof.userHost IS NULL');

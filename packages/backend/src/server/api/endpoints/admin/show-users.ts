@@ -1,4 +1,5 @@
 import define from '../../define.js';
+import { sqlLikeEscape } from '@/misc/sql-like-escape.js';
 import { Users } from '@/models/index.js';
 
 export const meta = {
@@ -55,7 +56,7 @@ export default define(meta, paramDef, async (ps, me) => {
 	}
 
 	if (ps.username) {
-		query.andWhere('user.usernameLower like :username', { username: ps.username.toLowerCase() + '%' });
+		query.andWhere('user.usernameLower like :username', { username: sqlLikeEscape(ps.username.toLowerCase()) + '%' });
 	}
 
 	if (ps.hostname) {
