@@ -1,4 +1,4 @@
-import * as websocket from 'websocket';
+import { WebSocket } from 'ws';
 import { readNotification } from '../common/read-notification.js';
 import call from '../call.js';
 import readNote from '@/services/note/read.js';
@@ -15,11 +15,14 @@ import { publishChannelStream, publishGroupMessagingStream, publishMessagingStre
 import { UserGroup } from '@/models/entities/user-group.js';
 import { StreamEventEmitter, StreamMessages } from './types.js';
 import { Packed } from '@/misc/schema.js';
+import Logger from '@/services/logger.js';
+
+const logger = new Logger('streaming');
 
 /**
  * Main stream connection
  */
-export default class Connection {
+export class Connection {
 	public user?: User;
 	public userProfile?: UserProfile;
 	public following: Set<User['id']> = new Set();
@@ -29,29 +32,29 @@ export default class Connection {
 	public blocked: Set<User['id']> = new Set(); // "被"block
 	public followingChannels: Set<ChannelModel['id']> = new Set();
 	public token?: AccessToken;
-	private wsConnection: websocket.connection;
+	private socket: WebSocket;
 	public subscriber: StreamEventEmitter;
 	private channels: Channel[] = [];
 	private subscribingNotes: any = {};
 	private cachedNotes: Packed<'Note'>[] = [];
 
 	constructor(
-		wsConnection: websocket.connection,
+		socket: WebSocket,
 		subscriber: EventEmitter,
 		user: User | null | undefined,
 		token: AccessToken | null | undefined,
 	) {
-		this.wsConnection = wsConnection;
+		this.socket = socket;
 		this.subscriber = subscriber;
 		if (user) this.user = user;
 		if (token) this.token = token;
 
-		this.onWsConnectionMessage = this.onWsConnectionMessage.bind(this);
+		this.onMessage = this.onMessage.bind(this);
 		this.onUserEvent = this.onUserEvent.bind(this);
 		this.onNoteStreamMessage = this.onNoteStreamMessage.bind(this);
 		this.onBroadcastMessage = this.onBroadcastMessage.bind(this);
 
-		this.wsConnection.on('message', this.onWsConnectionMessage);
+		this.socket.on('message', this.onMessage);
 
 		this.subscriber.on('broadcast', data => {
 			this.onBroadcastMessage(data);
@@ -125,7 +128,7 @@ export default class Connection {
 				break;
 
 			case 'terminate':
-				this.wsConnection.close();
+				this.socket.close();
 				this.dispose();
 				break;
 
@@ -134,18 +137,19 @@ export default class Connection {
 		}
 	}
 
-	/**
-	 * クライアントからメッセージ受信時
-	 */
-	private async onWsConnectionMessage(data: websocket.Message) {
-		if (data.type !== 'utf8') return;
-		if (data.utf8Data == null) return;
+	private async onMessage(data: WebSocket.RawData, isRaw: boolean) {
+		if (data.isRaw) return;
+		if (isRaw) {
+			logger.warn('received unexpected raw data from websocket');
+			return;
+		}
 
 		let obj: Record<string, any>;
 
 		try {
-			obj = JSON.parse(data.utf8Data);
-		} catch (e) {
+			obj = JSON.parse(data);
+		} catch (err) {
+			logger.error(err);
 			return;
 		}
 
@@ -153,22 +157,40 @@ export default class Connection {
 
 		switch (type) {
 			case 'api': this.onApiRequest(body); break;
-			case 'readNotification': this.onReadNotification(body); break;
-			case 'subNote': this.onSubscribeNote(body); break;
-			case 's': this.onSubscribeNote(body); break; // alias
-			case 'sr': this.onSubscribeNote(body); this.readNote(body); break;
-			case 'unsubNote': this.onUnsubscribeNote(body); break;
-			case 'un': this.onUnsubscribeNote(body); break; // alias
-			case 'connect': this.onChannelConnectRequested(body); break;
-			case 'disconnect': this.onChannelDisconnectRequested(body); break;
-			case 'channel': this.onChannelMessageRequested(body); break;
-			case 'ch': this.onChannelMessageRequested(body); break; // alias
+			case 'readNotification':
+				this.onReadNotification(body);
+				break;
+			case 'subNote': case 's':
+				this.onSubscribeNote(body);
+				break;
+			case 'sr':
+				this.onSubscribeNote(body);
+				this.readNote(body);
+				break;
+			case 'unsubNote': case 'un':
+				this.onUnsubscribeNote(body);
+				break;
+			case 'connect':
+				this.onChannelConnectRequested(body);
+				break;
+			case 'disconnect':
+				this.onChannelDisconnectRequested(body);
+				break;
+			case 'channel': case 'ch':
+				this.onChannelMessageRequested(body);
+				break;
 
-			// 個々のチャンネルではなくルートレベルでこれらのメッセージを受け取る理由は、
-			// クライアントの事情を考慮したとき、入力フォームはノートチャンネルやメッセージのメインコンポーネントとは別
-			// なこともあるため、それらのコンポーネントがそれぞれ各チャンネルに接続するようにするのは面倒なため。
-			case 'typingOnChannel': this.typingOnChannel(body.channel); break;
-			case 'typingOnMessaging': this.typingOnMessaging(body); break;
+			// The reason for receiving these messages at the root level rather than in
+			// individual channels is that when considering the client's circumstances, the
+			// input form may be separate from the main components of the note channel or
+			// message, and it would be cumbersome to have each of those components connect to
+			// each channel.
+			case 'typingOnChannel':
+				this.typingOnChannel(body.channel);
+				break;
+			case 'typingOnMessaging':
+				this.typingOnMessaging(body);
+				break;
 		}
 	}
 
@@ -297,7 +319,7 @@ export default class Connection {
 	 * クライアントにメッセージ送信
 	 */
 	public sendMessageToWs(type: string, payload: any) {
-		this.wsConnection.send(JSON.stringify({
+		this.socket.send(JSON.stringify({
 			type: type,
 			body: payload,
 		}));
