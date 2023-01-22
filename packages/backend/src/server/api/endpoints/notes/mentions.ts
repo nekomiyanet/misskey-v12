@@ -62,7 +62,9 @@ export default define(meta, paramDef, async (ps, user) => {
 	generateVisibilityQuery(query, user);
 	generateMutedUserQuery(query, user);
 	generateMutedNoteThreadQuery(query, user);
-	generateBlockedUserQuery(query, user);
+	if (user && !user.isAdmin && !user.isModerator) {
+		generateBlockedUserQuery(query, user);
+	}
 
 	if (ps.visibility) {
 		query.andWhere('note.visibility = :visibility', { visibility: ps.visibility });

@@ -43,7 +43,9 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	generateMutedUserQueryForUsers(query, me);
 	generateBlockQueryForUsers(query, me);
-	generateBlockedUserQuery(query, me);
+	if (me && !me.isAdmin && !me.isModerator) {
+		generateBlockedUserQuery(query, me);
+	}
 
 	const followingQuery = Followings.createQueryBuilder('following')
 		.select('following.followeeId')

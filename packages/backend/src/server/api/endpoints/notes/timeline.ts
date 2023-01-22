@@ -82,7 +82,9 @@ export default define(meta, paramDef, async (ps, user) => {
 	generateMutedUserQuery(query, user);
 	generateMutedInstanceQuery(query, user);
 	generateMutedNoteQuery(query, user);
-	generateBlockedUserQuery(query, user);
+	if (user && !user.isAdmin && !user.isModerator) {
+		generateBlockedUserQuery(query, user);
+	}
 
 	if (ps.includeMyRenotes === false) {
 		query.andWhere(new Brackets(qb => {
