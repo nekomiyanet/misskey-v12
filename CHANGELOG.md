@@ -11,11 +11,8 @@ You should also include the user name that made the change.
 ## 12.108.1-fix.2 (2023/01/24)
 
 ### Bugfixes
-- email address validation was not working @ybw2016v
 - API: fix endpoint endpoint @Johann150
-- API: improved validation and documentation for endpoints that accept different variants of input @Johann150
-- API: `notes/create`: The `mediaIds` property is now deprecated. @Johann150
-  - Use `fileIds` instead, it has the same behaviour.
+- email address validation was not working @ybw2016v
 - Client: URIエンコーディングが異常でdecodeURIComponentが失敗するとURLが表示できなくなる問題を修正 @tamaina
 
 ## 12.108.1-fix.1 (2023/01/23)
