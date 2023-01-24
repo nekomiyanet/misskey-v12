@@ -8,7 +8,15 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-fix.4 (2023/01/24)
+
+### Improvements
+- モデレータがモデレータのファイルを全削除できないように @atsu1125
+- モデレータがモデレータのパスワードをリセットできないように @atsu1125
+- フォロワー解除に確認ダイアログを追加 @atsu1125
+
 ## 12.108.1-fix.3 (2023/01/24)
+
 ### Bugfixes
 - Fix API endpoint @atsu1125
 
