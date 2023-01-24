@@ -181,14 +181,21 @@ export default defineComponent({
 		},
 
 		async resetPassword() {
-			const { password } = await os.api('admin/reset-password', {
-				userId: this.user.id,
+			const confirm = await os.confirm({
+				type: 'warning',
+				text: this.$ts.resetPasswordConfirm,
 			});
-
-			os.alert({
-				type: 'success',
-				text: this.$t('newPasswordIs', { password })
-			});
+			if (confirm.canceled) {
+				return;
+			} else {
+				const { password } = await os.api('admin/reset-password', {
+					userId: this.user.id,
+				});
+				os.alert({
+					type: 'success',
+					text: this.$t('newPasswordIs', { password })
+				});
+			}
 		},
 
 		async toggleSilence(v) {
