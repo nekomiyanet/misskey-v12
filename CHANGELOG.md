@@ -2,15 +2,28 @@
 ## 12.x.x (unreleased)
 
 ### Improvements
--
 
 ### Bugfixes
+-
+You should also include the user name that made the change.
+-->
+
+## 12.108.1-fix.2 (2023/01/24)
+
+### Bugfixes
+- email address validation was not working @ybw2016v
+- API: fix endpoint endpoint @Johann150
 - API: improved validation and documentation for endpoints that accept different variants of input @Johann150
 - API: `notes/create`: The `mediaIds` property is now deprecated. @Johann150
   - Use `fileIds` instead, it has the same behaviour.
+- Client: URIエンコーディングが異常でdecodeURIComponentが失敗するとURLが表示できなくなる問題を修正 @tamaina
 
-You should also include the user name that made the change.
--->
+## 12.108.1-fix.1 (2023/01/23)
+
+### Improvements
+- Make moderators can do moderation even the author block them @atsu1125
+- Feat: Delete All Files @atsu1125
+- forkbomb DOS mitigation @syuilo @mei23 @atsu1125
 
 ## 12.108.1 (2022/03/12)
 
