@@ -20,7 +20,7 @@ const modal = ref();
 
 const whatIsNew = () => {
 	modal.value.close();
-	window.open(`https://misskey-hub.net/docs/releases.html#_${version.replace(/\./g, '-')}`, '_blank');
+	window.open(`https://github.com/atsu1125/misskey-v12/releases/tag/${version}`, '_blank');
 };
 </script>
 
