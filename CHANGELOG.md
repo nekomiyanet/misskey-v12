@@ -8,6 +8,10 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-fix.3 (2023/01/24)
+### Bugfixes
+- Fix API endpoint @atsu1125
+
 ## 12.108.1-fix.2 (2023/01/24)
 
 ### Bugfixes
