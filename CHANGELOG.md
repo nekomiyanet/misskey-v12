@@ -8,6 +8,11 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-fix.5 (2023/01/29)
+
+## Improvements
+- 解決済みの通報を見られるように @Johann150
+
 ## 12.108.1-fix.4 (2023/01/24)
 
 ### Improvements
