@@ -42,6 +42,20 @@ export const initializeStreamingServer = (server: http.Server) => {
 
 			const main = new Connection(socket, ev, user, app);
 
+			// ping/pong mechanism
+			let pingTimeout = null;
+			function startHeartbeat() {
+				if (pingTimeout) clearTimeout(pingTimeout);
+
+				socket.ping();
+				pingTimeout = setTimeout(() => {
+					socket.terminate();
+				}, 1000 * 30);
+			}
+			startHeartbeat();
+			socket.on('ping', () => { startHeartbeat(); });
+			socket.on('pong', () => { startHeartbeat(); });
+
 			// keep user "online" while a stream is connected
 			const intervalId = user ? setInterval(() => {
 				Users.update(user.id, {
@@ -53,11 +67,13 @@ export const initializeStreamingServer = (server: http.Server) => {
 					lastActiveDate: new Date(),
 				});
 			}
+
 			socket.once('close', () => {
 				ev.removeAllListeners();
 				main.dispose();
 				redisClient.off('message', onRedisMessage);
 				if (intervalId) clearInterval(intervalId);
+				if (pingTimeout) clearTimeout(pingTimeout);
 			});
 
 			// ping/pong mechanism
