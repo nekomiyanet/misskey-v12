@@ -8,6 +8,7 @@ import { awaitAll, Promiseable } from '@/prelude/await-all.js';
 import { populateEmojis } from '@/misc/populate-emojis.js';
 import { getAntennas } from '@/misc/antenna-cache.js';
 import { USER_ACTIVE_THRESHOLD, USER_ONLINE_THRESHOLD } from '@/const.js';
+import { sanitizeUrl } from '@/misc/sanitize-url.js';
 
 type IsUserDetailed<Detailed extends boolean> = Detailed extends true ? Packed<'UserDetailed'> : Packed<'UserLite'>;
 type IsMeAndIsUserDetailed<ExpectsMe extends boolean | null, Detailed extends boolean> =
@@ -247,7 +248,7 @@ export class UserRepository extends Repository<User> {
 			name: user.name,
 			username: user.username,
 			host: user.host,
-			avatarUrl: this.getAvatarUrl(user),
+			avatarUrl: sanitizeUrl(this.getAvatarUrl(user)),
 			avatarBlurhash: user.avatar?.blurhash || null,
 			avatarColor: null, // 後方互換性のため
 			isAdmin: user.isAdmin || falsy,
@@ -259,20 +260,20 @@ export class UserRepository extends Repository<User> {
 				name: instance.name,
 				softwareName: instance.softwareName,
 				softwareVersion: instance.softwareVersion,
-				iconUrl: instance.iconUrl,
-				faviconUrl: instance.faviconUrl,
+				iconUrl: sanitizeUrl(instance.iconUrl),
+				faviconUrl: sanitizeUrl(instance.faviconUrl),
 				themeColor: instance.themeColor,
 			} : undefined) : undefined,
 			emojis: populateEmojis(user.emojis, user.host),
 			onlineStatus: this.getOnlineStatus(user),
 
 			...(opts.detail ? {
-				url: profile!.url,
-				uri: user.uri,
+				url: sanitizeUrl(profile!.url),
+				uri: sanitizeUrl(user.uri),
 				createdAt: user.createdAt.toISOString(),
 				updatedAt: user.updatedAt ? user.updatedAt.toISOString() : null,
 				lastFetchedAt: user.lastFetchedAt ? user.lastFetchedAt.toISOString() : null,
-				bannerUrl: user.banner ? DriveFiles.getPublicUrl(user.banner, false) : null,
+				bannerUrl: user.banner ?  sanitizeUrl(DriveFiles.getPublicUrl(user.banner, false)) : null,
 				bannerBlurhash: user.banner?.blurhash || null,
 				bannerColor: null, // 後方互換性のため
 				isLocked: user.isLocked,

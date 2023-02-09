@@ -1,6 +1,7 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Instance } from '@/models/entities/instance.js';
 import { Packed } from '@/misc/schema.js';
+import { sanitizeUrl } from '@/misc/sanitize-url.js';
 
 @EntityRepository(Instance)
 export class InstanceRepository extends Repository<Instance> {
@@ -26,7 +27,7 @@ export class InstanceRepository extends Repository<Instance> {
 			description: instance.description,
 			maintainerName: instance.maintainerName,
 			maintainerEmail: instance.maintainerEmail,
-			iconUrl: instance.iconUrl,
+			iconUrl: sanitizeUrl(instance.iconUrl) ?? null,
 			infoUpdatedAt: instance.infoUpdatedAt ? instance.infoUpdatedAt.toISOString() : null,
 		};
 	}

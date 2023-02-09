@@ -9,6 +9,7 @@ import { awaitAll } from '@/prelude/await-all.js';
 import { convertLegacyReaction, convertLegacyReactions, decodeReaction } from '@/misc/reaction-lib.js';
 import { NoteReaction } from '@/models/entities/note-reaction.js';
 import { aggregateNoteEmojis, populateEmojis, prefetchEmojis } from '@/misc/populate-emojis.js';
+import { sanitizeUrl } from '@/misc/sanitize-url.js';
 
 @EntityRepository(Note)
 export class NoteRepository extends Repository<Note> {
@@ -241,8 +242,8 @@ export class NoteRepository extends Repository<Note> {
 				name: channel.name,
 			} : undefined,
 			mentions: note.mentions.length > 0 ? note.mentions : undefined,
-			uri: note.uri || undefined,
-			url: note.url || undefined,
+			uri: sanitizeUrl(note.uri) || undefined,
+			url: sanitizeUrl(note.url) || undefined,
 
 			...(opts.detail ? {
 				reply: note.replyId ? this.pack(note.reply || note.replyId, me, {

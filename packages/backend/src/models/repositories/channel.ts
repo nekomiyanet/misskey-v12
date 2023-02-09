@@ -3,6 +3,7 @@ import { Channel } from '@/models/entities/channel.js';
 import { Packed } from '@/misc/schema.js';
 import { DriveFiles, ChannelFollowings, NoteUnreads } from '../index.js';
 import { User } from '@/models/entities/user.js';
+import { sanitizeUrl } from '@/misc/sanitize-url.js';
 
 @EntityRepository(Channel)
 export class ChannelRepository extends Repository<Channel> {
@@ -29,7 +30,7 @@ export class ChannelRepository extends Repository<Channel> {
 			name: channel.name,
 			description: channel.description,
 			userId: channel.userId,
-			bannerUrl: banner ? DriveFiles.getPublicUrl(banner, false) : null,
+			bannerUrl: banner ? (sanitizeUrl(DriveFiles.getPublicUrl(banner, false)) ?? null) : null,
 			usersCount: channel.usersCount,
 			notesCount: channel.notesCount,
 
