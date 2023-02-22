@@ -11,7 +11,7 @@ import { USER_ACTIVE_THRESHOLD, USER_ONLINE_THRESHOLD } from '@/const.js';
 
 type IsUserDetailed<Detailed extends boolean> = Detailed extends true ? Packed<'UserDetailed'> : Packed<'UserLite'>;
 type IsMeAndIsUserDetailed<ExpectsMe extends boolean | null, Detailed extends boolean> =
-	Detailed extends true ? 
+	Detailed extends true ?
 		ExpectsMe extends true ? Packed<'MeDetailed'> :
 		ExpectsMe extends false ? Packed<'UserDetailedNotMe'> :
 		Packed<'UserDetailed'> :
@@ -277,6 +277,7 @@ export class UserRepository extends Repository<User> {
 				bannerColor: null, // 後方互換性のため
 				isLocked: user.isLocked,
 				isSilenced: user.isSilenced || falsy,
+				isLocalSilenced: user.isLocalSilenced || falsy,
 				isSuspended: user.isSuspended || falsy,
 				description: profile!.description,
 				location: profile!.location,

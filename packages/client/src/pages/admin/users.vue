@@ -16,6 +16,7 @@
 				<option value="admin">{{ $ts.administrator }}</option>
 				<option value="moderator">{{ $ts.moderator }}</option>
 				<option value="silenced">{{ $ts.silence }}</option>
+				<option value="localsilenced">{{ $ts.localsilence }}</option>
 				<option value="suspended">{{ $ts.suspend }}</option>
 			</MkSelect>
 			<MkSelect v-model="origin" style="flex: 1;">
@@ -46,6 +47,7 @@
 						<span v-if="user.isAdmin" class="staff"><i class="fas fa-bookmark"></i></span>
 						<span v-if="user.isModerator" class="staff"><i class="far fa-bookmark"></i></span>
 						<span v-if="user.isSilenced" class="punished"><i class="fas fa-microphone-slash"></i></span>
+						<span v-if="user.isLocalSilenced" class="punished"><i class="fas fa-biohazard"></i></span>
 						<span v-if="user.isSuspended" class="punished"><i class="fas fa-snowflake"></i></span>
 					</header>
 					<div>
@@ -163,7 +165,7 @@ defineExpose({
 				}
 			}
 		}
-	
+
 		> .users {
 			margin-top: var(--margin);
 

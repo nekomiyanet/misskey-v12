@@ -120,6 +120,12 @@ export class User {
 
 	@Column('boolean', {
 		default: false,
+		comment: 'Whether the User is local silenced.',
+	})
+	public isLocalSilenced: boolean;
+
+	@Column('boolean', {
+		default: false,
 		comment: 'Whether the User is locked.',
 	})
 	public isLocked: boolean;

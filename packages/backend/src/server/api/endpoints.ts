@@ -53,8 +53,10 @@ import * as ep___admin_showModerationLogs from './endpoints/admin/show-moderatio
 import * as ep___admin_showUser from './endpoints/admin/show-user.js';
 import * as ep___admin_showUsers from './endpoints/admin/show-users.js';
 import * as ep___admin_silenceUser from './endpoints/admin/silence-user.js';
+import * as ep___admin_localsilenceUser from './endpoints/admin/local-silence-user.js';
 import * as ep___admin_suspendUser from './endpoints/admin/suspend-user.js';
 import * as ep___admin_unsilenceUser from './endpoints/admin/unsilence-user.js';
+import * as ep___admin_localunsilenceUser from './endpoints/admin/local-unsilence-user.js';
 import * as ep___admin_unsuspendUser from './endpoints/admin/unsuspend-user.js';
 import * as ep___admin_updateMeta from './endpoints/admin/update-meta.js';
 import * as ep___admin_vacuum from './endpoints/admin/vacuum.js';
@@ -357,8 +359,10 @@ const eps = [
 	['admin/show-user', ep___admin_showUser],
 	['admin/show-users', ep___admin_showUsers],
 	['admin/silence-user', ep___admin_silenceUser],
+	['admin/local-silence-user', ep___admin_localsilenceUser],
 	['admin/suspend-user', ep___admin_suspendUser],
 	['admin/unsilence-user', ep___admin_unsilenceUser],
+	['admin/local-unsilence-user', ep___admin_localunsilenceUser],
 	['admin/unsuspend-user', ep___admin_unsuspendUser],
 	['admin/update-meta', ep___admin_updateMeta],
 	['admin/vacuum', ep___admin_vacuum],

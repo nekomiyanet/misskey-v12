@@ -24,7 +24,7 @@ export const paramDef = {
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
 		offset: { type: 'integer', default: 0 },
 		sort: { type: 'string', enum: ['+follower', '-follower', '+createdAt', '-createdAt', '+updatedAt', '-updatedAt'] },
-		state: { type: 'string', enum: ['all', 'available', 'admin', 'moderator', 'adminOrModerator', 'silenced', 'suspended'], default: "all" },
+		state: { type: 'string', enum: ['all', 'available', 'admin', 'moderator', 'adminOrModerator', 'silenced', 'localsilenced', 'suspended'], default: "all" },
 		origin: { type: 'string', enum: ['combined', 'local', 'remote'], default: "local" },
 		username: { type: 'string', default: null },
 		hostname: { type: 'string', default: null },
@@ -43,6 +43,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		case 'adminOrModerator': query.where('user.isAdmin = TRUE OR user.isModerator = TRUE'); break;
 		case 'alive': query.where('user.updatedAt > :date', { date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5) }); break;
 		case 'silenced': query.where('user.isSilenced = TRUE'); break;
+		case 'localsilenced': query.where('user.isLocalSilenced = TRUE'); break;
 		case 'suspended': query.where('user.isSuspended = TRUE'); break;
 	}
 

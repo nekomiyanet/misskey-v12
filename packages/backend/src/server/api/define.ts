@@ -17,6 +17,7 @@ type SimpleUserInfo = {
 	isAdmin: ILocalUser['isAdmin'];
 	isModerator: ILocalUser['isModerator'];
 	isSilenced: ILocalUser['isSilenced'];
+	isLocalSilenced: ILocalUser['isLocalSilenced'];
 	showTimelineReplies: ILocalUser['showTimelineReplies'];
 };
 
