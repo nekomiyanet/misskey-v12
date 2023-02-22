@@ -40,7 +40,7 @@ export default async (endpoint: string, user: User | null | undefined, token: Ac
 		});
 	}
 
-	if (ep.meta.requireCredential && user!.isSuspended) {
+	if (ep.meta.requireCredential && (user!.isSuspended || user!.isDisabled)) {
 		throw new ApiError({
 			message: 'Your account has been suspended.',
 			code: 'YOUR_ACCOUNT_SUSPENDED',

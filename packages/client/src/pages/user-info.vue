@@ -25,6 +25,7 @@
 				<FormSwitch v-if="user.host == null && $i.isAdmin && (moderator || !user.isAdmin)" v-model="moderator" class="_formBlock" @update:modelValue="toggleModerator">{{ $ts.moderator }}</FormSwitch>
 				<FormSwitch v-model="silenced" class="_formBlock" @update:modelValue="toggleSilence">{{ $ts.silence }}</FormSwitch>
 				<FormSwitch v-model="localsilenced" class="_formBlock" @update:modelValue="toggleLocalSilence">{{ $ts.localsilence }}</FormSwitch>
+				<FormSwitch v-model="disabled" class="_formBlock" @update:modelValue="toggleDisable">{{ $ts.accountdisable }}</FormSwitch>
 				<FormSwitch v-model="suspended" class="_formBlock" @update:modelValue="toggleSuspend">{{ $ts.suspend }}</FormSwitch>
 				<FormButton v-if="user.host == null && iAmModerator" class="_formBlock" @click="resetPassword"><i class="fas fa-key"></i> {{ $ts.resetPassword }}</FormButton>
 				<FormButton v-if="iAmModerator" class="_formBlock" @click="deleteAllFiles"><i class="fas fa-trash-alt"></i> {{ $ts.deleteAllFiles }}</FormButton>
@@ -119,6 +120,7 @@ export default defineComponent({
 			moderator: false,
 			silenced: false,
 			localsilenced: false,
+			disabled: false,
 			suspended: false,
 		};
 	},
@@ -163,6 +165,7 @@ export default defineComponent({
 					this.moderator = this.info.isModerator;
 					this.silenced = this.info.isSilenced;
 					this.localsilenced = this.info.isLocalSilenced;
+					this.disabled = this.info.isDisabled;
 					this.suspended = this.info.isSuspended;
 				});
 			} else {
@@ -223,6 +226,19 @@ export default defineComponent({
 				this.localsilenced = !v;
 			} else {
 				await os.api(v ? 'admin/local-silence-user' : 'admin/local-unsilence-user', { userId: this.user.id });
+				await this.refreshUser();
+			}
+		},
+
+		async toggleDisable(v) {
+			const confirm = await os.confirm({
+				type: 'warning',
+				text: v ? this.$ts.accountdisableConfirm : this.$ts.accountenableConfirm,
+			});
+			if (confirm.canceled) {
+				this.disabled = !v;
+			} else {
+				await os.api(v ? 'admin/disable-user' : 'admin/enable-user', { userId: this.user.id });
 				await this.refreshUser();
 			}
 		},

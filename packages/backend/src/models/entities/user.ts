@@ -126,6 +126,12 @@ export class User {
 
 	@Column('boolean', {
 		default: false,
+		comment: 'Whether the User is disabled.',
+	})
+	public isDisabled: boolean;
+
+	@Column('boolean', {
+		default: false,
 		comment: 'Whether the User is locked.',
 	})
 	public isLocked: boolean;

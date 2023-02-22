@@ -22,7 +22,7 @@ export const initializeStreamingServer = (server: http.Server) => {
 		// (現状はエラーがキャッチされておらずサーバーのログに流れて邪魔なので)
 		const [user, app] = await authenticate(q.i as string);
 
-		if (user?.isSuspended) {
+		if (user?.isSuspended || user?.isDisabled) {
 			request.reject(400);
 			return;
 		}
