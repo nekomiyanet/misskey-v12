@@ -77,6 +77,8 @@ export default define(meta, paramDef, async (ps, user) => {
 
 	if (ps.isSensitive !== undefined) file.isSensitive = ps.isSensitive;
 
+	if (!ps.isSensitive && user.isForceSensitive) file.isSensitive = true;
+
 	if (ps.folderId !== undefined) {
 		if (ps.folderId === null) {
 			file.folderId = null;

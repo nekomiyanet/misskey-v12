@@ -420,7 +420,7 @@ export async function addFile({
 	file.blurhash = info.blurhash || null;
 	file.isLink = isLink;
 	file.isSensitive = user
-		? Users.isLocalUser(user) && profile!.alwaysMarkNsfw ? true :
+		? (Users.isLocalUser(user) && profile!.alwaysMarkNsfw) || (user.isForceSensitive) ? true :
 			(sensitive !== null && sensitive !== undefined)
 				? sensitive
 				: false

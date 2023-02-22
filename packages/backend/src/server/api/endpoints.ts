@@ -54,10 +54,12 @@ import * as ep___admin_showUser from './endpoints/admin/show-user.js';
 import * as ep___admin_showUsers from './endpoints/admin/show-users.js';
 import * as ep___admin_silenceUser from './endpoints/admin/silence-user.js';
 import * as ep___admin_localsilenceUser from './endpoints/admin/local-silence-user.js';
+import * as ep___admin_forcesensitiveUser from './endpoints/admin/force-sensitive-user.js';
 import * as ep___admin_disableUser from './endpoints/admin/disable-user.js';
 import * as ep___admin_suspendUser from './endpoints/admin/suspend-user.js';
 import * as ep___admin_unsilenceUser from './endpoints/admin/unsilence-user.js';
 import * as ep___admin_localunsilenceUser from './endpoints/admin/local-unsilence-user.js';
+import * as ep___admin_unforcesensitiveUser from './endpoints/admin/unforce-sensitive-user.js';
 import * as ep___admin_enableUser from './endpoints/admin/enable-user.js';
 import * as ep___admin_unsuspendUser from './endpoints/admin/unsuspend-user.js';
 import * as ep___admin_updateMeta from './endpoints/admin/update-meta.js';
@@ -368,6 +370,8 @@ const eps = [
 	['admin/unsuspend-user', ep___admin_unsuspendUser],
 	['admin/disable-user', ep___admin_disableUser],
 	['admin/enable-user', ep___admin_enableUser],
+	['admin/force-sensitive-user', ep___admin_forcesensitiveUser],
+	['admin/unforce-sensitive-user', ep___admin_unforcesensitiveUser],
 	['admin/update-meta', ep___admin_updateMeta],
 	['admin/vacuum', ep___admin_vacuum],
 	['announcements', ep___announcements],

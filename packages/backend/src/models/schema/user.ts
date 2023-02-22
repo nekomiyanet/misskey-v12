@@ -136,6 +136,10 @@ export const packedUserDetailedNotMeOnlySchema = {
 			type: 'boolean',
 			nullable: false, optional: false,
 		},
+		isForceSensitive: {
+			type: 'boolean',
+			nullable: false, optional: false,
+		},
 		isDisabled: {
 			type: 'boolean',
 			nullable: false, optional: false,

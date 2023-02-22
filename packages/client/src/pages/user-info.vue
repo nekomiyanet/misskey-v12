@@ -25,6 +25,7 @@
 				<FormSwitch v-if="user.host == null && $i.isAdmin && (moderator || !user.isAdmin)" v-model="moderator" class="_formBlock" @update:modelValue="toggleModerator">{{ $ts.moderator }}</FormSwitch>
 				<FormSwitch v-model="silenced" class="_formBlock" @update:modelValue="toggleSilence">{{ $ts.silence }}</FormSwitch>
 				<FormSwitch v-model="localsilenced" class="_formBlock" @update:modelValue="toggleLocalSilence">{{ $ts.localsilence }}</FormSwitch>
+				<FormSwitch v-model="forcesensitive" class="_formBlock" @update:modelValue="toggleForceSensitive">{{ $ts.forcesensitive }}</FormSwitch>
 				<FormSwitch v-model="disabled" class="_formBlock" @update:modelValue="toggleDisable">{{ $ts.accountdisable }}</FormSwitch>
 				<FormSwitch v-model="suspended" class="_formBlock" @update:modelValue="toggleSuspend">{{ $ts.suspend }}</FormSwitch>
 				<FormButton v-if="user.host == null && iAmModerator" class="_formBlock" @click="resetPassword"><i class="fas fa-key"></i> {{ $ts.resetPassword }}</FormButton>
@@ -120,6 +121,7 @@ export default defineComponent({
 			moderator: false,
 			silenced: false,
 			localsilenced: false,
+			forcesensitive: false,
 			disabled: false,
 			suspended: false,
 		};
@@ -165,6 +167,7 @@ export default defineComponent({
 					this.moderator = this.info.isModerator;
 					this.silenced = this.info.isSilenced;
 					this.localsilenced = this.info.isLocalSilenced;
+					this.forcesensitive = this.info.isForceSensitive;
 					this.disabled = this.info.isDisabled;
 					this.suspended = this.info.isSuspended;
 				});
@@ -226,6 +229,19 @@ export default defineComponent({
 				this.localsilenced = !v;
 			} else {
 				await os.api(v ? 'admin/local-silence-user' : 'admin/local-unsilence-user', { userId: this.user.id });
+				await this.refreshUser();
+			}
+		},
+
+		async toggleForceSensitive(v) {
+			const confirm = await os.confirm({
+				type: 'warning',
+				text: v ? this.$ts.forcesensitiveConfirm : this.$ts.unforcesensitiveConfirm,
+			});
+			if (confirm.canceled) {
+				this.forcesensitive = !v;
+			} else {
+				await os.api(v ? 'admin/force-sensitive-user' : 'admin/unforce-sensitive-user', { userId: this.user.id });
 				await this.refreshUser();
 			}
 		},
