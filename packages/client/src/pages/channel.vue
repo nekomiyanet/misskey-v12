@@ -62,6 +62,10 @@ export default defineComponent({
 					icon: 'fas fa-cog',
 					text: this.$ts.edit,
 					handler: this.edit,
+				}] : [])...(this.$i && (this.$i.id === this.channel.userId || this.$i.isAdmin || this.$i.isModerator) ? [{
+					icon: 'fas fa-trash-alt',
+					text: this.$ts.delete,
+					handler: this.delete,
 				}] : [])],
 			} : null),
 			channel: null,
@@ -91,6 +95,18 @@ export default defineComponent({
 		edit() {
 			this.$router.push(`/channels/${this.channel.id}/edit`);
 		}
+		async delete() {
+			const { canceled } = await os.confirm({
+				type: 'warning',
+				text: this.$t('removeAreYouSure', { x: this.channel.name }),
+			});
+			if (canceled) return;
+
+			await os.apiWithDialog('channels/delete', {
+				channelId: this.channelId
+			});
+			this.$router.push('/channels');
+		}
 	},
 });
 </script>
@@ -117,12 +133,12 @@ export default defineComponent({
 		color: #fff;
 		background: rgba(0, 0, 0, 0.5);
 		border-radius: 100%;
-		
+
 		> i {
 			vertical-align: middle;
 		}
 	}
-	
+
 	> .banner {
 		position: relative;
 		height: 200px;
