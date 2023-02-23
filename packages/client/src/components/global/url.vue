@@ -39,8 +39,9 @@ export default defineComponent({
 	setup(props) {
 		const self = props.url.startsWith(local);
 		const url = new URL(props.url);
+		if (!['http:', 'https:'].includes(url.protocol)) throw new Error('invalid url');
 		const el = ref();
-		
+
 		useTooltip(el, (showing) => {
 			os.popup(import('@/components/url-preview-popup.vue'), {
 				showing,
