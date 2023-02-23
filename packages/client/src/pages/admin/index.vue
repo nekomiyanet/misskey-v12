@@ -193,11 +193,6 @@ export default defineComponent({
 				text: i18n.ts.proxyAccount,
 				to: '/admin/proxy-account',
 				active: page.value === 'proxy-account',
-			}, {
-				icon: 'fas fa-cogs',
-				text: i18n.ts.other,
-				to: '/admin/other-settings',
-				active: page.value === 'other-settings',
 			}],
 		}, {
 			title: i18n.ts.info,
