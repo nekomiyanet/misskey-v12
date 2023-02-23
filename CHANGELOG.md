@@ -8,6 +8,24 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-fix.7 (2023/02/24)
+
+## Improvements
+- 非ログインのビジターメニューからお知らせを確認しやすいように @atsu1125
+- フォロー、フォロワーのページでフォローされていることを表示 @nenohi @atsu1125
+- ねこみやすきーのテーマを追加 @atsu1125
+- リノート解除を管理者権限を行使してUIから行えるように @atsu1125
+- チャンネルオーナーとモデレータがチャンネルを削除できるように @atsu1125
+- 管理画面(/admin/overview)にオンラインユーザー数を表示 @atsu1125
+
+## Bugfixes
+- ローカル専用の公開範囲へのサイレンスはリモートアカウントに設定できないように @atsu1125
+- ログイン無効化はリモートアカウントに設定できないように @atsu1125
+- タイムトラベルはできない @atsu1125
+- クイックアクションは使えない @atsu1125
+- その他の設定はない @atsu1125
+- Follow Security Advisory @atsu1125 @mei23 @syuilo
+
 ## 12.108.1-fix.6 (2023/02/23)
 
 ## Improvements
