@@ -15,6 +15,12 @@
 				<MkNumberDiff v-if="notesComparedToThePrevDay != null" v-tooltip="$ts.dayOverDayChanges" class="diff" :value="notesComparedToThePrevDay"><template #before>(</template><template #after>)</template></MkNumberDiff>
 			</div>
 		</div>
+		<div class="number _panel">
+			<div class="label">Current Online Users</div>
+			<div class="value _monospace">
+				{{ number(onlineUsersCount) }}
+			</div>
+		</div>
 	</div>
 
 	<MkContainer :foldable="true" class="charts">
@@ -105,6 +111,7 @@ export default defineComponent({
 			vueVersion,
 			url,
 			stats: null,
+			onlineUsersCount: null,
 			meta: null,
 			serverInfo: null,
 			usersComparedToThePrevDay: null,
@@ -119,7 +126,7 @@ export default defineComponent({
 		os.api('meta', { detail: true }).then(meta => {
 			this.meta = meta;
 		});
-		
+
 		os.api('stats', {}).then(stats => {
 			this.stats = stats;
 
@@ -130,6 +137,10 @@ export default defineComponent({
 			os.api('charts/notes', { limit: 2, span: 'day' }).then(chart => {
 				this.notesComparedToThePrevDay = this.stats.originalNotesCount - chart.local.total[1];
 			});
+		});
+
+		os.api('get-online-users-count').then(res => {
+			this.onlineUsersCount = res.count;
 		});
 
 		os.api('admin/server-info', {}).then(serverInfo => {

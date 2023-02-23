@@ -2,7 +2,7 @@
 <div ref="el" class="hiyeyicy" :class="{ wide: !narrow }">
 	<div v-if="!narrow || page == null" class="nav">
 		<MkHeader :info="header"></MkHeader>
-	
+
 		<MkSpacer :content-max="700" :margin-min="16">
 			<div class="lxpfedzu">
 				<div class="banner">
@@ -279,24 +279,6 @@ export default defineComponent({
 				icon: 'fas fa-user',
 				action: () => {
 					lookupUser();
-				}
-			}, {
-				text: i18n.ts.note,
-				icon: 'fas fa-pencil-alt',
-				action: () => {
-					alert('TODO');
-				}
-			}, {
-				text: i18n.ts.file,
-				icon: 'fas fa-cloud',
-				action: () => {
-					alert('TODO');
-				}
-			}, {
-				text: i18n.ts.instance,
-				icon: 'fas fa-globe',
-				action: () => {
-					alert('TODO');
 				}
 			}], ev.currentTarget ?? ev.target);
 		};
