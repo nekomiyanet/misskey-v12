@@ -23,6 +23,7 @@ export const builtinThemes = [
 	require('@/themes/l-vivid.json5'),
 	require('@/themes/l-cherry.json5'),
 	require('@/themes/l-sushi.json5'),
+	require('@/themes/l-nekomiyapink.json5'),
 
 	require('@/themes/d-dark.json5'),
 	require('@/themes/d-persimmon.json5'),
@@ -33,6 +34,7 @@ export const builtinThemes = [
 	require('@/themes/d-ice.json5'),
 	require('@/themes/d-pumpkin.json5'),
 	require('@/themes/d-black.json5'),
+	require('@/themes/d-nekomiyapink.json5'),
 ] as Theme[];
 
 let timeout = null;
