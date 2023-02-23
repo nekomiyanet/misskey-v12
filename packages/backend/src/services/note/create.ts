@@ -142,7 +142,7 @@ export default async (user: { id: User['id']; username: User['username']; host: 
 	}
 
 	// ローカルサイレンス
-	if (user.isLocalSilenced && !data.localOnly && data.visibility !== 'specified') {
+	if (Users.isLocalUser(user) && user.isLocalSilenced && !data.localOnly && data.visibility !== 'specified') {
 		data.localOnly = true;
 	}
 
