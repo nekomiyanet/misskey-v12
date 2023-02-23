@@ -128,10 +128,6 @@ defineExpose({
 			icon: 'fas fa-satellite-dish',
 			text: i18n.ts.channel,
 			handler: chooseChannel,
-		}, {
-			icon: 'fas fa-calendar-alt',
-			text: i18n.ts.jumpToSpecifiedDate,
-			handler: timetravel,
 		}],
 		tabs: [{
 			active: src === 'home',

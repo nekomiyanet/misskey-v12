@@ -41,10 +41,6 @@ export default defineComponent({
 				icon: 'fas fa-list-ul',
 				bg: 'var(--bg)',
 				actions: [{
-					icon: 'fas fa-calendar-alt',
-					text: this.$ts.jumpToSpecifiedDate,
-					handler: this.timetravel
-				}, {
 					icon: 'fas fa-cog',
 					text: this.$ts.settings,
 					handler: this.settings
