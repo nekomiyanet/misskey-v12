@@ -3,9 +3,9 @@ import { InternalStorage } from './internal-storage.js';
 import { DriveFiles, Instances } from '@/models/index.js';
 import { driveChart, perUserDriveChart, instanceChart } from '@/services/chart/index.js';
 import { createDeleteObjectStorageFileJob } from '@/queue/index.js';
-import { fetchMeta } from '@/misc/fetch-meta.js';
 import { getS3 } from './s3.js';
 import { v4 as uuid } from 'uuid';
+import config from '@/config/index.js';
 
 export async function deleteFile(file: DriveFile, isExpired = false) {
 	if (file.storedInternal) {
@@ -90,12 +90,11 @@ async function postProcess(file: DriveFile, isExpired = false) {
 }
 
 export async function deleteObjectStorageFile(key: string) {
-	const meta = await fetchMeta();
 
-	const s3 = getS3(meta);
+	const s3 = getS3();
 
 	await s3.deleteObject({
-		Bucket: meta.objectStorageBucket!,
+		Bucket: config.s3!.bucket!,
 		Key: key,
 	}).promise();
 }

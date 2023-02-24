@@ -85,11 +85,6 @@
 			<FormSection>
 				<template #label>{{ $ts.files }}</template>
 
-				<FormSwitch v-model="cacheRemoteFiles" class="_formBlock">
-					<template #label>{{ $ts.cacheRemoteFiles }}</template>
-					<template #caption>{{ $ts.cacheRemoteFilesDescription }}</template>
-				</FormSwitch>
-
 				<FormSplit :min-width="280">
 					<FormInput v-model="localDriveCapacityMb" type="number" class="_formBlock">
 						<template #label>{{ $ts.driveCapacityPerLocalAccount }}</template>
@@ -97,11 +92,6 @@
 						<template #caption>{{ $ts.inMb }}</template>
 					</FormInput>
 
-					<FormInput v-model="remoteDriveCapacityMb" type="number" :disabled="!cacheRemoteFiles" class="_formBlock">
-						<template #label>{{ $ts.driveCapacityPerRemoteAccount }}</template>
-						<template #suffix>MB</template>
-						<template #caption>{{ $ts.inMb }}</template>
-					</FormInput>
 				</FormSplit>
 			</FormSection>
 
@@ -195,7 +185,6 @@ export default defineComponent({
 			enableLocalTimeline: false,
 			enableGlobalTimeline: false,
 			pinnedUsers: '',
-			cacheRemoteFiles: false,
 			localDriveCapacityMb: 0,
 			remoteDriveCapacityMb: 0,
 			enableRegistration: false,
@@ -225,7 +214,6 @@ export default defineComponent({
 			this.enableLocalTimeline = !meta.disableLocalTimeline;
 			this.enableGlobalTimeline = !meta.disableGlobalTimeline;
 			this.pinnedUsers = meta.pinnedUsers.join('\n');
-			this.cacheRemoteFiles = meta.cacheRemoteFiles;
 			this.localDriveCapacityMb = meta.driveCapacityPerLocalUserMb;
 			this.remoteDriveCapacityMb = meta.driveCapacityPerRemoteUserMb;
 			this.enableRegistration = !meta.disableRegistration;
@@ -253,7 +241,6 @@ export default defineComponent({
 				disableLocalTimeline: !this.enableLocalTimeline,
 				disableGlobalTimeline: !this.enableGlobalTimeline,
 				pinnedUsers: this.pinnedUsers.split('\n'),
-				cacheRemoteFiles: this.cacheRemoteFiles,
 				localDriveCapacityMb: parseInt(this.localDriveCapacityMb, 10),
 				remoteDriveCapacityMb: parseInt(this.remoteDriveCapacityMb, 10),
 				disableRegistration: !this.enableRegistration,

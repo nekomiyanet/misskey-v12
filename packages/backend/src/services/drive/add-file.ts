@@ -21,6 +21,7 @@ import S3 from 'aws-sdk/clients/s3.js';
 import { getS3 } from './s3.js';
 import sharp from 'sharp';
 import { FILE_TYPE_BROWSERSAFE } from '@/const.js';
+import config from '@/config/index.js';
 
 const logger = driveLogger.createSubLogger('register', 'yellow');
 
@@ -36,9 +37,7 @@ async function save(file: DriveFile, path: string, name: string, type: string, h
 	// thunbnail, webpublic を必要なら生成
 	const alts = await generateAlts(path, type, !file.uri);
 
-	const meta = await fetchMeta();
-
-	if (meta.useObjectStorage) {
+	if (config.s3) {
 		//#region ObjectStorage params
 		let [ext] = (name.match(/\.([a-zA-Z0-9_-]+)$/) || ['']);
 
@@ -56,11 +55,11 @@ async function save(file: DriveFile, path: string, name: string, type: string, h
 			ext = '';
 		}
 
-		const baseUrl = meta.objectStorageBaseUrl
-			|| `${ meta.objectStorageUseSSL ? 'https' : 'http' }://${ meta.objectStorageEndpoint }${ meta.objectStoragePort ? `:${meta.objectStoragePort}` : '' }/${ meta.objectStorageBucket }`;
+		const baseUrl = config.s3.baseUrl
+			|| `${ config.s3.useSSL ? 'https' : 'http' }://${ config.s3.endpoint }/${ config.s3.bucket }`;
 
 		// for original
-		const key = `${meta.objectStoragePrefix}/${uuid()}${ext}`;
+		const key = `${ config.s3.prefix }/${uuid()}${ext}`;
 		const url = `${ baseUrl }/${ key }`;
 
 		// for alts
@@ -77,7 +76,7 @@ async function save(file: DriveFile, path: string, name: string, type: string, h
 		];
 
 		if (alts.webpublic) {
-			webpublicKey = `${meta.objectStoragePrefix}/webpublic-${uuid()}.${alts.webpublic.ext}`;
+			webpublicKey = `${ config.s3.prefix }/webpublic-${uuid()}.${alts.webpublic.ext}`;
 			webpublicUrl = `${ baseUrl }/${ webpublicKey }`;
 
 			logger.info(`uploading webpublic: ${webpublicKey}`);
@@ -85,7 +84,7 @@ async function save(file: DriveFile, path: string, name: string, type: string, h
 		}
 
 		if (alts.thumbnail) {
-			thumbnailKey = `${meta.objectStoragePrefix}/thumbnail-${uuid()}.${alts.thumbnail.ext}`;
+			thumbnailKey = `${ config.s3.prefix }/thumbnail-${uuid()}.${alts.thumbnail.ext}`;
 			thumbnailUrl = `${ baseUrl }/${ thumbnailKey }`;
 
 			logger.info(`uploading thumbnail: ${thumbnailKey}`);
@@ -252,10 +251,8 @@ async function upload(key: string, stream: fs.ReadStream | Buffer, type: string,
 	if (type === 'image/apng') type = 'image/png';
 	if (!FILE_TYPE_BROWSERSAFE.includes(type)) type = 'application/octet-stream';
 
-	const meta = await fetchMeta();
-
 	const params = {
-		Bucket: meta.objectStorageBucket,
+		Bucket: config.s3!.bucket,
 		Key: key,
 		Body: stream,
 		ContentType: type,
@@ -263,9 +260,9 @@ async function upload(key: string, stream: fs.ReadStream | Buffer, type: string,
 	} as S3.PutObjectRequest;
 
 	if (filename) params.ContentDisposition = contentDisposition('inline', filename);
-	if (meta.objectStorageSetPublicRead) params.ACL = 'public-read';
+	if (config.s3!.options.setPublicRead) params.ACL = 'public-read';
 
-	const s3 = getS3(meta);
+	const s3 = getS3();
 
 	const upload = s3.upload(params, {
 		partSize: s3.endpoint?.hostname === 'storage.googleapis.com' ? 500 * 1024 * 1024 : 8 * 1024 * 1024,

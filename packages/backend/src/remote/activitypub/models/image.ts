@@ -1,7 +1,6 @@
 import { uploadFromUrl } from '@/services/drive/upload-from-url.js';
 import { IRemoteUser } from '@/models/entities/user.js';
 import Resolver from '../resolver.js';
-import { fetchMeta } from '@/misc/fetch-meta.js';
 import { apLogger } from '../logger.js';
 import { DriveFile } from '@/models/entities/drive-file.js';
 import { DriveFiles } from '@/models/index.js';
@@ -27,14 +26,12 @@ export async function createImage(actor: IRemoteUser, value: any): Promise<Drive
 
 	logger.info(`Creating the Image: ${image.url}`);
 
-	const instance = await fetchMeta();
-
 	let file = await uploadFromUrl({
 		url: image.url,
 		user: actor,
 		uri: image.url,
 		sensitive: image.sensitive,
-		isLink: !instance.cacheRemoteFiles,
+		isLink: true,
 		comment: truncate(image.name, DB_MAX_IMAGE_COMMENT_LENGTH)
 	});
 
