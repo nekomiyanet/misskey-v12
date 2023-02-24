@@ -8,6 +8,20 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-fix.8 (2023/02/25)
+
+## Improvements
+- 設定ファイルでオブジェクトストレージの設定を行うように @atsu1125
+- 設定ファイルでメールの設定を行うように @atsu1125
+- モデレータがページを削除できるように @atsu1125
+- Twemoji 14.0に対応するように @atsu1125 @mei23 @syuilo
+
+## Bugfixes
+- お知らせの登録日時の表示を適切なデザインに @atsu1125
+- Follow Security Advisory @mei23
+- Node v16.19.1 @atsu1125
+- Nodeバージョンチェックは起動時に弾くんじゃなくてインストール時に弾く @atsu1125
+
 ## 12.108.1-fix.7 (2023/02/24)
 
 ## Improvements
