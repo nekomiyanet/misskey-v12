@@ -89,8 +89,6 @@ export async function masterMain() {
 }
 
 const runningNodejsVersion = process.version.slice(1).split('.').map(x => parseInt(x, 10));
-const requiredNodejsVersion = [11, 7, 0];
-const satisfyNodejsVersion = !lessThan(runningNodejsVersion, requiredNodejsVersion);
 
 function showEnvironment(): void {
 	const env = process.env.NODE_ENV;
@@ -110,10 +108,6 @@ function showNodejsVersion(): void {
 
 	nodejsLogger.info(`Version ${runningNodejsVersion.join('.')}`);
 
-	if (!satisfyNodejsVersion) {
-		nodejsLogger.error(`Node.js version is less than ${requiredNodejsVersion.join('.')}. Please upgrade it.`, null, true);
-		process.exit(1);
-	}
 }
 
 function loadConfigBoot(): Config {
