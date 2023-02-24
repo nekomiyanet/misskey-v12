@@ -88,14 +88,14 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
-"@discordapp/twemoji@13.1.0":
-  version "13.1.0"
-  resolved "https://registry.yarnpkg.com/@discordapp/twemoji/-/twemoji-13.1.0.tgz#6b25f3958fa8fd68692248c87776bc737fd009a9"
-  integrity sha512-KEw/te+ylD2MHutzigafyptv0kdTU05Dbgxr9Y5J9IAQw8PbFz16nKtlPnJtA23BLp9fZQeNXzUmegkRi7fpDA==
+"@discordapp/twemoji@14.0.2":
+  version "14.0.2"
+  resolved "https://registry.yarnpkg.com/@discordapp/twemoji/-/twemoji-14.0.2.tgz#50cc19f6f3769dc6b36eb251421b5f5d4629e837"
+  integrity sha512-eYJpFsjViDTYwq3f6v+tRu8iRc+yLAeGrlh6kmNRvvC6rroUE2bMlBfEQ/WNh+2Q1FtSEFXpxzuQPOHzRzbAyA==
   dependencies:
     fs-extra "^8.0.1"
     jsonfile "^5.0.0"
-    twemoji-parser "13.1.0"
+    twemoji-parser "14.0.0"
     universalify "^0.1.2"
 
 "@discoveryjs/json-ext@^0.5.0":
@@ -5622,7 +5622,7 @@ twemoji-parser@13.1.0:
   resolved "https://registry.yarnpkg.com/twemoji-parser/-/twemoji-parser-13.1.0.tgz#65e7e449c59258791b22ac0b37077349127e3ea4"
   integrity sha512-AQOzLJpYlpWMy8n+0ATyKKZzWlZBJN+G0C+5lhX7Ftc2PeEVdUU/7ns2Pn2vVje26AIZ/OHwFoUbdv6YYD/wGg==
 
-twemoji-parser@14.0.x:
+twemoji-parser@14.0.0, twemoji-parser@14.0.x:
   version "14.0.0"
   resolved "https://registry.yarnpkg.com/twemoji-parser/-/twemoji-parser-14.0.0.tgz#13dabcb6d3a261d9efbf58a1666b182033bf2b62"
   integrity sha512-9DUOTGLOWs0pFWnh1p6NF+C3CkQ96PWmEFwhOVmT3WbecRC+68AIqpsnJXygfkFcp4aXbOp8Dwbhh/HQgvoRxA==
