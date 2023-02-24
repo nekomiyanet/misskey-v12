@@ -1,4 +1,4 @@
-FROM node:16.14.0-alpine3.15 AS base
+FROM node:16.19.1-alpine3.15 AS base
 
 ENV NODE_ENV=production
 
@@ -32,4 +32,3 @@ COPY --from=builder /misskey/packages/client/node_modules ./packages/client/node
 COPY . ./
 
 CMD ["npm", "run", "migrateandstart"]
-
