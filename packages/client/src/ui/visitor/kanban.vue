@@ -23,7 +23,9 @@
 								<Mfm :text="announcement.text"/>
 								<img v-if="announcement.imageUrl" :src="announcement.imageUrl"/>
 							</div>
-							<div class="time"><MkTime :time="announcement.createdAt" mode="detail"/></div>
+							<div class="footer">
+								<div><i class="far fa-clock"></i> {{ $ts.createdAt }}: <MkTime :time="announcement.createdAt" mode="detail"/></div>
+							</div>
 						</section>
 					</MkPagination>
 				</div>
@@ -212,6 +214,12 @@ export default defineComponent({
 				> header {
 					padding: 12px 16px;
 					border-bottom: solid 1px rgba(255, 255, 255, 0.5);
+				}
+
+				> .footer {
+					margin: var(--margin) 0 var(--margin) 0;
+					font-size: 85%;
+					opacity: 0.75;
 				}
 
 				> .list {
