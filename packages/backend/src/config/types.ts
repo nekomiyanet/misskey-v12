@@ -46,6 +46,14 @@ export type Source = {
 			useProxy?: boolean;
 		}
 	}
+	smtp?: {
+		host: string;
+		port: number;
+		useTLS: boolean;
+		user: string;
+		pass: string;
+		senderaddress: string;
+	}
 
 	proxy?: string;
 	proxySmtp?: string;

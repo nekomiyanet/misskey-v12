@@ -88,6 +88,17 @@ redis:
 #    forcePathStyle: false
 #    useProxy: false
 
+#   ┌─────────────────────┐
+#───┘ email configuration └──────────────────────
+
+#smtp:
+#  host: smtp.example.com
+#  port: 25
+#  useTLS: false
+#  user: username
+#  pass: password
+#  senderaddress: noreply@example.com
+
 #   ┌───────────────┐
 #───┘ ID generation └───────────────────────────────────────────
 

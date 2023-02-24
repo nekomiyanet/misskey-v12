@@ -11,24 +11,24 @@ export async function sendEmail(to: string, subject: string, html: string, text:
 	const iconUrl = `${config.url}/static-assets/mi-white.png`;
 	const emailSettingUrl = `${config.url}/settings/email`;
 
-	const enableAuth = meta.smtpUser != null && meta.smtpUser !== '';
+	const enableAuth = config.smtp.user != null && config.smtp.user !== '';
 
 	const transporter = nodemailer.createTransport({
-		host: meta.smtpHost,
-		port: meta.smtpPort,
-		secure: meta.smtpSecure,
+		host: config.smtp.host,
+		port: config.smtp.port,
+		secure: config.smtp.useTLS,
 		ignoreTLS: !enableAuth,
 		proxy: config.proxySmtp,
 		auth: enableAuth ? {
-			user: meta.smtpUser,
-			pass: meta.smtpPass,
+			user: config.smtp.user,
+			pass: config.smtp.pass,
 		} : undefined,
 	} as any);
 
 	try {
 		// TODO: htmlサニタイズ
 		const info = await transporter.sendMail({
-			from: meta.email!,
+			from: config.smtp.senderaddress!,
 			to: to,
 			subject: subject,
 			text: text,
