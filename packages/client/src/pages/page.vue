@@ -23,6 +23,7 @@
 						<button v-tooltip="$ts.shareWithNote" v-click-anime class="_button" @click="shareWithNote"><i class="fas fa-retweet fa-fw"></i></button>
 						<button v-tooltip="$ts.share" v-click-anime class="_button" @click="share"><i class="fas fa-share-alt fa-fw"></i></button>
 					</div>
+					<MkButton v-if="$i && ($i.id != page.user.id && ($i.isModerator || $i.isAdmin))" v-tooltip="$ts.deleteAsAdmin" class="button" danger @click="del()"><i class="fas fa-trash-alt"></i></MkButton>
 				</div>
 				<div class="user">
 					<MkAvatar :user="page.user" class="avatar"/>
@@ -184,6 +185,19 @@ export default defineComponent({
 		pin(pin) {
 			os.apiWithDialog('i/update', {
 				pinnedPageId: pin ? this.page.id : null,
+			});
+		},
+
+		async del() {
+			const confirm = await os.confirm({
+				type: 'warning',
+				text: this.$ts.noteDeleteAsAdminConfirm,
+			});
+			if (confirm.canceled) return;
+			os.apiWithDialog('pages/delete', {
+				pageId: this.page.id,
+			}).then(() => {
+				this.$router.push('/pages');
 			});
 		}
 	}
