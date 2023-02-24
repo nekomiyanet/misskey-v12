@@ -72,7 +72,7 @@ export default define(meta, paramDef, async (ps, me) => {
 				for (const tags of ps.query!) {
 					qb.orWhere(new Brackets(qb => {
 						for (const tag of tags) {
-							if (!safeForSql(normalizeForSearch(ps.tag))) throw 'Injection';
+							if (!safeForSql(normalizeForSearch(tag))) throw 'Injection';
 							qb.andWhere(`'{"${normalizeForSearch(tag)}"}' <@ note.tags`);
 						}
 					}));
