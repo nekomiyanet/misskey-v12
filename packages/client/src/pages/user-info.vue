@@ -18,6 +18,19 @@
 					<template #key>ID</template>
 					<template #value><span class="_monospace">{{ user.id }}</span></template>
 				</MkKeyValue>
+
+				<MkKeyValue :copy="info.email" v-if="info" oneline style="margin: 1em 0;">
+					<template #key>Email</template>
+					<template #value><span class="_monospace">{{ info.email }}</span></template>
+				</MkKeyValue>
+
+				<MkKeyValue v-if="info" oneline style="margin: 1em 0;">
+					<template #key>Email Status</template>
+					<template v-if="!info.email" #value><span class="_monospace">None</span></template>
+					<template v-if="info.email && info.emailVerified" #value><span class="_monospace">Verified</span></template>
+					<template v-if="info.email && !info.emailVerified" #value><span class="_monospace">Not Verified</span></template>
+				</MkKeyValue>
+
 			</div>
 
 			<FormSection v-if="iAmModerator">

@@ -1,5 +1,5 @@
 import define from '../../define.js';
-import { Users } from '@/models/index.js';
+import { Users, UserProfiles } from '@/models/index.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -23,9 +23,12 @@ export const paramDef = {
 
 // eslint-disable-next-line import/no-default-export
 export default define(meta, paramDef, async (ps, me) => {
-	const user = await Users.findOne(ps.userId as string);
+	const [user, profile] = await Promise.all([
+		Users.findOne(ps.userId as string),
+		UserProfiles.findOneOrFail(ps.userId),
+	]);
 
-	if (user == null) {
+	if (user == null || profile == null) {
 		throw new Error('user not found');
 	}
 
@@ -33,8 +36,29 @@ export default define(meta, paramDef, async (ps, me) => {
 		throw new Error('cannot show info of admin');
 	}
 
+	const maskedKeys = ['accessToken', 'accessTokenSecret', 'refreshToken'];
+	Object.keys(profile.integrations).forEach(integration => {
+		maskedKeys.forEach(key => profile.integrations[integration][key] = '<MASKED>');
+	});
+
 	return {
-		...user,
-		token: user.token != null ? '<MASKED>' : user.token,
+		email: profile.email,
+		emailVerified: profile.emailVerified,
+		autoAcceptFollowed: profile.autoAcceptFollowed,
+		noCrawle: profile.noCrawle,
+		alwaysMarkNsfw: profile.alwaysMarkNsfw,
+		carefulBot: profile.carefulBot,
+		injectFeaturedNote: profile.injectFeaturedNote,
+		receiveAnnouncementEmail: profile.receiveAnnouncementEmail,
+		integrations: profile.integrations,
+		mutedWords: profile.mutedWords,
+		mutedInstances: profile.mutedInstances,
+		mutingNotificationTypes: profile.mutingNotificationTypes,
+		isModerator: user.isModerator,
+		isSilenced: user.isSilenced,
+		isSuspended: user.isSuspended,
+		isLocalSilenced: user.isLocalSilenced,
+		isForceSensitive: user.isForceSensitive,
+		isDisabled: user.isDisabled,
 	};
 });
