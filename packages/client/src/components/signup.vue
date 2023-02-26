@@ -30,6 +30,7 @@
 				<span v-else-if="emailState === 'unavailable:disposable'" style="color: var(--error)"><i class="fas fa-exclamation-triangle fa-fw"></i> {{ $ts._emailUnavailable.disposable }}</span>
 				<span v-else-if="emailState === 'unavailable:mx'" style="color: var(--error)"><i class="fas fa-exclamation-triangle fa-fw"></i> {{ $ts._emailUnavailable.mx }}</span>
 				<span v-else-if="emailState === 'unavailable:smtp'" style="color: var(--error)"><i class="fas fa-exclamation-triangle fa-fw"></i> {{ $ts._emailUnavailable.smtp }}</span>
+				<span v-else-if="emailState === 'unavailable:blocked'" style="color: var(--error)"><i class="fas fa-exclamation-triangle fa-fw"></i> {{ $ts._emailUnavailable.blocked }}</span>
 				<span v-else-if="emailState === 'unavailable'" style="color: var(--error)"><i class="fas fa-exclamation-triangle fa-fw"></i> {{ $ts.unavailable }}</span>
 				<span v-else-if="emailState === 'error'" style="color: var(--error)"><i class="fas fa-exclamation-triangle fa-fw"></i> {{ $ts.error }}</span>
 			</template>
@@ -181,6 +182,7 @@ export default defineComponent({
 					result.reason === 'disposable' ? 'unavailable:disposable' :
 					result.reason === 'mx' ? 'unavailable:mx' :
 					result.reason === 'smtp' ? 'unavailable:smtp' :
+					result.reason === 'blocked' ? 'unavailable:blocked' :
 					'unavailable';
 			}).catch(err => {
 				this.emailState = 'error';

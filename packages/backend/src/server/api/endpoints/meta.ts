@@ -314,6 +314,14 @@ export const meta = {
 					optional: false, nullable: false,
 				},
 			},
+			blockedEmailDomains: {
+				type: 'array',
+				optional: true, nullable: false,
+				items: {
+					type: 'string',
+					optional: false, nullable: false,
+				},
+			},
 			hcaptchaSecretKey: {
 				type: 'string',
 				optional: true, nullable: true,
@@ -481,6 +489,7 @@ export default define(meta, paramDef, async (ps, me) => {
 			response.pinnedUsers = instance.pinnedUsers;
 			response.hiddenTags = instance.hiddenTags;
 			response.blockedHosts = instance.blockedHosts;
+			response.blockedEmailDomains = instance.blockedEmailDomains;
 			response.hcaptchaSecretKey = instance.hcaptchaSecretKey;
 			response.recaptchaSecretKey = instance.recaptchaSecretKey;
 			response.proxyAccountId = instance.proxyAccountId;

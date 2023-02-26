@@ -184,6 +184,11 @@ export default defineComponent({
 				to: '/admin/instance-block',
 				active: page.value === 'instance-block',
 			}, {
+				icon: 'fas fa-ban',
+				text: i18n.ts.emailDomainBlocking,
+				to: '/admin/email-block',
+				active: page.value === 'email-block',
+			}, {
 				icon: 'fas fa-ghost',
 				text: i18n.ts.proxyAccount,
 				to: '/admin/proxy-account',
@@ -217,6 +222,7 @@ export default defineComponent({
 				case 'relays': return defineAsyncComponent(() => import('./relays.vue'));
 				case 'integrations': return defineAsyncComponent(() => import('./integrations.vue'));
 				case 'instance-block': return defineAsyncComponent(() => import('./instance-block.vue'));
+				case 'email-block': return defineAsyncComponent(() => import('./email-block.vue'));
 				case 'proxy-account': return defineAsyncComponent(() => import('./proxy-account.vue'));
 				case 'other-settings': return defineAsyncComponent(() => import('./other-settings.vue'));
 			}
