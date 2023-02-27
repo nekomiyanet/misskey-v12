@@ -39,6 +39,8 @@ const XTutorial = defineAsyncComponent(() => import('./timeline.tutorial.vue'));
 
 const isLocalTimelineAvailable = !instance.disableLocalTimeline || ($i != null && ($i.isModerator || $i.isAdmin));
 const isGlobalTimelineAvailable = !instance.disableGlobalTimeline || ($i != null && ($i.isModerator || $i.isAdmin));
+const isModTimelineAvailable = $i != null && ($i.isModerator || $i.isAdmin);
+const isCatTimelineAvailable = $i != null && $i.isCat;
 const keymap = {
 	't': focus,
 };
@@ -114,7 +116,7 @@ function focus(): void {
 defineExpose({
 	[symbols.PAGE_INFO]: computed(() => ({
 		title: i18n.ts.timeline,
-		icon: src === 'local' ? 'fas fa-comments' : src === 'social' ? 'fas fa-share-alt' : src === 'global' ? 'fas fa-globe' : 'fas fa-home',
+		icon: src === 'local' ? 'fas fa-comments' : src === 'social' ? 'fas fa-share-alt' : src === 'global' ? 'fas fa-globe' : src === 'cat' ? 'fas fa-paw' : src === 'mod' ? 'fas fa-bookmark' : 'fas fa-home',
 		bg: 'var(--bg)',
 		actions: [{
 			icon: 'fas fa-list-ul',
@@ -135,7 +137,13 @@ defineExpose({
 			icon: 'fas fa-home',
 			iconOnly: true,
 			onClick: () => { saveSrc('home'); },
-		}, ...(isLocalTimelineAvailable ? [{
+		}, ...(isCatTimelineAvailable ? [{
+			active: src === 'cat',
+			title: i18n.ts._timelines.cat,
+			icon: 'fas fa-paw',
+			iconOnly: true,
+			onClick: () => { saveSrc('cat'); },
+		}] : []), ...(isLocalTimelineAvailable ? [{
 			active: src === 'local',
 			title: i18n.ts._timelines.local,
 			icon: 'fas fa-comments',
@@ -153,6 +161,12 @@ defineExpose({
 			icon: 'fas fa-globe',
 			iconOnly: true,
 			onClick: () => { saveSrc('global'); },
+		}] : []), ...(isModTimelineAvailable ? [{
+			active: src === 'mod',
+			title: i18n.ts._timelines.mod,
+			icon: 'fas fa-bookmark',
+			iconOnly: true,
+			onClick: () => { saveSrc('mod'); },
 		}] : [])],
 	})),
 });

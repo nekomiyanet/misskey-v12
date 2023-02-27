@@ -4,6 +4,8 @@
 		<i v-if="column.tl === 'home'" class="fas fa-home"></i>
 		<i v-else-if="column.tl === 'local'" class="fas fa-comments"></i>
 		<i v-else-if="column.tl === 'social'" class="fas fa-share-alt"></i>
+		<i v-else-if="column.tl === 'cat'" class="fas fa-paw"></i>
+		<i v-else-if="column.tl === 'mod'" class="fas fa-bookmark"></i>
 		<i v-else-if="column.tl === 'global'" class="fas fa-globe"></i>
 		<span style="margin-left: 8px;">{{ column.name }}</span>
 	</template>
@@ -77,6 +79,10 @@ export default defineComponent({
 					value: 'local', text: this.$ts._timelines.local
 				}, {
 					value: 'social', text: this.$ts._timelines.social
+				}, {
+					value: 'cat', text: this.$ts._timelines.cat
+				}, {
+					value: 'mod', text: this.$ts._timelines.mod
 				}, {
 					value: 'global', text: this.$ts._timelines.global
 				}]

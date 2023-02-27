@@ -1324,6 +1324,8 @@ _timelines:
   local: "Local"
   social: "Social"
   global: "Global"
+  cat: "Cat"
+  mod: "Mod"
 _pages:
   newPage: "Create a new Page"
   editPage: "Edit this Page"

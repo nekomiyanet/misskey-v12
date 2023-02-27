@@ -81,6 +81,14 @@ if (props.src === 'antenna') {
 	endpoint = 'notes/hybrid-timeline';
 	connection = stream.useChannel('hybridTimeline');
 	connection.on('note', prepend);
+} else if (props.src === 'cat') {
+	endpoint = 'notes/cat-timeline';
+	connection = stream.useChannel('catTimeline');
+	connection.on('note', prepend);
+} else if (props.src === 'mod') {
+	endpoint = 'notes/mod-timeline';
+	connection = stream.useChannel('modTimeline');
+	connection.on('note', prepend);
 } else if (props.src === 'global') {
 	endpoint = 'notes/global-timeline';
 	connection = stream.useChannel('globalTimeline');
