@@ -22,7 +22,7 @@ export async function validateEmailForAccount(emailAddress: string): Promise<{
 	});
 
 	// メールドメインブロックを判定
-	const domain = extractDomain(emailAddress);
+	const domain = extractDomain(emailAddress).toLowerCase();
 	let blockedemaildomain = false;
 	const meta = await fetchMeta();
 	if (meta.blockedEmailDomains.some(x => x.endsWith(domain))) {
