@@ -41,6 +41,20 @@ export default define(meta, paramDef, async (ps, me) => {
 		maskedKeys.forEach(key => profile.integrations[integration][key] = '<MASKED>');
 	});
 
+
+	if (!me.isAdmin) {
+		return {
+			isModerator: user.isModerator,
+			isSilenced: user.isSilenced,
+			isSuspended: user.isSuspended,
+			emailVerified: profile.emailVerified,
+			isLocalSilenced: user.isLocalSilenced,
+			isPrivateSilenced: user.isPrivateSilenced,
+			isForceSensitive: user.isForceSensitive,
+			isDisabled: user.isDisabled,
+		};
+	}
+
 	return {
 		email: profile.email,
 		emailVerified: profile.emailVerified,
