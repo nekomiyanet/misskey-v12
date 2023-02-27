@@ -5,6 +5,7 @@ import hybridTimeline from './hybrid-timeline.js';
 import globalTimeline from './global-timeline.js';
 import catTimeline from './cat-timeline.js';
 import modTimeline from './mod-timeline.js';
+import limitedTimeline from './limited-timeline.js';
 import serverStats from './server-stats.js';
 import queueStats from './queue-stats.js';
 import userList from './user-list.js';
@@ -24,6 +25,7 @@ export default {
 	globalTimeline,
 	catTimeline,
 	modTimeline,
+	limitedTimeline,
 	serverStats,
 	queueStats,
 	userList,

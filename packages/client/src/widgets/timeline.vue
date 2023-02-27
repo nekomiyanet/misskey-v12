@@ -7,6 +7,7 @@
 			<i v-else-if="widgetProps.src === 'social'" class="fas fa-share-alt"></i>
 			<i v-else-if="widgetProps.src === 'cat'" class="fas fa-paw"></i>
 			<i v-else-if="widgetProps.src === 'mod'" class="fas fa-bookmark"></i>
+			<i v-else-if="widgetProps.src === 'limited'" class="fas fa-unlock"></i>
 			<i v-else-if="widgetProps.src === 'global'" class="fas fa-globe"></i>
 			<i v-else-if="widgetProps.src === 'list'" class="fas fa-list-ul"></i>
 			<i v-else-if="widgetProps.src === 'antenna'" class="fas fa-satellite"></i>
@@ -106,6 +107,10 @@ const choose = async (ev) => {
 		text: i18n.ts._timelines.home,
 		icon: 'fas fa-home',
 		action: () => { setSrc('home') }
+	}, {
+		text: i18n.ts._timelines.limited,
+		icon: 'fas fa-unlock',
+	action: () => { setSrc('limited') }
 	}, {
 		text: i18n.ts._timelines.local,
 		icon: 'fas fa-comments',

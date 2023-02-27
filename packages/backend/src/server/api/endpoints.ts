@@ -235,6 +235,7 @@ import * as ep___notes_hybridTimeline from './endpoints/notes/hybrid-timeline.js
 import * as ep___notes_localTimeline from './endpoints/notes/local-timeline.js';
 import * as ep___notes_catTimeline from './endpoints/notes/cat-timeline.js';
 import * as ep___notes_modTimeline from './endpoints/notes/mod-timeline.js';
+import * as ep___notes_limitedTimeline from './endpoints/notes/limited-timeline.js';
 import * as ep___notes_mentions from './endpoints/notes/mentions.js';
 import * as ep___notes_polls_recommendation from './endpoints/notes/polls/recommendation.js';
 import * as ep___notes_polls_vote from './endpoints/notes/polls/vote.js';
@@ -550,6 +551,7 @@ const eps = [
 	['notes/local-timeline', ep___notes_localTimeline],
 	['notes/cat-timeline', ep___notes_catTimeline],
 	['notes/mod-timeline', ep___notes_modTimeline],
+	['notes/limited-timeline', ep___notes_limitedTimeline],
 	['notes/mentions', ep___notes_mentions],
 	['notes/polls/recommendation', ep___notes_polls_recommendation],
 	['notes/polls/vote', ep___notes_polls_vote],

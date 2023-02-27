@@ -1321,6 +1321,7 @@ _instanceCharts:
   filesTotal: "Cumulative number of files"
 _timelines:
   home: "Home"
+  limited: "Limited Home"
   local: "Local"
   social: "Social"
   global: "Global"
