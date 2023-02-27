@@ -126,6 +126,12 @@ export class User {
 
 	@Column('boolean', {
 		default: false,
+		comment: 'Whether the User is private silenced.',
+	})
+	public isPrivateSilenced: boolean;
+
+	@Column('boolean', {
+		default: false,
 		comment: 'Whether the User is force sensitive.',
 	})
 	public isForceSensitive: boolean;

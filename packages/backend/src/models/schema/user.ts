@@ -136,6 +136,10 @@ export const packedUserDetailedNotMeOnlySchema = {
 			type: 'boolean',
 			nullable: false, optional: false,
 		},
+		isPrivateSilenced: {
+			type: 'boolean',
+			nullable: false, optional: false,
+		},
 		isForceSensitive: {
 			type: 'boolean',
 			nullable: false, optional: false,

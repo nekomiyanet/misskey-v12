@@ -279,6 +279,7 @@ export class UserRepository extends Repository<User> {
 				isLocked: user.isLocked,
 				isSilenced: user.isSilenced || falsy,
 				isLocalSilenced: user.isLocalSilenced || falsy,
+				isPrivateSilenced: user.isPrivateSilenced || falsy,
 				isForceSensitive: user.isForceSensitive || falsy,
 				isDisabled: user.isDisabled || falsy,
 				isSuspended: user.isSuspended || falsy,

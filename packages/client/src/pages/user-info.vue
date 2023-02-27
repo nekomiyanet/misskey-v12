@@ -38,6 +38,7 @@
 				<FormSwitch v-if="user.host == null && $i.isAdmin && (moderator || !user.isAdmin)" v-model="moderator" class="_formBlock" @update:modelValue="toggleModerator">{{ $ts.moderator }}</FormSwitch>
 				<FormSwitch v-model="silenced" class="_formBlock" @update:modelValue="toggleSilence">{{ $ts.silence }}</FormSwitch>
 				<FormSwitch v-if="user.host == null && iAmModerator" v-model="localsilenced" class="_formBlock" @update:modelValue="toggleLocalSilence">{{ $ts.localsilence }}</FormSwitch>
+				<FormSwitch v-if="user.host != null && iAmModerator" v-model="privatesilenced" class="_formBlock" @update:modelValue="toggleprivatesilence">{{ $ts.privatesilence }}</FormSwitch>
 				<FormSwitch v-model="forcesensitive" class="_formBlock" @update:modelValue="toggleForceSensitive">{{ $ts.forcesensitive }}</FormSwitch>
 				<FormSwitch v-if="user.host == null && iAmModerator" v-model="disabled" class="_formBlock" @update:modelValue="toggleDisable">{{ $ts.accountdisable }}</FormSwitch>
 				<FormSwitch v-model="suspended" class="_formBlock" @update:modelValue="toggleSuspend">{{ $ts.suspend }}</FormSwitch>
@@ -134,6 +135,7 @@ export default defineComponent({
 			moderator: false,
 			silenced: false,
 			localsilenced: false,
+			privatesilenced: false,
 			forcesensitive: false,
 			disabled: false,
 			suspended: false,
@@ -180,6 +182,7 @@ export default defineComponent({
 					this.moderator = this.info.isModerator;
 					this.silenced = this.info.isSilenced;
 					this.localsilenced = this.info.isLocalSilenced;
+					this.privatesilenced = this.info.isPrivateSilenced;
 					this.forcesensitive = this.info.isForceSensitive;
 					this.disabled = this.info.isDisabled;
 					this.suspended = this.info.isSuspended;
@@ -242,6 +245,19 @@ export default defineComponent({
 				this.localsilenced = !v;
 			} else {
 				await os.api(v ? 'admin/local-silence-user' : 'admin/local-unsilence-user', { userId: this.user.id });
+				await this.refreshUser();
+			}
+		},
+
+		async toggleprivatesilence(z) {
+			const confirm = await os.confirm({
+				type: 'warning',
+				text: z ? this.$ts.silenceConfirm : this.$ts.unsilenceConfirm,
+			});
+			if (confirm.canceled) {
+				this.privatesilenced = !z;
+			} else {
+				await os.api(z ? 'admin/private-silence-user' : 'admin/private-unsilence-user', { userId: this.user.id });
 				await this.refreshUser();
 			}
 		},

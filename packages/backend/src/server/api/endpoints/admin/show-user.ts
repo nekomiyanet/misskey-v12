@@ -58,6 +58,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		isSilenced: user.isSilenced,
 		isSuspended: user.isSuspended,
 		isLocalSilenced: user.isLocalSilenced,
+		isPrivateSilenced: user.isPrivateSilenced,
 		isForceSensitive: user.isForceSensitive,
 		isDisabled: user.isDisabled,
 	};

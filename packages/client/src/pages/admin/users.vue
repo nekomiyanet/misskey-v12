@@ -17,6 +17,7 @@
 				<option value="moderator">{{ $ts.moderator }}</option>
 				<option value="silenced">{{ $ts.silence }}</option>
 				<option value="localsilenced">{{ $ts.localsilence }}</option>
+				<option value="privatesilenced">{{ $ts.privatesilence }}</option>
 				<option value="forcesensitive">{{ $ts.forcesensitive }}</option>
 				<option value="disabled">{{ $ts.accountdisable }}</option>
 				<option value="suspended">{{ $ts.suspend }}</option>
@@ -50,6 +51,7 @@
 						<span v-if="user.isModerator" class="staff"><i class="far fa-bookmark"></i></span>
 						<span v-if="user.isSilenced" class="punished"><i class="fas fa-microphone-slash"></i></span>
 						<span v-if="user.isLocalSilenced" class="punished"><i class="fas fa-biohazard"></i></span>
+						<span v-if="user.isPrivateSilenced" class="punished"><i class="fas fa-unlock"></i></span>
 						<span v-if="user.isForceSensitive" class="punished"><i class="fas fa-exclamation-triangle"></i></span>
 						<span v-if="user.isDisabled" class="punished"><i class="fas fa-ban"></i></span>
 						<span v-if="user.isSuspended" class="punished"><i class="fas fa-snowflake"></i></span>

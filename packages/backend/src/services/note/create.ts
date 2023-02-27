@@ -112,7 +112,7 @@ type Option = {
 	app?: App | null;
 };
 
-export default async (user: { id: User['id']; username: User['username']; host: User['host']; isSilenced: User['isSilenced']; isLocalSilenced: User['isLocalSilenced']; createdAt: User['createdAt']; }, data: Option, silent = false) => new Promise<Note>(async (res, rej) => {
+export default async (user: { id: User['id']; username: User['username']; host: User['host']; isSilenced: User['isSilenced']; isLocalSilenced: User['isLocalSilenced']; isPrivateSilenced: User['isPrivateSilenced']; createdAt: User['createdAt']; }, data: Option, silent = false) => new Promise<Note>(async (res, rej) => {
 	// チャンネル外にリプライしたら対象のスコープに合わせる
 	// (クライアントサイドでやっても良い処理だと思うけどとりあえずサーバーサイドで)
 	if (data.reply && data.channel && data.reply.channelId !== data.channel.id) {
@@ -144,6 +144,11 @@ export default async (user: { id: User['id']; username: User['username']; host: 
 	// ローカルサイレンス
 	if (Users.isLocalUser(user) && user.isLocalSilenced && !data.localOnly && data.visibility !== 'specified') {
 		data.localOnly = true;
+	}
+
+	// プライベートサイレンス
+	if (Users.isRemoteUser(user) && user.isPrivateSilenced && (data.visibility === 'public' || data.visibility === 'home')) {
+		data.visibility = 'followers';
 	}
 
 	// Renote対象が「ホームまたは全体」以外の公開範囲ならreject
