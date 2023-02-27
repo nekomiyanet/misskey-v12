@@ -119,8 +119,7 @@ async function fetchAny(uri: string): Promise<SchemaType<typeof meta['res']> | n
 
 	// ブロックしてたら中断
 	const fetchedMeta = await fetchMeta();
-	if (fetchedMeta.blockedHosts.includes(extractDbHost(uri))) return null;
-
+	if (fetchedMeta.blockedHosts.some(x => x.endsWith(extractDbHost(uri)))) return null;
 	// URI(AP Object id)としてDB検索
 	{
 		const [user, note] = await Promise.all([
