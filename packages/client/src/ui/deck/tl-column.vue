@@ -11,7 +11,7 @@
 		<span style="margin-left: 8px;">{{ column.name }}</span>
 	</template>
 
-	<div v-if="disabled" class="iwaalbte">
+	<div v-if="disabled || ((column.tl === 'local' || column.tl === 'social') && !this.enableLTL) || (column.tl === 'cat' && !this.enableCTL) || (column.tl === 'mod' && !this.enableMTL) || (column.tl === 'limited' && !this.enableLimitedTL) || (column.tl === 'global' && !this.enableGTL)" class="iwaalbte">
 		<p>
 			<i class="fas fa-minus-circle"></i>
 			{{ $t('disabled-timeline.title') }}
@@ -28,6 +28,7 @@ import XColumn from './column.vue';
 import XTimeline from '@/components/timeline.vue';
 import * as os from '@/os';
 import { removeColumn, updateColumn } from './deck-store';
+import { defaultStore } from '@/store';
 
 export default defineComponent({
 	components: {
@@ -51,6 +52,11 @@ export default defineComponent({
 			disabled: false,
 			indicated: false,
 			columnActive: true,
+			enableCTL: false,
+			enableLimitedTL: false,
+			enableMTL: false,
+			enableGTL: false,
+			enableLTL: false,
 		};
 	},
 
@@ -68,6 +74,11 @@ export default defineComponent({
 				this.$instance.disableLocalTimeline && ['local', 'social'].includes(this.column.tl) ||
 				this.$instance.disableGlobalTimeline && ['global'].includes(this.column.tl));
 		}
+		this.enableLTL = defaultStore.state.enableLTL;
+		this.enableLimitedTL = defaultStore.state.enableLimitedTL;
+		this.enableCTL = defaultStore.state.enableCTL;
+		this.enableMTL = defaultStore.state.enableMTL;
+		this.enableGTL = defaultStore.state.enableGTL;
 	},
 
 	methods: {

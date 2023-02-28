@@ -37,10 +37,11 @@ import { $i } from '@/account';
 
 const XTutorial = defineAsyncComponent(() => import('./timeline.tutorial.vue'));
 
-const isLocalTimelineAvailable = !instance.disableLocalTimeline || ($i != null && ($i.isModerator || $i.isAdmin));
-const isGlobalTimelineAvailable = !instance.disableGlobalTimeline || ($i != null && ($i.isModerator || $i.isAdmin));
-const isModTimelineAvailable = $i != null && ($i.isModerator || $i.isAdmin);
-const isCatTimelineAvailable = $i != null && $i.isCat;
+const isLocalTimelineAvailable = (!instance.disableLocalTimeline || ($i != null && ($i.isModerator || $i.isAdmin))) && defaultStore.state.enableLTL;
+const isGlobalTimelineAvailable = (!instance.disableGlobalTimeline || ($i != null && ($i.isModerator || $i.isAdmin))) && defaultStore.state.enableGTL;
+const isModTimelineAvailable = $i != null && ($i.isModerator || $i.isAdmin) && defaultStore.state.enableMTL;
+const isCatTimelineAvailable = $i != null && $i.isCat && defaultStore.state.enableCTL;
+const isLimitedTimelineAvailable = $i != null && defaultStore.state.enableLimitedTL;
 const keymap = {
 	't': focus,
 };
@@ -93,7 +94,7 @@ async function chooseChannel(ev: MouseEvent): Promise<void> {
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
 }
 
-function saveSrc(newSrc: 'home' | 'local' | 'social' | 'global'): void {
+function saveSrc(newSrc: 'home' | 'local' | 'social' | 'global' | 'limited' | 'cat' | 'mod'): void {
 	defaultStore.set('tl', {
 		...defaultStore.state.tl,
 		src: newSrc,
@@ -137,13 +138,13 @@ defineExpose({
 			icon: 'fas fa-home',
 			iconOnly: true,
 			onClick: () => { saveSrc('home'); },
-		}, {
+		}, ...(isLimitedTimelineAvailable ? [{
 			active: src === 'limited',
 			title: i18n.ts._timelines.limited,
 			icon: 'fas fa-unlock',
 			iconOnly: true,
 			onClick: () => { saveSrc('limited'); },
-		}, ...(isCatTimelineAvailable ? [{
+		}] : []), ...(isCatTimelineAvailable ? [{
 			active: src === 'cat',
 			title: i18n.ts._timelines.cat,
 			icon: 'fas fa-paw',
