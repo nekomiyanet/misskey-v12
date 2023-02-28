@@ -63,7 +63,7 @@ export default define(meta, paramDef, async (ps, user) => {
 			.where('note.userId = :meId', { meId: user.id });
 			if (hasFollowing) qb.orWhere(`note.userId IN (${ followingQuery.getQuery() })`);
 		}))
-		.andWhere('(note.visibility = \'followers\') OR (note.visibility = \'specified\')')
+		.andWhere('note.visibility = \'followers\'')
 		.innerJoinAndSelect('note.user', 'user')
 		.leftJoinAndSelect('user.avatar', 'avatar')
 		.leftJoinAndSelect('user.banner', 'banner')

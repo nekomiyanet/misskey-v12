@@ -28,7 +28,7 @@ export default class extends Channel {
 			// その投稿のユーザーをフォローしていなかったら弾く
 			if ((this.user!.id !== note.userId) && !this.following.has(note.userId)) return;
 		}
-		if (['public', 'home'].includes(note.visibility)) return;
+		if (['public', 'home', 'specified'].includes(note.visibility)) return;
 
 		// Ignore notes from instances the user has muted
 		if (isInstanceMuted(note, new Set<string>(this.userProfile?.mutedInstances ?? []))) return;
