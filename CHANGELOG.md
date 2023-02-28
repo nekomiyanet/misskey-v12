@@ -8,6 +8,14 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-fix.9.3 (2023/02/28)
+
+## Improvements
+- ユーザーがタイムラインを無効化できるように @atsu1125
+
+## Bugfixes
+- 限定ホームタイムラインのクエリを修正 @atsu1125
+
 ## 12.108.1-fix.9 (2023/02/28)
 
 ## Improvements
