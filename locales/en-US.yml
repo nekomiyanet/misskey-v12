@@ -862,6 +862,7 @@ tenMinutes: "10 minutes"
 oneHour: "One hour"
 oneDay: "One day"
 oneWeek: "One week"
+invitationRequiredToRegister: "This server is currently invitation only. Only those with an invitation code can register."
 _emailUnavailable:
   used: "This email address is already being used"
   format: "The format of this email address is invalid"

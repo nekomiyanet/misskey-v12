@@ -26,6 +26,9 @@
 				<div class="about">
 					<div class="desc" v-html="meta.description || $ts.headlineMisskey"></div>
 				</div>
+				<div v-if="meta.disableRegistration" class="warn">
+					<MkInfo warn>{{ $ts.invitationRequiredToRegister }}</MkInfo>
+				</div>
 				<div class="action">
 					<MkButton inline gradate data-cy-signup style="margin-right: 12px;" @click="signup()">{{ $ts.signup }}</MkButton>
 					<MkButton inline data-cy-signin @click="signin()">{{ $ts.login }}</MkButton>
@@ -62,6 +65,7 @@ import XTimeline from './welcome.timeline.vue';
 import { host, instanceName } from '@/config';
 import * as os from '@/os';
 import number from '@/filters/number';
+import MkInfo from '@/components/ui/info.vue';
 
 export default defineComponent({
 	components: {
@@ -69,6 +73,7 @@ export default defineComponent({
 		XNote,
 		MkFeaturedPhotos,
 		XTimeline,
+		MkInfo,
 	},
 
 	data() {
@@ -271,6 +276,10 @@ export default defineComponent({
 
 				> .about {
 					padding: 0 32px;
+				}
+
+				> .warn {
+					padding: 32px 32px 0 32px;
 				}
 
 				> .action {
