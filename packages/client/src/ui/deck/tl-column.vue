@@ -87,19 +87,19 @@ export default defineComponent({
 				title: this.$ts.timeline,
 				items: [{
 					value: 'home', text: this.$ts._timelines.home
-				}, {
+				}, ...(this.enableLTL ? [{
 					value: 'local', text: this.$ts._timelines.local
 				}, {
 					value: 'social', text: this.$ts._timelines.social
-				}, {
+				}] : []), ...(this.enableCTL ? [{
 					value: 'cat', text: this.$ts._timelines.cat
-				}, {
+				}] : []), ...(this.enableMTL ? [{
 					value: 'mod', text: this.$ts._timelines.mod
-				}, {
+				}] : []), ...(this.enableLimitedTL ? [{
 					value: 'limited', text: this.$ts._timelines.limited
-				}, {
+				}] : []), ...(this.enableGTL ? [{
 					value: 'global', text: this.$ts._timelines.global
-				}]
+				}] : [])]
 			});
 			if (canceled) {
 				if (this.column.tl == null) {

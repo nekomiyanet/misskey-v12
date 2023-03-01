@@ -16,7 +16,14 @@
 		</button>
 	</template>
 
-	<div>
+	<div v-if="((widgetProps.src === 'local' || widgetProps.src === 'social') && !isLocalTimelineAvailable) || (widgetProps.src === 'cat' && !isCatTimelineAvailable) || (widgetProps.src === 'mod' && !isModTimelineAvailable) || (widgetProps.src === 'limited' && !isLimitedTimelineAvailable) || (widgetProps.src === 'global' && !isGlobalTimelineAvailable)" class="iwaalbte">
+		<p>
+			<i class="fas fa-minus-circle"></i>
+			{{ $ts.disabledTimelineTitle }}
+		</p>
+		<p class="desc">{{ $ts.disabledTimelineDescription }}</p>
+	</div>
+	<div v-else>
 		<XTimeline :key="widgetProps.src === 'list' ? `list:${widgetProps.list.id}` : widgetProps.src === 'antenna' ? `antenna:${widgetProps.antenna.id}` : widgetProps.src" :src="widgetProps.src" :list="widgetProps.list ? widgetProps.list.id : null" :antenna="widgetProps.antenna ? widgetProps.antenna.id : null"/>
 	</div>
 </MkContainer>
@@ -149,3 +156,17 @@ defineExpose<WidgetComponentExpose>({
 	id: props.widget ? props.widget.id : null,
 });
 </script>
+
+<style lang="scss" scoped>
+.iwaalbte {
+	text-align: center;
+
+	> p {
+		margin: 16px;
+
+		&.desc {
+			font-size: 14px;
+		}
+	}
+}
+</style>

@@ -5,13 +5,23 @@
 		<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
 
 		<div v-if="queue > 0" class="new"><button class="_buttonPrimary" @click="top()">{{ $ts.newNoteRecived }}</button></div>
-		<div class="tl _block">
-			<XTimeline ref="tl" :key="src"
-				class="tl"
-				:src="src"
-				:sound="true"
-				@queue="queueUpdated"
-			/>
+
+		<div>
+			<div v-if="((src === 'local' || src === 'social') && !isLocalTimelineAvailable) || (src === 'cat' && !isCatTimelineAvailable) || (src === 'mod' && !isModTimelineAvailable) || (src === 'limited' && !isLimitedTimelineAvailable) || (src === 'global' && !isGlobalTimelineAvailable)" class="iwaalbte">
+				<p>
+					<i class="fas fa-minus-circle"></i>
+					{{ $ts.disabledTimelineTitle }}
+				</p>
+				<p class="desc">{{ $ts.disabledTimelineDescription }}</p>
+			</div>
+			<div v-else class="tl _block">
+				<XTimeline ref="tl" :key="src"
+					class="tl"
+					:src="src"
+					:sound="true"
+					@queue="queueUpdated"
+				/>
+			</div>
 		</div>
 	</div>
 </MkSpacer>
@@ -203,6 +213,17 @@ defineExpose({
 		background: var(--bg);
 		border-radius: var(--radius);
 		overflow: clip;
+	}
+}
+.iwaalbte {
+	text-align: center;
+
+	> p {
+		margin: 16px;
+
+		&.desc {
+			font-size: 14px;
+		}
 	}
 }
 </style>
