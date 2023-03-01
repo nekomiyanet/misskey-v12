@@ -872,6 +872,9 @@ cat: "ねこ"
 bot: "ボット"
 popularCatUsers: "人気のねこ"
 catfeatured: "ねこハイライト"
+noEmailServerWarning: "メールサーバーの設定がされていません。"
+thereIsUnresolvedAbuseReportWarning: "未対応の通報があります。"
+check: "チェック"
 
 _emailUnavailable:
   used: "既に使用されています"

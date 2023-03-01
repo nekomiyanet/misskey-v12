@@ -9,8 +9,10 @@
 					<img :src="$instance.iconUrl || '/favicon.ico'" alt="" class="icon"/>
 				</div>
 
+				<MkInfo v-if="thereIsUnresolvedAbuseReport" warn class="info">{{ $ts.thereIsUnresolvedAbuseReportWarning }} <MkA to="/admin/abuses" class="_link">{{ $ts.check }}</MkA></MkInfo>
 				<MkInfo v-if="noMaintainerInformation" warn class="info">{{ $ts.noMaintainerInformationWarning }} <MkA to="/admin/settings" class="_link">{{ $ts.configure }}</MkA></MkInfo>
 				<MkInfo v-if="noBotProtection" warn class="info">{{ $ts.noBotProtectionWarning }} <MkA to="/admin/security" class="_link">{{ $ts.configure }}</MkA></MkInfo>
+				<MkInfo v-if="noEmailServer" warn class="info">{{ $ts.noEmailServerWarning }} <MkA to="/admin/email-settings" class="_link">{{ $ts.configure }}</MkA></MkInfo>
 
 				<MkSuperMenu :def="menuDef" :grid="page == null"></MkSuperMenu>
 			</div>
@@ -83,11 +85,21 @@ export default defineComponent({
 
 		const noMaintainerInformation = ref(false);
 		const noBotProtection = ref(false);
+		const noEmailServer = ref(false);
+		const thereIsUnresolvedAbuseReport = ref(false);
 
 		os.api('meta', { detail: true }).then(meta => {
 			// TODO: 設定が完了しても残ったままになるので、ストリーミングでmeta更新イベントを受け取ってよしなに更新する
 			noMaintainerInformation.value = isEmpty(meta.maintainerName) || isEmpty(meta.maintainerEmail);
 			noBotProtection.value = !meta.enableHcaptcha && !meta.enableRecaptcha;
+			noEmailServer.value = !meta.enableEmail;
+		});
+
+		os.api('admin/abuse-user-reports', {
+			state: 'unresolved',
+			limit: 1,
+		}).then(reports => {
+			if (reports.length > 0) thereIsUnresolvedAbuseReport.value = true;
 		});
 
 		const menuDef = computed(() => [{
@@ -286,6 +298,8 @@ export default defineComponent({
 			},
 			noMaintainerInformation,
 			noBotProtection,
+			noEmailServer,
+			thereIsUnresolvedAbuseReport,
 			page,
 			narrow,
 			view,
