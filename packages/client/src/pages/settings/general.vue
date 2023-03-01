@@ -53,6 +53,7 @@
 			<div><Mfm :key="useOsNativeEmojis" text="🍮🍦🍭🍩🍰🍫🍬🥞🍪"/></div>
 		</FormSwitch>
 		<FormSwitch v-model="disableDrawer" class="_formBlock">{{ $ts.disableDrawer }}</FormSwitch>
+		<FormSwitch v-model="enableAbsoluteTime" class="_formBlock">{{ $ts.enableAbsoluteTime }}</FormSwitch>
 		<FormSwitch v-model="enableLimitedTL" class="_formBlock">{{ $ts.enableLimitedTL }}</FormSwitch>
 		<FormSwitch v-model="enableCTL" class="_formBlock">{{ $ts.enableCTL }}</FormSwitch>
 		<FormSwitch v-model="enableLTL" class="_formBlock">{{ $ts.enableLTL }}</FormSwitch>
@@ -162,6 +163,7 @@ export default defineComponent({
 		useReactionPickerForContextMenu: defaultStore.makeGetterSetter('useReactionPickerForContextMenu'),
 		squareAvatars: defaultStore.makeGetterSetter('squareAvatars'),
 		aiChanMode: defaultStore.makeGetterSetter('aiChanMode'),
+		enableAbsoluteTime: defaultStore.makeGetterSetter('enableAbsoluteTime'),
 		enableLimitedTL: defaultStore.makeGetterSetter('enableLimitedTL'),
 		enableCTL: defaultStore.makeGetterSetter('enableCTL'),
 		enableLTL: defaultStore.makeGetterSetter('enableLTL'),

@@ -7,7 +7,8 @@
 	<div class="username"><MkAcct :user="note.user"/></div>
 	<div class="info">
 		<MkA class="created-at" :to="notePage(note)">
-			<MkTime :time="note.createdAt"/>
+			<MkTime v-if="enableAbsoluteTime" :time="note.createdAt" mode="absolute"/>
+			<MkTime v-else-if="!enableAbsoluteTime" :time="note.createdAt" mode="relative"/>
 		</MkA>
 		<span v-if="note.visibility !== 'public'" class="visibility">
 			<i v-if="note.visibility === 'home'" class="fas fa-home"></i>
@@ -24,6 +25,9 @@ import { } from 'vue';
 import * as misskey from 'misskey-js';
 import { notePage } from '@/filters/note';
 import { userPage } from '@/filters/user';
+import { defaultStore } from '@/store';
+
+const enableAbsoluteTime = defaultStore.state.enableAbsoluteTime;
 
 defineProps<{
 	note: misskey.entities.Note;

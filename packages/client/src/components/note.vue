@@ -26,7 +26,8 @@
 		<div class="info">
 			<button ref="renoteTime" class="_button time" @click="showRenoteMenu()">
 				<i v-if="isMyRenote || ($i.isModerator || $i.isAdmin)" class="fas fa-ellipsis-h dropdownIcon"></i>
-				<MkTime :time="note.createdAt"/>
+				<MkTime v-if="enableAbsoluteTime" :time="note.createdAt" mode="absolute"/>
+				<MkTime v-else-if="!enableAbsoluteTime" :time="note.createdAt" mode="relative"/>
 			</button>
 			<span v-if="note.visibility !== 'public'" class="visibility">
 				<i v-if="note.visibility === 'home'" class="fas fa-home"></i>
@@ -181,6 +182,7 @@ const muted = ref(checkWordMute(appearNote, $i, defaultStore.state.mutedWords));
 const translation = ref(null);
 const translating = ref(false);
 const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && appearNote.user.instance);
+const enableAbsoluteTime = defaultStore.state.enableAbsoluteTime;
 
 const keymap = {
 	'r': () => reply(true),

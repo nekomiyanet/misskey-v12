@@ -867,6 +867,7 @@ enableMfm: "Enable Mfm"
 disabledTimelineTitle: "Disabled Timeline"
 disabledTimelineDescription: "This timeline is disabled."
 emailRequiredToRegister: "This server requires valid email address to register."
+enableAbsoluteTime: "Enable Absolute Time"
 _emailUnavailable:
   used: "This email address is already being used"
   format: "The format of this email address is invalid"

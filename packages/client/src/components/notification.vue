@@ -29,7 +29,8 @@
 			<span v-if="notification.type === 'pollEnded'">{{ i18n.ts._notification.pollEnded }}</span>
 			<MkA v-else-if="notification.user" v-user-preview="notification.user.id" class="name" :to="userPage(notification.user)"><MkUserName :user="notification.user"/></MkA>
 			<span v-else>{{ notification.header }}</span>
-			<MkTime v-if="withTime" :time="notification.createdAt" class="time"/>
+			<MkTime v-if="withTime && enableAbsoluteTime" :time="notification.createdAt" mode="absolute" class="time"/>
+			<MkTime v-else-if="withTime && !enableAbsoluteTime" :time="notification.createdAt" mode="relative" class="time"/>
 		</header>
 		<MkA v-if="notification.type === 'reaction'" class="text" :to="notePage(notification.note)" :title="getNoteSummary(notification.note)">
 			<i class="fas fa-quote-left"></i>
@@ -84,6 +85,7 @@ import { i18n } from '@/i18n';
 import * as os from '@/os';
 import { stream } from '@/stream';
 import { useTooltip } from '@/scripts/use-tooltip';
+import { defaultStore } from '@/store';
 
 export default defineComponent({
 	components: {
@@ -110,6 +112,7 @@ export default defineComponent({
 	setup(props) {
 		const elRef = ref<HTMLElement>(null);
 		const reactionRef = ref(null);
+		const enableAbsoluteTime = ref(defaultStore.state.enableAbsoluteTime);
 
 		onMounted(() => {
 			if (!props.notification.isRead) {
@@ -178,6 +181,7 @@ export default defineComponent({
 			elRef,
 			reactionRef,
 			i18n,
+			enableAbsoluteTime,
 		};
 	},
 });
