@@ -21,6 +21,8 @@
 				<option value="forcesensitive">{{ $ts.forcesensitive }}</option>
 				<option value="disabled">{{ $ts.accountdisable }}</option>
 				<option value="suspended">{{ $ts.suspend }}</option>
+				<option value="cat">{{ $ts.cat }}</option>
+				<option value="bot">{{ $ts.bot }}</option>
 			</MkSelect>
 			<MkSelect v-model="origin" style="flex: 1;">
 				<template #label>{{ $ts.instance }}</template>
@@ -55,6 +57,8 @@
 						<span v-if="user.isForceSensitive" class="punished"><i class="fas fa-exclamation-triangle"></i></span>
 						<span v-if="user.isDisabled" class="punished"><i class="fas fa-ban"></i></span>
 						<span v-if="user.isSuspended" class="punished"><i class="fas fa-snowflake"></i></span>
+						<span v-if="user.isCat" class="punished"><i class="fas fa-paw"></i></span>
+						<span v-if="user.isBot" class="punished"><i class="fas fa-robot"></i></span>
 					</header>
 					<div>
 						<span>{{ $ts.lastUsed }}: <MkTime v-if="user.updatedAt" :time="user.updatedAt" mode="detail"/></span>
