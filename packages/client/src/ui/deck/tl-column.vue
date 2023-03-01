@@ -11,7 +11,7 @@
 		<span style="margin-left: 8px;">{{ column.name }}</span>
 	</template>
 
-	<div v-if="disabled || ((column.tl === 'local' || column.tl === 'social') && !this.enableLTL) || (column.tl === 'cat' && !this.enableCTL) || (column.tl === 'mod' && !this.enableMTL) || (column.tl === 'limited' && !this.enableLimitedTL) || (column.tl === 'global' && !this.enableGTL)" class="iwaalbte">
+	<div v-if="disabled || ((column.tl === 'local' || column.tl === 'social') && !this.enableLTL) || (column.tl === 'cat' && (!this.enableCTL || !this.$i.isCat)) || (column.tl === 'mod' && !this.enableMTL) || (column.tl === 'limited' && !this.enableLimitedTL) || (column.tl === 'global' && !this.enableGTL)" class="iwaalbte">
 		<p>
 			<i class="fas fa-minus-circle"></i>
 			{{ $ts.disabledTimelineTitle }}
@@ -29,6 +29,7 @@ import XTimeline from '@/components/timeline.vue';
 import * as os from '@/os';
 import { removeColumn, updateColumn } from './deck-store';
 import { defaultStore } from '@/store';
+import { $i } from '@/account';
 
 export default defineComponent({
 	components: {
@@ -72,7 +73,8 @@ export default defineComponent({
 		} else {
 			this.disabled = !this.$i.isModerator && !this.$i.isAdmin && (
 				this.$instance.disableLocalTimeline && ['local', 'social'].includes(this.column.tl) ||
-				this.$instance.disableGlobalTimeline && ['global'].includes(this.column.tl));
+				this.$instance.disableGlobalTimeline && ['global'].includes(this.column.tl) ||
+				['mod'].includes(this.column.tl));
 		}
 		this.enableLTL = defaultStore.state.enableLTL;
 		this.enableLimitedTL = defaultStore.state.enableLimitedTL;
@@ -87,19 +89,19 @@ export default defineComponent({
 				title: this.$ts.timeline,
 				items: [{
 					value: 'home', text: this.$ts._timelines.home
-				}, ...(this.enableLTL ? [{
+				}, {
 					value: 'local', text: this.$ts._timelines.local
 				}, {
 					value: 'social', text: this.$ts._timelines.social
-				}] : []), ...(this.enableCTL ? [{
+				}, {
 					value: 'cat', text: this.$ts._timelines.cat
-				}] : []), ...(this.enableMTL ? [{
+				}, {
 					value: 'mod', text: this.$ts._timelines.mod
-				}] : []), ...(this.enableLimitedTL ? [{
+				}, {
 					value: 'limited', text: this.$ts._timelines.limited
-				}] : []), ...(this.enableGTL ? [{
+				}, {
 					value: 'global', text: this.$ts._timelines.global
-				}] : [])]
+				}]
 			});
 			if (canceled) {
 				if (this.column.tl == null) {
