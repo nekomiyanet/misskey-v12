@@ -55,10 +55,10 @@
 		<FormSwitch v-model="disableDrawer" class="_formBlock">{{ $ts.disableDrawer }}</FormSwitch>
 		<FormSwitch v-model="enableAbsoluteTime" class="_formBlock">{{ $ts.enableAbsoluteTime }}</FormSwitch>
 		<FormSwitch v-model="enableLimitedTL" class="_formBlock">{{ $ts.enableLimitedTL }}</FormSwitch>
-		<FormSwitch v-model="enableCTL" class="_formBlock">{{ $ts.enableCTL }}</FormSwitch>
 		<FormSwitch v-model="enableLTL" class="_formBlock">{{ $ts.enableLTL }}</FormSwitch>
 		<FormSwitch v-model="enableGTL" class="_formBlock">{{ $ts.enableGTL }}</FormSwitch>
-		<FormSwitch v-model="enableMTL" class="_formBlock">{{ $ts.enableMTL }}</FormSwitch>
+		<FormSwitch v-if="$i.isCat" v-model="enableCTL" class="_formBlock">{{ $ts.enableCTL }}</FormSwitch>
+		<FormSwitch v-if="$i.isModerator || $i.isAdmin" v-model="enableMTL" class="_formBlock">{{ $ts.enableMTL }}</FormSwitch>
 
 		<FormRadios v-model="fontSize" class="_formBlock">
 			<template #label>{{ $ts.fontSize }}</template>
