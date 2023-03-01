@@ -222,6 +222,7 @@ import * as ep___mute_delete from './endpoints/mute/delete.js';
 import * as ep___mute_list from './endpoints/mute/list.js';
 import * as ep___my_apps from './endpoints/my/apps.js';
 import * as ep___notes from './endpoints/notes.js';
+import * as ep___notes_catFeatured from './endpoints/notes/cat-featured.js';
 import * as ep___notes_children from './endpoints/notes/children.js';
 import * as ep___notes_clips from './endpoints/notes/clips.js';
 import * as ep___notes_conversation from './endpoints/notes/conversation.js';
@@ -538,6 +539,7 @@ const eps = [
 	['mute/list', ep___mute_list],
 	['my/apps', ep___my_apps],
 	['notes', ep___notes],
+	['notes/cat-featured', ep___notes_catFeatured],
 	['notes/children', ep___notes_children],
 	['notes/clips', ep___notes_clips],
 	['notes/conversation', ep___notes_conversation],

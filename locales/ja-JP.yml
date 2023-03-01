@@ -871,6 +871,7 @@ enableAbsoluteTime: "絶対時刻表記を使用する"
 cat: "ねこ"
 bot: "ボット"
 popularCatUsers: "人気のねこ"
+catfeatured: "ねこハイライト"
 
 _emailUnavailable:
   used: "既に使用されています"

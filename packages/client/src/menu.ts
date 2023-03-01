@@ -168,6 +168,12 @@ export const menuDef = reactive({
 		icon: 'fas fa-terminal',
 		to: '/scratchpad',
 	},
+	catfeatured: {
+		title: 'catfeatured',
+		icon: 'fas fa-paw',
+		show: computed(() => $i != null && $i.isCat),
+		to: '/cat-featured',
+	},
 	ui: {
 		title: 'switchUi',
 		icon: 'fas fa-columns',
