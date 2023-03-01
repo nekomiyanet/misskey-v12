@@ -8,6 +8,22 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-fix.9.5 (2023/03/02)
+
+## Improvements
+- 人気のねこ @atsu1125
+- 話題のねこ @atsu1125
+- 時間は相対的だけではなく絶対的なものでもある @atsu1125
+- Adminのダッシュボードに不備・通知がある際に通知 @atsu1125
+- ねこを管理画面から探せるように @atsu1125
+- ロボットを管理画面から探せるように @atsu1125
+- フォローされていることをユーザープレビューでも表示 @atsu1125
+- テーマカラーをnodeinfoから配信 @Johann150 @atsu1125
+- Botアカウントでログインしている際にささやかに警告 @atsu1125
+
+## Bugfixes
+- 無効化されたタイムラインを修正２ @atsu1125
+
 ## 12.108.1-fix.9.4 (2023/03/01)
 
 ## Improvements
