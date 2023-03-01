@@ -14,9 +14,9 @@
 	<div v-if="disabled || ((column.tl === 'local' || column.tl === 'social') && !this.enableLTL) || (column.tl === 'cat' && !this.enableCTL) || (column.tl === 'mod' && !this.enableMTL) || (column.tl === 'limited' && !this.enableLimitedTL) || (column.tl === 'global' && !this.enableGTL)" class="iwaalbte">
 		<p>
 			<i class="fas fa-minus-circle"></i>
-			{{ $t('disabled-timeline.title') }}
+			{{ $ts.disabledTimelineTitle }}
 		</p>
-		<p class="desc">{{ $t('disabled-timeline.description') }}</p>
+		<p class="desc">{{ $ts.disabledTimelineDescription }}</p>
 	</div>
 	<XTimeline v-else-if="column.tl" ref="timeline" :key="column.tl" :src="column.tl" @after="() => $emit('loaded')" @queue="queueUpdated" @note="onNote"/>
 </XColumn>

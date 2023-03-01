@@ -31,6 +31,8 @@ import MkContainer from '@/components/ui/container.vue';
 import XTimeline from '@/components/timeline.vue';
 import { $i } from '@/account';
 import { i18n } from '@/i18n';
+import { instance } from '@/instance';
+import { defaultStore } from '@/store';
 
 const name = 'timeline';
 
@@ -67,6 +69,11 @@ type WidgetProps = GetFormResultType<typeof widgetPropsDef>;
 //const emit = defineEmits<WidgetComponentEmits<WidgetProps>>();
 const props = defineProps<{ widget?: Widget<WidgetProps>; }>();
 const emit = defineEmits<{ (e: 'updateProps', props: WidgetProps); }>();
+const isLocalTimelineAvailable = (!instance.disableLocalTimeline || ($i != null && ($i.isModerator || $i.isAdmin))) && defaultStore.state.enableLTL;
+const isGlobalTimelineAvailable = (!instance.disableGlobalTimeline || ($i != null && ($i.isModerator || $i.isAdmin))) && defaultStore.state.enableGTL;
+const isModTimelineAvailable = $i != null && ($i.isModerator || $i.isAdmin) && defaultStore.state.enableMTL;
+const isCatTimelineAvailable = $i != null && $i.isCat && defaultStore.state.enableCTL;
+const isLimitedTimelineAvailable = $i != null && defaultStore.state.enableLimitedTL;
 
 const { widgetProps, configure, save } = useWidgetPropsManager(name,
 	widgetPropsDef,
@@ -107,11 +114,11 @@ const choose = async (ev) => {
 		text: i18n.ts._timelines.home,
 		icon: 'fas fa-home',
 		action: () => { setSrc('home') }
-	}, {
+	}, ...(isLimitedTimelineAvailable ? [{
 		text: i18n.ts._timelines.limited,
 		icon: 'fas fa-unlock',
 	action: () => { setSrc('limited') }
-	}, {
+	}] : []), ...(isLocalTimelineAvailable ? [{
 		text: i18n.ts._timelines.local,
 		icon: 'fas fa-comments',
 		action: () => { setSrc('local') }
@@ -119,19 +126,19 @@ const choose = async (ev) => {
 		text: i18n.ts._timelines.social,
 		icon: 'fas fa-share-alt',
 		action: () => { setSrc('social') }
-	}, {
+	}] : []), ...(isCatTimelineAvailable ? [{
 		text: i18n.ts._timelines.cat,
 		icon: 'fas fa-paw',
 		action: () => { setSrc('cat') }
-	}, {
+	}] : []), ...(isModTimelineAvailable ? [{
 		text: i18n.ts._timelines.mod,
 		icon: 'fas fa-bookmark',
 		action: () => { setSrc('mod') }
-	}, {
+	}] : []), ...(isGlobalTimelineAvailable ? [{
 		text: i18n.ts._timelines.global,
 		icon: 'fas fa-globe',
 		action: () => { setSrc('global') }
-	}, antennaItems.length > 0 ? null : undefined, ...antennaItems, listItems.length > 0 ? null : undefined, ...listItems], ev.currentTarget ?? ev.target).then(() => {
+	}] : []), antennaItems.length > 0 ? null : undefined, ...antennaItems, listItems.length > 0 ? null : undefined, ...listItems], ev.currentTarget ?? ev.target).then(() => {
 		menuOpened.value = false;
 	});
 };
