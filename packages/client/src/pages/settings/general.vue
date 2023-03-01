@@ -40,6 +40,7 @@
 	<FormSection>
 		<template #label>{{ $ts.appearance }}</template>
 		<FormSwitch v-model="disableAnimatedMfm" class="_formBlock">{{ $ts.disableAnimatedMfm }}</FormSwitch>
+		<FormSwitch v-model="enableMfm" class="_formBlock">{{ $ts.enableMfm }}</FormSwitch>
 		<FormSwitch v-model="reduceAnimation" class="_formBlock">{{ $ts.reduceUiAnimation }}</FormSwitch>
 		<FormSwitch v-model="useBlurEffect" class="_formBlock">{{ $ts.useBlurEffect }}</FormSwitch>
 		<FormSwitch v-model="useBlurEffectForModal" class="_formBlock">{{ $ts.useBlurEffectForModal }}</FormSwitch>
@@ -166,6 +167,7 @@ export default defineComponent({
 		enableLTL: defaultStore.makeGetterSetter('enableLTL'),
 		enableGTL: defaultStore.makeGetterSetter('enableGTL'),
 		enableMTL: defaultStore.makeGetterSetter('enableMTL'),
+		enableMfm: defaultStore.makeGetterSetter('enableMfm'),
 	},
 
 	watch: {

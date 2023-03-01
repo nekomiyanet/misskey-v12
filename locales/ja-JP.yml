@@ -863,6 +863,7 @@ oneHour: "1時間"
 oneDay: "1日"
 oneWeek: "1週間"
 invitationRequiredToRegister: "現在このサーバーは招待制です。招待コードをお持ちの方のみ登録できます。"
+enableMfm: "MFMを有効にする"
 
 _emailUnavailable:
   used: "既に使用されています"

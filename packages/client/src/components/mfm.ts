@@ -91,7 +91,7 @@ export default defineComponent({
 					let style;
 					switch (token.props.name) {
 						case 'tada': {
-							style = `font-size: 150%;` + (this.$store.state.animatedMfm ? 'animation: tada 1s linear infinite both;' : '');
+							style = (this.$store.state.enableMfm ?　`font-size: 150%;` : '') + (this.$store.state.animatedMfm ? 'animation: tada 1s linear infinite both;' : '');
 							break;
 						}
 						case 'jelly': {
@@ -135,19 +135,19 @@ export default defineComponent({
 								(token.props.args.h && token.props.args.v) ? 'scale(-1, -1)' :
 								token.props.args.v ? 'scaleY(-1)' :
 								'scaleX(-1)';
-							style = `transform: ${transform};`;
+							style = this.$store.state.enableMfm ? `transform: ${transform};` : '';
 							break;
 						}
 						case 'x2': {
-							style = `font-size: 200%;`;
+							style = this.$store.state.enableMfm ? `font-size: 200%;` : '';
 							break;
 						}
 						case 'x3': {
-							style = `font-size: 400%;`;
+							style = this.$store.state.enableMfm ? `font-size: 400%;` : '';
 							break;
 						}
 						case 'x4': {
-							style = `font-size: 600%;`;
+							style = this.$store.state.enableMfm ? `font-size: 600%;` : '';
 							break;
 						}
 						case 'font': {
@@ -159,13 +159,18 @@ export default defineComponent({
 								token.props.args.emoji ? 'emoji' :
 								token.props.args.math ? 'math' :
 								null;
-							if (family) style = `font-family: ${family};`;
+							if (family) style = this.$store.state.enableMfm ? `font-family: ${family};` : '';
 							break;
 						}
 						case 'blur': {
-							return h('span', {
-								class: '_mfm_blur_',
-							}, genEl(token.children));
+							if (this.$store.state.enableMfm) {
+								return h('span', {
+									class: '_mfm_blur_',
+								}, genEl(token.children));
+							} else {
+								return h('span', {
+								}, genEl(token.children));
+							}
 						}
 						case 'rainbow': {
 							style = this.$store.state.animatedMfm ? 'animation: mfm-rainbow 1s linear infinite;' : '';
@@ -179,7 +184,7 @@ export default defineComponent({
 						}
 						case 'rotate': {
 							const degrees = parseInt(token.props.args.deg) || '90';
-							style = `transform: rotate(${degrees}deg); transform-origin: center center;`;
+							style = this.$store.state.enableMfm ? `transform: rotate(${degrees}deg); transform-origin: center center;` : '';
 							break;
 						}
 					}
