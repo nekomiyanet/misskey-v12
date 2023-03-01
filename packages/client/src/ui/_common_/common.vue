@@ -13,6 +13,7 @@
 <div v-if="pendingApiRequestsCount > 0" id="wait"></div>
 
 <div v-if="dev" id="devTicker"><span>DEV BUILD</span></div>
+<div v-if="$i && $i.isBot && enableBotLoggedinWarning" id="botWarn"><span>{{ $ts.loggedInAsBot }}</span></div>
 </template>
 
 <script lang="ts">
@@ -21,6 +22,7 @@ import { popup, popups, uploads, pendingApiRequestsCount } from '@/os';
 import * as sound from '@/scripts/sound';
 import { $i } from '@/account';
 import { stream } from '@/stream';
+import { defaultStore } from '@/store';
 
 export default defineComponent({
 	components: {
@@ -55,6 +57,7 @@ export default defineComponent({
 			popups,
 			pendingApiRequestsCount,
 			dev: _DEV_,
+			enableBotLoggedinWarning: defaultStore.state.enableBotLoggedinWarning,
 		};
 	},
 });
@@ -105,6 +108,23 @@ export default defineComponent({
 	color: #ff0;
 	background: rgba(0, 0, 0, 0.5);
 	padding: 4px 5px;
+	font-size: 14px;
+	pointer-events: none;
+	user-select: none;
+
+	> span {
+		animation: dev-ticker-blink 2s infinite;
+	}
+}
+
+#botWarn {
+	position: fixed;
+	top: 0;
+	right: 0;
+	z-index: 2147483647;
+	color: #4b0082;
+	background: rgba(0, 0, 0, 0.2);
+	padding: 4px 7px;
 	font-size: 14px;
 	pointer-events: none;
 	user-select: none;

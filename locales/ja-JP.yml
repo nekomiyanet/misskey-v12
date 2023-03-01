@@ -875,6 +875,8 @@ catfeatured: "ねこハイライト"
 noEmailServerWarning: "メールサーバーの設定がされていません。"
 thereIsUnresolvedAbuseReportWarning: "未対応の通報があります。"
 check: "チェック"
+loggedInAsBot: "Botアカウントとしてログインしています"
+enableBotLoggedinWarning: "Botアカウントとしてログインしていることを警告する"
 
 _emailUnavailable:
   used: "既に使用されています"

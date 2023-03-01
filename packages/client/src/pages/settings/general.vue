@@ -54,6 +54,7 @@
 		</FormSwitch>
 		<FormSwitch v-model="disableDrawer" class="_formBlock">{{ $ts.disableDrawer }}</FormSwitch>
 		<FormSwitch v-model="enableAbsoluteTime" class="_formBlock">{{ $ts.enableAbsoluteTime }}</FormSwitch>
+		<FormSwitch v-if="$i.isBot" v-model="enableBotLoggedinWarning" class="_formBlock">{{ $ts.enableBotLoggedinWarning }}</FormSwitch>
 		<FormSwitch v-model="enableLimitedTL" class="_formBlock">{{ $ts.enableLimitedTL }}</FormSwitch>
 		<FormSwitch v-model="enableLTL" class="_formBlock">{{ $ts.enableLTL }}</FormSwitch>
 		<FormSwitch v-model="enableGTL" class="_formBlock">{{ $ts.enableGTL }}</FormSwitch>
@@ -164,6 +165,7 @@ export default defineComponent({
 		squareAvatars: defaultStore.makeGetterSetter('squareAvatars'),
 		aiChanMode: defaultStore.makeGetterSetter('aiChanMode'),
 		enableAbsoluteTime: defaultStore.makeGetterSetter('enableAbsoluteTime'),
+		enableBotLoggedinWarning: defaultStore.makeGetterSetter('enableBotLoggedinWarning'),
 		enableLimitedTL: defaultStore.makeGetterSetter('enableLimitedTL'),
 		enableCTL: defaultStore.makeGetterSetter('enableCTL'),
 		enableLTL: defaultStore.makeGetterSetter('enableLTL'),

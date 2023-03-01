@@ -875,6 +875,8 @@ catfeatured: "Cat Featured"
 noEmailServerWarning: "Email server not configured."
 thereIsUnresolvedAbuseReportWarning: "There are unsolved reports."
 check: "Check"
+loggedInAsBot: "Logging in As Bot Account"
+enableBotLoggedinWarning: "Show warning of logging in as bot account"
 _emailUnavailable:
   used: "This email address is already being used"
   format: "The format of this email address is invalid"
