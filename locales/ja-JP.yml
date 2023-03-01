@@ -866,6 +866,7 @@ invitationRequiredToRegister: "現在このサーバーは招待制です。招�
 enableMfm: "MFMを有効にする"
 disabledTimelineTitle: "無効化されたタイムライン"
 disabledTimelineDescription: "このタイムラインは無効化されています。"
+emailRequiredToRegister: "このサーバーに登録するためには有効なメールアドレスが必要です。"
 
 _emailUnavailable:
   used: "既に使用されています"

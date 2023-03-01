@@ -29,6 +29,9 @@
 				<div v-if="meta.disableRegistration" class="warn">
 					<MkInfo warn>{{ $ts.invitationRequiredToRegister }}</MkInfo>
 				</div>
+				<div v-if="!meta.disableRegistration && meta.emailRequiredForSignup" class="warn">
+					<MkInfo warn>{{ $ts.emailRequiredToRegister }}</MkInfo>
+				</div>
 				<div class="action">
 					<MkButton inline gradate data-cy-signup style="margin-right: 12px;" @click="signup()">{{ $ts.signup }}</MkButton>
 					<MkButton inline data-cy-signin @click="signin()">{{ $ts.login }}</MkButton>
