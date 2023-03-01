@@ -8,6 +8,17 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-fix.9.4 (2023/03/01)
+
+## Improvements
+- 招待制なことをわかりやすく @atsu1125
+- メールアドレスが必要なことをわかりやすく @atsu1125
+- 動きのない標準的なMarkup language For Misskeyを無効化できるように @atsu1125
+
+## Bugfixes
+- 無効化されたタイムラインを修正 @atsu1125
+- リノートを取得できないのを修正 @atsu1125
+
 ## 12.108.1-fix.9.3 (2023/02/28)
 
 ## Improvements
