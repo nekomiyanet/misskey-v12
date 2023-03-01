@@ -870,6 +870,7 @@ emailRequiredToRegister: "This server requires valid email address to register."
 enableAbsoluteTime: "Enable Absolute Time"
 cat: "Cat"
 bot: "Bot"
+popularCatUsers: "Popular Cats"
 _emailUnavailable:
   used: "This email address is already being used"
   format: "The format of this email address is invalid"

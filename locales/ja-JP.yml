@@ -870,6 +870,7 @@ emailRequiredToRegister: "このサーバーに登録するためには有効な
 enableAbsoluteTime: "絶対時刻表記を使用する"
 cat: "ねこ"
 bot: "ボット"
+popularCatUsers: "人気のねこ"
 
 _emailUnavailable:
   used: "既に使用されています"

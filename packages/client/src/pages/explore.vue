@@ -17,6 +17,10 @@
 						<template #header><i class="fas fa-chart-line fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.popularUsers }}</template>
 						<XUserList :pagination="popularUsers"/>
 					</MkFolder>
+					<MkFolder class="_gap" persist-key="explore-popular-cat-users">
+						<template #header><i class="fas fa-paw fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.popularCatUsers }}</template>
+						<XUserList :pagination="popularCatUsers"/>
+					</MkFolder>
 					<MkFolder class="_gap" persist-key="explore-recently-updated-users">
 						<template #header><i class="fas fa-comment-alt fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.recentlyUpdatedUsers }}</template>
 						<XUserList :pagination="recentlyUpdatedUsers"/>
@@ -130,6 +134,11 @@ export default defineComponent({
 			pinnedUsers: { endpoint: 'pinned-users' },
 			popularUsers: { endpoint: 'users', limit: 10, noPaging: true, params: {
 				state: 'alive',
+				origin: 'local',
+				sort: '+follower',
+			} },
+			popularCatUsers: { endpoint: 'users', limit: 10, noPaging: true, params: {
+				state: 'cat',
 				origin: 'local',
 				sort: '+follower',
 			} },

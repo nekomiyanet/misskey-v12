@@ -25,7 +25,7 @@ export const paramDef = {
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
 		offset: { type: 'integer', default: 0 },
 		sort: { type: 'string', enum: ['+follower', '-follower', '+createdAt', '-createdAt', '+updatedAt', '-updatedAt'] },
-		state: { type: 'string', enum: ['all', 'admin', 'moderator', 'adminOrModerator', 'alive'], default: "all" },
+		state: { type: 'string', enum: ['all', 'admin', 'moderator', 'adminOrModerator', 'alive', 'cat', 'bot'], default: "all" },
 		origin: { type: 'string', enum: ['combined', 'local', 'remote'], default: "local" },
 	},
 	required: [],
@@ -41,6 +41,8 @@ export default define(meta, paramDef, async (ps, me) => {
 		case 'moderator': query.andWhere('user.isModerator = TRUE'); break;
 		case 'adminOrModerator': query.andWhere('user.isAdmin = TRUE OR user.isModerator = TRUE'); break;
 		case 'alive': query.andWhere('user.updatedAt > :date', { date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5) }); break;
+		case 'cat': query.andWhere('user.isCat = TRUE'); break;
+		case 'bot': query.andWhere('user.isBot = TRUE'); break;
 	}
 
 	switch (ps.origin) {
