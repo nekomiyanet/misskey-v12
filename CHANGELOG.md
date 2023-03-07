@@ -8,6 +8,11 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-fix.9.6 (2023/03/08)
+
+## Bugfixes
+- 未ログイン状態でノートが見れないのを修正 @atsu1125
+
 ## 12.108.1-fix.9.5 (2023/03/02)
 
 ## Improvements
