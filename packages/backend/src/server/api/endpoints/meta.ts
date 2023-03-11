@@ -314,6 +314,14 @@ export const meta = {
 					optional: false, nullable: false,
 				},
 			},
+			silencedHosts: {
+				type: 'array',
+				optional: true, nullable: false,
+				items: {
+					type: 'string',
+					optional: false, nullable: false,
+				},
+			},
 			selfSilencedHosts: {
 				type: 'array',
 				optional: true, nullable: false,
@@ -497,6 +505,7 @@ export default define(meta, paramDef, async (ps, me) => {
 			response.pinnedUsers = instance.pinnedUsers;
 			response.hiddenTags = instance.hiddenTags;
 			response.blockedHosts = instance.blockedHosts;
+			response.silencedHosts = instance.silencedHosts;
 			response.selfSilencedHosts = instance.selfSilencedHosts;
 			response.blockedEmailDomains = instance.blockedEmailDomains;
 			response.hcaptchaSecretKey = instance.hcaptchaSecretKey;

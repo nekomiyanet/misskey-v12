@@ -15,6 +15,7 @@ import { genId } from '@/misc/gen-id.js';
 import { createNotification } from '../create-notification.js';
 import { isDuplicateKeyValueError } from '@/misc/is-duplicate-key-value-error.js';
 import { Packed } from '@/misc/schema.js';
+import { fetchMeta } from '@/misc/fetch-meta.js';
 
 const logger = new Logger('following/create');
 
@@ -140,12 +141,15 @@ export default async function(_follower: { id: User['id'] }, _followee: { id: Us
 
 	const followeeProfile = await UserProfiles.findOneOrFail(followee.id);
 
+	const meta = await fetchMeta();
+
 	// フォロー対象が鍵アカウントである or
 	// フォロワーがBotであり、フォロー対象がBotからのフォローに慎重である or
 	// フォロワーがローカルユーザーであり、フォロー対象がリモートユーザーである or
-	// フォロワーがサイレンスされている
+	// フォロワーがサイレンスされている or
+	// フォロワーインスタンスがサイレンスされている or
 	// 上記のいずれかに当てはまる場合はすぐフォローせずにフォローリクエストを発行しておく
-	if (followee.isLocked || (followeeProfile.carefulBot && follower.isBot) || (Users.isLocalUser(follower) && Users.isRemoteUser(followee)) || follower.isSilenced || follower.isLocalSilenced) {
+	if (followee.isLocked || (followeeProfile.carefulBot && follower.isBot) || (Users.isLocalUser(follower) && Users.isRemoteUser(followee)) || follower.isSilenced || follower.isLocalSilenced || meta.silencedHosts.some(x => x.endsWith(follower.host))) {
 		let autoAccept = false;
 
 		// 鍵アカウントであっても、既にフォローされていた場合はスルー

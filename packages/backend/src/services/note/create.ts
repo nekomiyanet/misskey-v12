@@ -35,6 +35,7 @@ import { Channel } from '@/models/entities/channel.js';
 import { normalizeForSearch } from '@/misc/normalize-for-search.js';
 import { getAntennas } from '@/misc/antenna-cache.js';
 import { endedPollNotificationQueue } from '@/queue/queues.js';
+import { fetchMeta } from '@/misc/fetch-meta.js';
 
 type NotificationType = 'reply' | 'renote' | 'quote' | 'mention';
 
@@ -149,6 +150,12 @@ export default async (user: { id: User['id']; username: User['username']; host: 
 	// プライベートサイレンス
 	if (Users.isRemoteUser(user) && user.isPrivateSilenced && (data.visibility === 'public' || data.visibility === 'home')) {
 		data.visibility = 'followers';
+	}
+
+	// インスタンスサイレンス
+	const meta = await fetchMeta();
+	if (meta.silencedHosts.some(x => x.endsWith(user.host)) && data.visibility === 'public' && data.channel == null) {
+		data.visibility = 'home';
 	}
 
 	// Renote対象が「ホームまたは全体」以外の公開範囲ならreject
