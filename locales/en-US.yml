@@ -877,6 +877,10 @@ thereIsUnresolvedAbuseReportWarning: "There are unsolved reports."
 check: "Check"
 loggedInAsBot: "Logging in As Bot Account"
 enableBotLoggedinWarning: "Show warning of logging in as bot account"
+selfSilencing: "Self Silenced Instances"
+selfSilencedInstances: "Self Silenced Instances"
+selfSilencedInstancesDescription: "Instances to deliver with maximum visibility home. One host per line. "
+
 _emailUnavailable:
   used: "This email address is already being used"
   format: "The format of this email address is invalid"

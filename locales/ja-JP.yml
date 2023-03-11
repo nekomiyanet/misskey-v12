@@ -877,6 +877,9 @@ thereIsUnresolvedAbuseReportWarning: "未対応の通報があります。"
 check: "チェック"
 loggedInAsBot: "Botアカウントとしてログインしています"
 enableBotLoggedinWarning: "Botアカウントとしてログインしていることを警告する"
+selfSilencing: "セルフサイレンス"
+selfSilencedInstances: "セルフサイレンス"
+selfSilencedInstancesDescription: "最大公開範囲ホームで配信するインスタンス。1行に1ホスト記述します。"
 
 _emailUnavailable:
   used: "既に使用されています"

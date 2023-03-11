@@ -27,6 +27,9 @@ export const paramDef = {
 		blockedHosts: { type: 'array', nullable: true, items: {
 			type: 'string',
 		} },
+		selfSilencedHosts: { type: 'array', nullable: true, items: {
+			type: 'string',
+		} },
 		blockedEmailDomains: { type: 'array', nullable: true, items: {
 			type: 'string',
 		} },
@@ -112,6 +115,10 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (Array.isArray(ps.blockedHosts)) {
 		set.blockedHosts = ps.blockedHosts.filter(Boolean).map(x => x.toLowerCase());
+	}
+
+	if (Array.isArray(ps.selfSilencedHosts)) {
+		set.selfSilencedHosts = ps.selfSilencedHosts.filter(Boolean).map(x => x.toLowerCase());
 	}
 
 	if (Array.isArray(ps.blockedEmailDomains)) {

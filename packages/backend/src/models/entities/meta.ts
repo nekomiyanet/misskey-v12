@@ -80,6 +80,11 @@ export class Meta {
 	@Column('varchar', {
 		length: 256, array: true, default: '{}',
 	})
+	public selfSilencedHosts: string[];
+
+	@Column('varchar', {
+		length: 256, array: true, default: '{}',
+	})
 	public blockedEmailDomains: string[];
 
 	@Column('varchar', {

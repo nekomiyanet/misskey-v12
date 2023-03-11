@@ -196,6 +196,11 @@ export default defineComponent({
 				to: '/admin/instance-block',
 				active: page.value === 'instance-block',
 			}, {
+				icon: 'fas fa-microphone-slash',
+				text: i18n.ts.selfSilencing,
+				to: '/admin/self-silence',
+				active: page.value === 'self-silence',
+			}, {
 				icon: 'fas fa-ban',
 				text: i18n.ts.emailDomainBlocking,
 				to: '/admin/email-block',
@@ -234,6 +239,7 @@ export default defineComponent({
 				case 'relays': return defineAsyncComponent(() => import('./relays.vue'));
 				case 'integrations': return defineAsyncComponent(() => import('./integrations.vue'));
 				case 'instance-block': return defineAsyncComponent(() => import('./instance-block.vue'));
+				case 'self-silence': return defineAsyncComponent(() => import('./self-silence.vue'));
 				case 'email-block': return defineAsyncComponent(() => import('./email-block.vue'));
 				case 'proxy-account': return defineAsyncComponent(() => import('./proxy-account.vue'));
 				case 'other-settings': return defineAsyncComponent(() => import('./other-settings.vue'));
