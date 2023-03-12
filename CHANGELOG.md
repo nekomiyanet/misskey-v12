@@ -8,6 +8,17 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-fix.9.7 (2023/03/12)
+
+## Improvements
+- セルフインスタンスサイレンス機能 @atsu1125
+- インスタンスサイレンス機能 @atsu1125
+
+## Bugfixes
+- Botアカウントである旨の警告を削除 @atsu1125
+- 更新されたというポップアップを削除 @atsu1125
+- インスタンスのアイコンが出ないのを修正 @atsu1125
+
 ## 12.108.1-fix.9.6 (2023/03/08)
 
 ## Bugfixes
