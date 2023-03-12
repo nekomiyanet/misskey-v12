@@ -40,7 +40,7 @@
 		<MkPagination v-slot="{items}" ref="instances" :key="host + state" :pagination="pagination">
 			<div class="dqokceoi">
 				<MkA v-for="instance in items" :key="instance.id" class="instance" :to="`/instance-info/${instance.host}`">
-					<div class="host"><img :src="instance.faviconUrl">{{ instance.host }}</div>
+					<div class="host"><img :src="instance.iconUrl || instance.faviconUrl">{{ instance.host }}</div>
 					<div class="table">
 						<div class="cell">
 							<div class="key">{{ $ts.registeredAt }}</div>
