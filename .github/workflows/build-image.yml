@@ -1,9 +1,10 @@
 name: Build container image
+
 on:
+  release:
+    types: [published]
   workflow_dispatch:
-  push:
-    tags:
-      - "*"
+
 jobs:
   build-image:
     runs-on: ubuntu-latest
@@ -21,8 +22,9 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository_owner }}/misskey-v12
           flavor: |
-            latest=false
+            latest=true
           tags: |
+            type=edge,branch=main
             type=semver,pattern={{ raw }}
       - uses: docker/build-push-action@v2
         with:
