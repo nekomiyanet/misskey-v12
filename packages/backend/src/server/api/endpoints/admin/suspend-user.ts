@@ -1,5 +1,4 @@
 import define from '../../define.js';
-import deleteFollowing from '@/services/following/delete.js';
 import { Users, Followings, Notifications } from '@/models/index.js';
 import { User } from '@/models/entities/user.js';
 import { insertModerationLog } from '@/services/insert-moderation-log.js';
@@ -52,28 +51,9 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	(async () => {
 		await doPostSuspend(user).catch(e => {});
-		await unFollowAll(user).catch(e => {});
 		await readAllNotify(user).catch(e => {});
 	})();
 });
-
-async function unFollowAll(follower: User) {
-	const followings = await Followings.find({
-		followerId: follower.id,
-	});
-
-	for (const following of followings) {
-		const followee = await Users.findOne({
-			id: following.followeeId,
-		});
-
-		if (followee == null) {
-			throw `Cant find followee ${following.followeeId}`;
-		}
-
-		await deleteFollowing(follower, followee, true);
-	}
-}
 
 async function readAllNotify(notifier: User) {
 	await Notifications.update({
