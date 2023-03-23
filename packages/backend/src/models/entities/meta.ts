@@ -93,6 +93,11 @@ export class Meta {
 	public blockedEmailDomains: string[];
 
 	@Column('varchar', {
+		length: 256, array: true, default: '{}',
+	})
+	public blockedWords: string[];
+
+	@Column('varchar', {
 		length: 512, array: true, default: '{"/featured", "/channels", "/explore", "/pages", "/about-misskey"}',
 	})
 	public pinnedPages: string[];

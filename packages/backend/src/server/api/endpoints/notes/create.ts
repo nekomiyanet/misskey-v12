@@ -9,6 +9,7 @@ import { Note } from '@/models/entities/note.js';
 import { noteVisibilities } from '../../../../types.js';
 import { Channel } from '@/models/entities/channel.js';
 import { MAX_NOTE_TEXT_LENGTH } from '@/const.js';
+import { fetchMeta } from '@/misc/fetch-meta.js';
 
 export const meta = {
 	tags: ['notes'],
@@ -82,6 +83,12 @@ export const meta = {
 			code: 'YOU_HAVE_BEEN_BLOCKED',
 			id: 'b390d7e1-8a5e-46ed-b625-06271cafd3d3',
 		},
+
+		blockedWords: {
+			message: 'This word is blocked by instance policy.',
+			code: 'BLOCKED_WORDS',
+			id: '70a8a1f7-f26b-4d94-a9d5-aa629ac87cda',
+		},
 	},
 } as const;
 
@@ -111,7 +118,7 @@ export const paramDef = {
 			type: 'object', nullable: true,
 			properties: {
 				choices: {
-					type: 'array', uniqueItems: true, minItems: 2, maxItems: 10, 
+					type: 'array', uniqueItems: true, minItems: 2, maxItems: 10,
 					items: {
 						type: 'string', minLength: 1, maxLength: 50,
 					},
@@ -128,6 +135,12 @@ export const paramDef = {
 
 // eslint-disable-next-line import/no-default-export
 export default define(meta, paramDef, async (ps, user) => {
+	//Check Word Blocking
+	const m = await fetchMeta();
+	if (ps.text && m.blockedWords.some(w => ps.text!.includes(w))) {
+		throw new ApiError(meta.errors.blockedWords);
+	}
+
 	let visibleUsers: User[] = [];
 	if (ps.visibleUserIds) {
 		visibleUsers = (await Promise.all(ps.visibleUserIds.map(id => Users.findOne(id))))
