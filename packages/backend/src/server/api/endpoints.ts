@@ -34,6 +34,7 @@ import * as ep___admin_federation_removeAllFollowing from './endpoints/admin/fed
 import * as ep___admin_federation_updateInstance from './endpoints/admin/federation/update-instance.js';
 import * as ep___admin_getIndexStats from './endpoints/admin/get-index-stats.js';
 import * as ep___admin_getTableStats from './endpoints/admin/get-table-stats.js';
+import * as ep___admin_hideUser from './endpoints/admin/hide-user.js';
 import * as ep___admin_invite from './endpoints/admin/invite.js';
 import * as ep___admin_moderators_add from './endpoints/admin/moderators/add.js';
 import * as ep___admin_moderators_remove from './endpoints/admin/moderators/remove.js';
@@ -63,6 +64,7 @@ import * as ep___admin_localunsilenceUser from './endpoints/admin/local-unsilenc
 import * as ep___admin_privateunsilenceUser from './endpoints/admin/private-unsilence-user.js';
 import * as ep___admin_unforcesensitiveUser from './endpoints/admin/unforce-sensitive-user.js';
 import * as ep___admin_enableUser from './endpoints/admin/enable-user.js';
+import * as ep___admin_unhideUser from './endpoints/admin/unhide-user.js';
 import * as ep___admin_unsuspendUser from './endpoints/admin/unsuspend-user.js';
 import * as ep___admin_updateMeta from './endpoints/admin/update-meta.js';
 import * as ep___admin_vacuum from './endpoints/admin/vacuum.js';
@@ -351,6 +353,7 @@ const eps = [
 	['admin/federation/update-instance', ep___admin_federation_updateInstance],
 	['admin/get-index-stats', ep___admin_getIndexStats],
 	['admin/get-table-stats', ep___admin_getTableStats],
+	['admin/hide-user', ep___admin_hideUser],
 	['admin/invite', ep___admin_invite],
 	['admin/moderators/add', ep___admin_moderators_add],
 	['admin/moderators/remove', ep___admin_moderators_remove],
@@ -373,6 +376,7 @@ const eps = [
 	['admin/local-silence-user', ep___admin_localsilenceUser],
 	['admin/private-silence-user', ep___admin_privatesilenceUser],
 	['admin/suspend-user', ep___admin_suspendUser],
+	['admin/unhide-user', ep___admin_unhideUser],
 	['admin/unsilence-user', ep___admin_unsilenceUser],
 	['admin/local-unsilence-user', ep___admin_localunsilenceUser],
 	['admin/private-unsilence-user', ep___admin_privateunsilenceUser],

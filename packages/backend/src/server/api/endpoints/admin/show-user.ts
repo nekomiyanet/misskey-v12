@@ -52,6 +52,7 @@ export default define(meta, paramDef, async (ps, me) => {
 			isPrivateSilenced: user.isPrivateSilenced,
 			isForceSensitive: user.isForceSensitive,
 			isDisabled: user.isDisabled,
+			isHidden: user.isHidden,
 		};
 	}
 
@@ -75,5 +76,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		isPrivateSilenced: user.isPrivateSilenced,
 		isForceSensitive: user.isForceSensitive,
 		isDisabled: user.isDisabled,
+		isHidden: user.isHidden,
 	};
 });

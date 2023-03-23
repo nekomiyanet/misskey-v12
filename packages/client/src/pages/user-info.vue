@@ -43,6 +43,7 @@
 				<FormSwitch v-if="user.host != null && iAmModerator" v-model="privatesilenced" class="_formBlock" @update:modelValue="toggleprivatesilence">{{ $ts.privatesilence }}</FormSwitch>
 				<FormSwitch v-model="forcesensitive" class="_formBlock" @update:modelValue="toggleForceSensitive">{{ $ts.forcesensitive }}</FormSwitch>
 				<FormSwitch v-if="user.host == null && iAmModerator" v-model="disabled" class="_formBlock" @update:modelValue="toggleDisable">{{ $ts.accountdisable }}</FormSwitch>
+				<FormSwitch v-if="iAmModerator" v-model="hidden" class="_formBlock" @update:modelValue="toggleHide">{{ $ts.accounthide }}</FormSwitch>
 				<FormSwitch v-model="suspended" class="_formBlock" @update:modelValue="toggleSuspend">{{ $ts.suspend }}</FormSwitch>
 				<FormButton v-if="user.host == null && iAmModerator" class="_formBlock" @click="resetPassword"><i class="fas fa-key"></i> {{ $ts.resetPassword }}</FormButton>
 				<FormButton v-if="iAmModerator" class="_formBlock" @click="deleteAllFiles"><i class="fas fa-trash-alt"></i> {{ $ts.deleteAllFiles }}</FormButton>
@@ -140,6 +141,7 @@ export default defineComponent({
 			privatesilenced: false,
 			forcesensitive: false,
 			disabled: false,
+			hidden: false,
 			suspended: false,
 		};
 	},
@@ -187,6 +189,7 @@ export default defineComponent({
 					this.privatesilenced = this.info.isPrivateSilenced;
 					this.forcesensitive = this.info.isForceSensitive;
 					this.disabled = this.info.isDisabled;
+					this.hidden = this.info.isHidden;
 					this.suspended = this.info.isSuspended;
 				});
 			} else {
@@ -286,6 +289,19 @@ export default defineComponent({
 				this.disabled = !v;
 			} else {
 				await os.api(v ? 'admin/disable-user' : 'admin/enable-user', { userId: this.user.id });
+				await this.refreshUser();
+			}
+		},
+
+		async toggleHide(v) {
+			const confirm = await os.confirm({
+				type: 'warning',
+				text: v ? this.$ts.accountHideConfirm : this.$ts.accountUnhideConfirm,
+			});
+			if (confirm.canceled) {
+				this.hidden = !v;
+			} else {
+				await os.api(v ? 'admin/hide-user' : 'admin/unhide-user', { userId: this.user.id });
 				await this.refreshUser();
 			}
 		},

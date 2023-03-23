@@ -2,7 +2,7 @@ import { resolveUser } from '@/remote/resolve-user.js';
 import define from '../../define.js';
 import { apiLogger } from '../../logger.js';
 import { ApiError } from '../../error.js';
-import { Users } from '@/models/index.js';
+import { Users, Followings } from '@/models/index.js';
 import { In } from 'typeorm';
 import { User } from '@/models/entities/user.js';
 
@@ -40,6 +40,12 @@ export const meta = {
 			message: 'No such user.',
 			code: 'NO_SUCH_USER',
 			id: '4362f8dc-731f-4ad8-a694-be5a88922a24',
+		},
+
+		forbidden: {
+			message: 'Forbidden.',
+			code: 'FORBIDDEN',
+			id: '3c6a84db-d619-26af-ca14-06232a21df8a',
 		},
 	},
 } as const;
@@ -101,6 +107,20 @@ export default define(meta, paramDef, async (ps, me) => {
 
 		if (user == null || (!isAdminOrModerator && user.isSuspended)) {
 			throw new ApiError(meta.errors.noSuchUser);
+		}
+
+		if (!isAdminOrModerator && user.isHidden) {
+			if (me == null) {
+				throw new ApiError(meta.errors.forbidden);
+			} else if (me.id !== user.id) {
+				const following = await Followings.findOne({
+					followeeId: user.id,
+					followerId: me.id,
+				});
+				if (following == null) {
+					throw new ApiError(meta.errors.forbidden);
+				}
+			}
 		}
 
 		return await Users.pack(user, me, {

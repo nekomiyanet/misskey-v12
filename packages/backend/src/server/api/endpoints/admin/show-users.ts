@@ -25,7 +25,7 @@ export const paramDef = {
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
 		offset: { type: 'integer', default: 0 },
 		sort: { type: 'string', enum: ['+follower', '-follower', '+createdAt', '-createdAt', '+updatedAt', '-updatedAt'] },
-		state: { type: 'string', enum: ['all', 'available', 'admin', 'moderator', 'adminOrModerator', 'silenced', 'localsilenced', 'privatesilenced', 'forcesensitive', 'disabled', 'suspended', 'cat', 'bot'], default: "all" },
+		state: { type: 'string', enum: ['all', 'available', 'admin', 'moderator', 'adminOrModerator', 'silenced', 'localsilenced', 'privatesilenced', 'forcesensitive', 'disabled', 'hidden', 'suspended', 'cat', 'bot'], default: "all" },
 		origin: { type: 'string', enum: ['combined', 'local', 'remote'], default: "local" },
 		username: { type: 'string', default: null },
 		hostname: { type: 'string', default: null },
@@ -48,6 +48,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		case 'privatesilenced': query.where('user.isPrivateSilenced = TRUE'); break;
 		case 'forcesensitive': query.where('user.isForceSensitive = TRUE'); break;
 		case 'disabled': query.where('user.isDisabled = TRUE'); break;
+		case 'hidden': query.where('user.isHidden = TRUE'); break;
 		case 'suspended': query.where('user.isSuspended = TRUE'); break;
 		case 'cat': query.where('user.isCat = TRUE'); break;
 		case 'bot': query.where('user.isBot = TRUE'); break;
