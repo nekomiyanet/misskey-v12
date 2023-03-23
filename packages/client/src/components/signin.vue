@@ -55,6 +55,7 @@ import { byteify, hexify } from '@/scripts/2fa';
 import * as os from '@/os';
 import { login } from '@/account';
 import { showSuspendedDialog } from '../scripts/show-suspended-dialog';
+import { showDisabledDialog } from '../scripts/show-disabled-dialog';
 
 export default defineComponent({
 	components: {
@@ -207,6 +208,10 @@ export default defineComponent({
 				}
 				case 'e03a5f46-d309-4865-9b69-56282d94e1eb': {
 					showSuspendedDialog();
+					break;
+				}
+				case '0c54f46e-fcb0-45ce-b566-4e2464de3d77': {
+					showDisabledDialog();
 					break;
 				}
 				default: {

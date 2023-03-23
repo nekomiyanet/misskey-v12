@@ -40,11 +40,20 @@ export default async (endpoint: string, user: User | null | undefined, token: Ac
 		});
 	}
 
-	if (ep.meta.requireCredential && (user!.isSuspended || user!.isDisabled)) {
+	if (ep.meta.requireCredential && (user!.isSuspended)) {
 		throw new ApiError({
 			message: 'Your account has been suspended.',
 			code: 'YOUR_ACCOUNT_SUSPENDED',
 			id: 'a8c724b3-6e9c-4b46-b1a8-bc3ed6258370',
+			httpStatusCode: 403,
+		});
+	}
+
+	if (ep.meta.requireCredential && (user!.isDisabled)) {
+		throw new ApiError({
+			message: 'Your account has been disabled.',
+			code: 'YOUR_ACCOUNT_DISABLED',
+			id: '0c54f46e-fcb0-45ce-b566-4e2464de3d77',
 			httpStatusCode: 403,
 		});
 	}
