@@ -37,6 +37,8 @@ export default define(meta, paramDef, async (ps, me) => {
 	query.where('user.isExplorable = TRUE');
 	query.andWhere('user.isDisabled = FALSE');
 	query.andWhere('user.isHidden = FALSE');
+	query.andWhere('user.isSilenced = FALSE');
+	query.andWhere('user.isLocalSilenced = FALSE');
 
 	switch (ps.state) {
 		case 'admin': query.andWhere('user.isAdmin = TRUE'); break;
