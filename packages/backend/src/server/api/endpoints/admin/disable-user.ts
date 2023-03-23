@@ -31,7 +31,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		throw new Error('cannot disable admin');
 	}
 
-	if (user.isModerator) {
+	if (user.isModerator && !me.isAdmin) {
 		throw new Error('cannot disable moderator');
 	}
 
