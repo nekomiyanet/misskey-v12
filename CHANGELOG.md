@@ -8,6 +8,19 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20230324002400 (2023/03/24)
+
+## Improvements
+- Adminはモデレータのログインを無効化できるように @atsu1125
+- モデレーション：フォロワー以外からのプロフィールを非表示にできるように @atsu1125
+- 投稿禁止ワードを設定できるように @atsu1125
+
+## Bugfixes
+- SuspendでUnfollowAllはしないようにする @atsu1125
+- アカウントがサイレンス・無効化されている場合などにおすすめしないように @atsu1125
+- アカウントが無効化されている場合のエラーメッセージを改善 @atsu1125
+- ブロック時にフォロワー解除も投げる @atsu1125
+
 ## 12.108.1-fix.9.7 (2023/03/12)
 
 ## Improvements
