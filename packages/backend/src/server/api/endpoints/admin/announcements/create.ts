@@ -1,6 +1,7 @@
 import define from '../../../define.js';
 import { Announcements } from '@/models/index.js';
 import { genId } from '@/misc/gen-id.js';
+import { insertModerationLog } from '@/services/insert-moderation-log.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -55,7 +56,7 @@ export const paramDef = {
 } as const;
 
 // eslint-disable-next-line import/no-default-export
-export default define(meta, paramDef, async (ps) => {
+export default define(meta, paramDef, async (ps, me) => {
 	const announcement = await Announcements.insert({
 		id: genId(),
 		createdAt: new Date(),
@@ -64,6 +65,12 @@ export default define(meta, paramDef, async (ps) => {
 		text: ps.text,
 		imageUrl: ps.imageUrl,
 	}).then(x => Announcements.findOneOrFail(x.identifiers[0]));
+
+	insertModerationLog(me, 'addAnnouncements', {
+		id: announcement.id,
+		title: announcement.title,
+		text: announcement.text,
+	});
 
 	return Object.assign({}, announcement, { createdAt: announcement.createdAt.toISOString(), updatedAt: null });
 });

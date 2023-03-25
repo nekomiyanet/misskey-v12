@@ -1,6 +1,7 @@
 import define from '../../../define.js';
 import { Announcements } from '@/models/index.js';
 import { ApiError } from '../../../error.js';
+import { insertModerationLog } from '@/services/insert-moderation-log.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -32,4 +33,10 @@ export default define(meta, paramDef, async (ps, me) => {
 	if (announcement == null) throw new ApiError(meta.errors.noSuchAnnouncement);
 
 	await Announcements.delete(announcement.id);
+
+	insertModerationLog(me, 'deleteAnnouncements', {
+		id: announcement.id,
+		title: announcement.title,
+		text: announcement.text,
+	});
 });
