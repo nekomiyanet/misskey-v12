@@ -63,12 +63,18 @@ export default defineComponent({
 		userPage,
 
 		resolve() {
-			os.apiWithDialog('admin/resolve-abuse-user-report', {
-				forward: this.forward,
-				reportId: this.report.id,
-			}).then(() => {
-				this.$emit('resolved', this.report.id);
-			});
+			os.confirm({
+				type: 'warning',
+				text: this.$t('removeAreYouSure', { x: this.report.comment }),
+			}).then(({ canceled }) => {
+				if (canceled) return;
+				os.apiWithDialog('admin/resolve-abuse-user-report', {
+					forward: this.forward,
+					reportId: this.report.id,
+				}).then(() => {
+					this.$emit('resolved', this.report.id);
+				});
+			}
 		}
 	}
 });
