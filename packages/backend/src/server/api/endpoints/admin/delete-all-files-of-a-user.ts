@@ -1,6 +1,7 @@
 import define from '../../define.js';
 import { deleteFile } from '@/services/drive/delete-file.js';
 import { DriveFiles, Users } from '@/models/index.js';
+import { insertModerationLog } from '@/services/insert-moderation-log.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -36,4 +37,8 @@ export default define(meta, paramDef, async (ps, me) => {
 	for (const file of files) {
 		deleteFile(file);
 	}
+
+	insertModerationLog(me, 'deletefiles', {
+		targetId: ps.userId,
+	});
 });

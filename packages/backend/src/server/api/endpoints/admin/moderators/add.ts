@@ -1,5 +1,6 @@
 import define from '../../../define.js';
 import { Users } from '@/models/index.js';
+import { insertModerationLog } from '@/services/insert-moderation-log.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -17,7 +18,7 @@ export const paramDef = {
 } as const;
 
 // eslint-disable-next-line import/no-default-export
-export default define(meta, paramDef, async (ps) => {
+export default define(meta, paramDef, async (ps, me) => {
 	const user = await Users.findOne(ps.userId as string);
 
 	if (user == null) {
@@ -30,5 +31,9 @@ export default define(meta, paramDef, async (ps) => {
 
 	await Users.update(user.id, {
 		isModerator: true,
+	});
+
+	insertModerationLog(me, 'add-moderator', {
+		targetId: user.id,
 	});
 });

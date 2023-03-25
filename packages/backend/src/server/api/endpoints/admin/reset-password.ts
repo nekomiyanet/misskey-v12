@@ -2,6 +2,7 @@ import define from '../../define.js';
 import bcrypt from 'bcryptjs';
 import rndstr from 'rndstr';
 import { Users, UserProfiles } from '@/models/index.js';
+import { insertModerationLog } from '@/services/insert-moderation-log.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -56,6 +57,10 @@ export default define(meta, paramDef, async (ps, me) => {
 		userId: user.id,
 	}, {
 		password: hash,
+	});
+
+	insertModerationLog(me, 'reset-password', {
+		targetId: user.id,
 	});
 
 	return {
