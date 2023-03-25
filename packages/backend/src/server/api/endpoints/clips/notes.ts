@@ -4,7 +4,7 @@ import { makePaginationQuery } from '../../common/make-pagination-query.js';
 import { generateVisibilityQuery } from '../../common/generate-visibility-query.js';
 import { generateMutedUserQuery } from '../../common/generate-muted-user-query.js';
 import { ApiError } from '../../error.js';
-import { generateBlockedUserQuery } from '../../common/generate-block-query.js';
+import { generateBlockedUserQuery, generateBlockingUserQuery } from '../../common/generate-block-query.js';
 
 export const meta = {
 	tags: ['account', 'notes', 'clips'],
@@ -79,6 +79,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	if (user) {
 		generateVisibilityQuery(query, user);
 		generateMutedUserQuery(query, user);
+		generateBlockingUserQuery(query, user);
 		if (user && !user.isAdmin && !user.isModerator) {
 			generateBlockedUserQuery(query, user);
 		}

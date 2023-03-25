@@ -11,7 +11,7 @@ import { activeUsersChart } from '@/services/chart/index.js';
 import { generateRepliesQuery } from '../../common/generate-replies-query.js';
 import { generateMutedNoteQuery } from '../../common/generate-muted-note-query.js';
 import { generateChannelQuery } from '../../common/generate-channel-query.js';
-import { generateBlockedUserQuery } from '../../common/generate-block-query.js';
+import { generateBlockedUserQuery, generateBlockingUserQuery } from '../../common/generate-block-query.js';
 
 export const meta = {
 	tags: ['notes'],
@@ -90,6 +90,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	generateMutedUserQuery(query, user);
 	generateMutedInstanceQuery(query, user);
 	generateMutedNoteQuery(query, user);
+	generateBlockingUserQuery(query, user);
 
 	if (!user.isAdmin && !user.isModerator) {
 		generateBlockedUserQuery(query, user);

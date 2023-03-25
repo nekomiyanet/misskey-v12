@@ -3,6 +3,7 @@ import Channel from '../channel.js';
 import { Notes } from '@/models/index.js';
 import { normalizeForSearch } from '@/misc/normalize-for-search.js';
 import { isBlockerUserRelated } from '@/misc/is-blocker-user-related.js';
+import { isBlockeeUserRelated } from '@/misc/is-blockee-user-related.js';
 import { Packed } from '@/misc/schema.js';
 
 export default class extends Channel {
@@ -40,7 +41,9 @@ export default class extends Channel {
 		// 流れてきたNoteがミュートしているユーザーが関わるものだったら無視する
 		if (isMutedUserRelated(note, this.muting)) return;
 		// 流れてきたNoteがブロックされているユーザーが関わるものだったら無視する
-		if (isBlockerUserRelated(note, this.blocking)) return;
+		if (!this.user.isAdmin && !this.user.isModerator && isBlockerUserRelated(note, this.blocking)) return;
+		// 流れてきたNoteがブロックしているユーザーが関わるものだったら無視する
+		if (isBlockeeUserRelated(note, this.blocking)) return;
 
 		this.connection.cacheNote(note);
 

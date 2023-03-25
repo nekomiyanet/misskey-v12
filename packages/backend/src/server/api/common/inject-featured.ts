@@ -3,7 +3,7 @@ import { Note } from '@/models/entities/note.js';
 import { User } from '@/models/entities/user.js';
 import { Notes, UserProfiles, NoteReactions } from '@/models/index.js';
 import { generateMutedUserQuery } from './generate-muted-user-query.js';
-import { generateBlockedUserQuery } from './generate-block-query.js';
+import { generateBlockedUserQuery, generateBlockingUserQuery } from './generate-block-query.js';
 
 // TODO: リアクション、Renote、返信などをしたノートは除外する
 
@@ -30,6 +30,7 @@ export async function injectFeatured(timeline: Note[], user?: User | null) {
 		query.andWhere('note.userId != :userId', { userId: user.id });
 
 		generateMutedUserQuery(query, user);
+		generateBlockingUserQuery(query, user);
 		if (!user.isAdmin && !user.isModerator) {
 			generateBlockedUserQuery(query, user);
 		}

@@ -4,6 +4,7 @@ import { fetchMeta } from '@/misc/fetch-meta.js';
 import { Notes } from '@/models/index.js';
 import { checkWordMute } from '@/misc/check-word-mute.js';
 import { isBlockerUserRelated } from '@/misc/is-blocker-user-related.js';
+import { isBlockeeUserRelated } from '@/misc/is-blockee-user-related.js';
 import { isInstanceMuted } from '@/misc/is-instance-muted.js';
 import { Packed } from '@/misc/schema.js';
 
@@ -74,6 +75,8 @@ export default class extends Channel {
 		if (isMutedUserRelated(note, this.muting)) return;
 		// 流れてきたNoteがブロックされているユーザーが関わるものだったら無視する
 		if (!this.user.isAdmin && !this.user.isModerator && isBlockerUserRelated(note, this.blocking)) return;
+		// 流れてきたNoteがブロックしているユーザーが関わるものだったら無視する
+		if (isBlockeeUserRelated(note, this.blocking)) return;
 
 		// 流れてきたNoteがミュートすべきNoteだったら無視する
 		// TODO: 将来的には、単にMutedNoteテーブルにレコードがあるかどうかで判定したい(以下の理由により難しそうではある)

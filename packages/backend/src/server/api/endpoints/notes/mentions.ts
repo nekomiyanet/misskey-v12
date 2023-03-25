@@ -5,7 +5,7 @@ import { generateVisibilityQuery } from '../../common/generate-visibility-query.
 import { generateMutedUserQuery } from '../../common/generate-muted-user-query.js';
 import { makePaginationQuery } from '../../common/make-pagination-query.js';
 import { Brackets } from 'typeorm';
-import { generateBlockedUserQuery } from '../../common/generate-block-query.js';
+import { generateBlockedUserQuery, generateBlockingUserQuery } from '../../common/generate-block-query.js';
 import { generateMutedNoteThreadQuery } from '../../common/generate-muted-note-thread-query.js';
 
 export const meta = {
@@ -62,6 +62,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	generateVisibilityQuery(query, user);
 	generateMutedUserQuery(query, user);
 	generateMutedNoteThreadQuery(query, user);
+	generateBlockingUserQuery(query, user);
 	if (user && !user.isAdmin && !user.isModerator) {
 		generateBlockedUserQuery(query, user);
 	}

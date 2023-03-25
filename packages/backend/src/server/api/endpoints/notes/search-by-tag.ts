@@ -6,7 +6,7 @@ import { generateVisibilityQuery } from '../../common/generate-visibility-query.
 import { Brackets } from 'typeorm';
 import { safeForSql } from '@/misc/safe-for-sql.js';
 import { normalizeForSearch } from '@/misc/normalize-for-search.js';
-import { generateBlockedUserQuery } from '../../common/generate-block-query.js';
+import { generateBlockedUserQuery, generateBlockingUserQuery } from '../../common/generate-block-query.js';
 
 export const meta = {
 	tags: ['notes', 'hashtags'],
@@ -59,6 +59,7 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	generateVisibilityQuery(query, me);
 	if (me) generateMutedUserQuery(query, me);
+	if (me) generateBlockingUserQuery(query, me);
 	if (me && !me.isAdmin && !me.isModerator) {
 		generateBlockedUserQuery(query, me);
 	}

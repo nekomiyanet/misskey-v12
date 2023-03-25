@@ -4,7 +4,7 @@ import { generateVisibilityQuery } from '../../common/generate-visibility-query.
 import { generateMutedUserQuery } from '../../common/generate-muted-user-query.js';
 import { Brackets } from 'typeorm';
 import { Notes } from '@/models/index.js';
-import { generateBlockedUserQuery } from '../../common/generate-block-query.js';
+import { generateBlockedUserQuery, generateBlockingUserQuery } from '../../common/generate-block-query.js';
 import { generateMutedInstanceQuery } from '../../common/generate-muted-instance-query.js';
 
 export const meta = {
@@ -62,6 +62,7 @@ export default define(meta, paramDef, async (ps, user) => {
 
 	generateVisibilityQuery(query, user);
 	if (user) generateMutedUserQuery(query, user);
+	if (user) generateBlockingUserQuery(query, user);
 	if (user && !user.isAdmin && !user.isModerator) {
 		generateBlockedUserQuery(query, user);
 	}
