@@ -74,15 +74,19 @@ class NotificationManager {
 
 	public async deliver() {
 		for (const x of this.queue) {
-			// ミュート情報を取得
+			// ミュートブロック情報を取得
 			const mentioneeMutes = await Mutings.find({
 				muterId: x.target,
 			});
+			const mentioneeBlocks = await Blockings.find({
+				blockerId: x.target,
+			});
 
 			const mentioneesMutedUserIds = mentioneeMutes.map(m => m.muteeId);
+			const mentioneesBlockedUserIds = mentioneeBlocks.map(m => m.blockeeId);
 
-			// 通知される側のユーザーが通知する側のユーザーをミュートしていない限りは通知する
-			if (!mentioneesMutedUserIds.includes(this.notifier.id)) {
+			// 通知される側のユーザーが通知する側のユーザーをミュートかブロックしていない限りは通知する
+			if ((!mentioneesMutedUserIds.includes(this.notifier.id)) && (!mentioneesBlockedUserIds.includes(this.notifier.id))) {
 				createNotification(x.target, x.reason, {
 					notifierId: this.notifier.id,
 					noteId: this.note.id,

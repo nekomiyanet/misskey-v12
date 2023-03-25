@@ -65,11 +65,15 @@ export async function createMessage(user: { id: User['id']; host: User['host']; 
 		if (recipientUser && Users.isLocalUser(recipientUser)) {
 			if (freshMessage.isRead) return; // 既読
 
-			//#region ただしミュートされているなら発行しない
+			//#region ただしミュートかブロックされているなら発行しない
 			const mute = await Mutings.find({
 				muterId: recipientUser.id,
 			});
+			const block = await Blockings.find({
+				blockerId: recipientUser.id,
+			});
 			if (mute.map(m => m.muteeId).includes(user.id)) return;
+			if (block.map(m => m.blockeeId).includes(user.id)) return;
 			//#endregion
 
 			publishMainStream(recipientUser.id, 'unreadMessagingMessage', messageObj);

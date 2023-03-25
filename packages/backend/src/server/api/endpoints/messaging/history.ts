@@ -1,6 +1,6 @@
 import define from '../../define.js';
 import { MessagingMessage } from '@/models/entities/messaging-message.js';
-import { MessagingMessages, Mutings, UserGroupJoinings } from '@/models/index.js';
+import { MessagingMessages, Mutings, UserGroupJoinings, Blockings } from '@/models/index.js';
 import { Brackets } from 'typeorm';
 
 export const meta = {
@@ -34,6 +34,10 @@ export const paramDef = {
 export default define(meta, paramDef, async (ps, user) => {
 	const mute = await Mutings.find({
 		muterId: user.id,
+	});
+
+	const block = await Blockings.find({
+		blockerId: user.id,
 	});
 
 	const groups = ps.group ? await UserGroupJoinings.find({
@@ -76,6 +80,12 @@ export default define(meta, paramDef, async (ps, user) => {
 				query.andWhere(`message.userId NOT IN (:...mute)`, { mute: mute.map(m => m.muteeId) });
 				query.andWhere(`message.recipientId NOT IN (:...mute)`, { mute: mute.map(m => m.muteeId) });
 			}
+
+			if (block.length > 0) {
+				query.andWhere(`message.userId NOT IN (:...block)`, { block: block.map(m => m.blockeeId) });
+				query.andWhere(`message.recipientId NOT IN (:...block)`, { block: block.map(m => m.blockeeId) });
+			}
+
 		}
 
 		const message = await query.getOne();

@@ -1,6 +1,6 @@
 import { publishMainStream } from '@/services/stream.js';
 import pushSw from './push-notification.js';
-import { Notifications, Mutings, UserProfiles, Users } from '@/models/index.js';
+import { Notifications, Mutings, UserProfiles, Users, Blockings } from '@/models/index.js';
 import { genId } from '@/misc/gen-id.js';
 import { User } from '@/models/entities/user.js';
 import { Notification } from '@/models/entities/notification.js';
@@ -42,11 +42,17 @@ export async function createNotification(
 		if (fresh == null) return; // 既に削除されているかもしれない
 		if (fresh.isRead) return;
 
-		//#region ただしミュートしているユーザーからの通知なら無視
+		//#region ただしミュートかブロックしているユーザーからの通知なら無視
 		const mutings = await Mutings.find({
 			muterId: notifieeId,
 		});
+		const blockings = await Blockings.find({
+			blockerId: notifieeId,
+		})
 		if (data.notifierId && mutings.map(m => m.muteeId).includes(data.notifierId)) {
+			return;
+		}
+		if (data.notifierId && blockings.map(m => m.blockeeId).includes(data.notifierId)) {
 			return;
 		}
 		//#endregion

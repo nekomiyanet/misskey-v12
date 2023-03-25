@@ -2,7 +2,7 @@ import { readNotification } from '../../common/read-notification.js';
 import define from '../../define.js';
 import { makePaginationQuery } from '../../common/make-pagination-query.js';
 import { generateMutedInstanceNotificationQuery } from '../../common/generate-muted-instance-query.js';
-import { Notifications, Followings, Mutings, Users } from '@/models/index.js';
+import { Notifications, Followings, Mutings, Users, Blockings } from '@/models/index.js';
 import { notificationTypes } from '@/types.js';
 import read from '@/services/note/read.js';
 import { Brackets } from 'typeorm';
@@ -62,6 +62,10 @@ export default define(meta, paramDef, async (ps, user) => {
 		.select('muting.muteeId')
 		.where('muting.muterId = :muterId', { muterId: user.id });
 
+	const blockingQuery = Blockings.createQueryBuilder('blocking')
+		.select('blocking.blockeeId')
+		.where('blocking.blockerId = :blockerId', { blockerId: user.id });
+
 	const suspendedQuery = Users.createQueryBuilder('users')
 		.select('users.id')
 		.where('users.isSuspended = TRUE');
@@ -87,6 +91,12 @@ export default define(meta, paramDef, async (ps, user) => {
 		.orWhere('notification.notifierId IS NULL');
 	}));
 	query.setParameters(mutingQuery.getParameters());
+
+	query.andWhere(new Brackets(qb => { qb
+		.where(`notification.notifierId NOT IN (${ blockingQuery.getQuery() })`)
+		.orWhere('notification.notifierId IS NULL');
+	}));
+	query.setParameters(blockingQuery.getParameters());
 
 	generateMutedInstanceNotificationQuery(query, user);
 
