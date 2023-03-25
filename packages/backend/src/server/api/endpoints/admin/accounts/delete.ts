@@ -60,5 +60,6 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	insertModerationLog(me, 'delete-account', {
 		targetId: user.id,
+		targetUsername: user.username,
 	});
 });
