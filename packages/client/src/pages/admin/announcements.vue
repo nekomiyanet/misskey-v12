@@ -89,6 +89,7 @@ export default defineComponent({
 						type: 'success',
 						text: this.$ts.saved
 					});
+					this.refresh();
 				}).catch(e => {
 					os.alert({
 						type: 'error',
@@ -108,7 +109,14 @@ export default defineComponent({
 					});
 				});
 			}
+		},
+
+		refresh() {
+			os.api('admin/announcements/list').then(announcements => {
+				this.announcements = announcements;
+			});
 		}
+
 	}
 });
 </script>
