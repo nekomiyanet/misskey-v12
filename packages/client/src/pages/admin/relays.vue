@@ -69,14 +69,20 @@ export default defineComponent({
 		},
 
 		remove(inbox: string) {
-			os.api('admin/relays/remove', {
-				inbox
-			}).then(() => {
-				this.refresh();
-			}).catch((e: any) => {
-				os.alert({
-					type: 'error',
-					text: e.message || e
+			os.confirm({
+				type: 'warning',
+				text: this.$t('removeAreYouSure', { x: inbox }),
+			}).then(({ canceled }) => {
+				if (canceled) return;
+				os.api('admin/relays/remove', {
+					inbox
+				}).then(() => {
+					this.refresh();
+				}).catch((e: any) => {
+					os.alert({
+						type: 'error',
+						text: e.message || e
+					});
 				});
 			});
 		},
