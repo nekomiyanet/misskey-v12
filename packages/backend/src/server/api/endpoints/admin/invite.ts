@@ -2,6 +2,7 @@ import rndstr from 'rndstr';
 import define from '../../define.js';
 import { RegistrationTickets } from '@/models/index.js';
 import { genId } from '@/misc/gen-id.js';
+import { insertModerationLog } from '@/services/insert-moderation-log.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -31,7 +32,7 @@ export const paramDef = {
 } as const;
 
 // eslint-disable-next-line import/no-default-export
-export default define(meta, paramDef, async () => {
+export default define(meta, paramDef, async (ps, me) => {
 	const code = rndstr({
 		length: 8,
 		chars: '2-9A-HJ-NP-Z', // [0-9A-Z] w/o [01IO] (32 patterns)
@@ -41,6 +42,10 @@ export default define(meta, paramDef, async () => {
 		id: genId(),
 		createdAt: new Date(),
 		code,
+	});
+
+	insertModerationLog(me, 'invite', {
+		code: code,
 	});
 
 	return {
