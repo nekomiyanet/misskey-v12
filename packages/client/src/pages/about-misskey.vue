@@ -14,6 +14,7 @@
 			</div>
 			<div class="_formBlock" style="text-align: center;">
 				<MkButton primary rounded inline @click="iLoveMisskey">I <Mfm text="$[jelly ❤]"/> #Misskey</MkButton>
+				<MkButton primary rounded inline @click="iLoveNekomiyaNet">I <Mfm text="$[jelly ❤]"/> #Nekomiya_net</MkButton>
 			</div>
 			<FormSection>
 				<div class="_formLinks">
@@ -183,6 +184,13 @@ function gravity() {
 function iLoveMisskey() {
 	os.post({
 		initialText: 'I $[jelly ❤] #Misskey',
+		instant: true,
+	});
+}
+
+function iLoveNekomiyaNet() {
+	os.post({
+		initialText: 'I $[jelly ❤] #Nekomiya_net',
 		instant: true,
 	});
 }
