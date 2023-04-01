@@ -8,6 +8,12 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20230401172330 (2023/04/01)
+
+## Improvements
+- フォント変更等 @morotesovtannu
+- add I love Nekomiya_net(about-misskey) @morotesovtannu
+
 ## 12.108.1-nekomiya-20230326034000 (2023/03/26)
 
 ## Improvements
