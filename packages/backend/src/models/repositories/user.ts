@@ -340,6 +340,7 @@ export class UserRepository extends Repository<User> {
 				mutedInstances: profile!.mutedInstances,
 				mutingNotificationTypes: profile!.mutingNotificationTypes,
 				emailNotificationTypes: profile!.emailNotificationTypes,
+				federateBlocks: user!.federateBlocks,
 			} : {}),
 
 			...(opts.includeSecrets ? {

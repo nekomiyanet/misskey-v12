@@ -331,6 +331,10 @@ export const packedMeDetailedOnlySchema = {
 			type: 'boolean',
 			nullable: false, optional: false,
 		},
+		federateBlocks: {
+			type: 'boolean',
+			nullable: false, optional: false,
+		},
 		hideOnlineStatus: {
 			type: 'boolean',
 			nullable: false, optional: false,

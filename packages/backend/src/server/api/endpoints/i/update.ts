@@ -116,6 +116,7 @@ export const paramDef = {
 		emailNotificationTypes: { type: 'array', items: {
 			type: 'string',
 		} },
+		federateBlocks: { type: 'boolean' },
 	},
 } as const;
 
@@ -164,6 +165,7 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 	if (typeof ps.carefulBot === 'boolean') profileUpdates.carefulBot = ps.carefulBot;
 	if (typeof ps.autoAcceptFollowed === 'boolean') profileUpdates.autoAcceptFollowed = ps.autoAcceptFollowed;
 	if (typeof ps.noCrawle === 'boolean') profileUpdates.noCrawle = ps.noCrawle;
+	if (typeof ps.federateBlocks === 'boolean') updates.federateBlocks = ps.federateBlocks;
 	if (typeof ps.isCat === 'boolean') updates.isCat = ps.isCat;
 	if (typeof ps.injectFeaturedNote === 'boolean') profileUpdates.injectFeaturedNote = ps.injectFeaturedNote;
 	if (typeof ps.receiveAnnouncementEmail === 'boolean') profileUpdates.receiveAnnouncementEmail = ps.receiveAnnouncementEmail;

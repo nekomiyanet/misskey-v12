@@ -7,7 +7,7 @@
 		{{ $ts.makeReactionsPublic }}
 		<template #caption>{{ $ts.makeReactionsPublicDescription }}</template>
 	</FormSwitch>
-		
+
 	<FormSelect v-model="ffVisibility" class="_formBlock" @update:modelValue="save()">
 		<template #label>{{ $ts.ffVisibility }}</template>
 		<option value="public">{{ $ts._ffVisibility.public }}</option>
@@ -15,7 +15,7 @@
 		<option value="private">{{ $ts._ffVisibility.private }}</option>
 		<template #caption>{{ $ts.ffVisibilityDescription }}</template>
 	</FormSelect>
-		
+
 	<FormSwitch v-model="hideOnlineStatus" class="_formBlock" @update:modelValue="save()">
 		{{ $ts.hideOnlineStatus }}
 		<template #caption>{{ $ts.hideOnlineStatusDescription }}</template>
@@ -27,6 +27,10 @@
 	<FormSwitch v-model="isExplorable" class="_formBlock" @update:modelValue="save()">
 		{{ $ts.makeExplorable }}
 		<template #caption>{{ $ts.makeExplorableDescription }}</template>
+	</FormSwitch>
+	<FormSwitch v-model="federateBlocks" class="_formBlock" @update:modelValue="save()">
+		{{ $ts.federateBlocks }}
+		<template #caption>{{ $ts.federateBlocksDescription }}</template>
 	</FormSwitch>
 
 	<FormSection>
@@ -66,6 +70,7 @@ let isExplorable = $ref($i.isExplorable);
 let hideOnlineStatus = $ref($i.hideOnlineStatus);
 let publicReactions = $ref($i.publicReactions);
 let ffVisibility = $ref($i.ffVisibility);
+let federateBlocks = $ref($i.federateBlocks);
 
 let defaultNoteVisibility = $computed(defaultStore.makeGetterSetter('defaultNoteVisibility'));
 let defaultNoteLocalOnly = $computed(defaultStore.makeGetterSetter('defaultNoteLocalOnly'));
@@ -81,6 +86,7 @@ function save() {
 		hideOnlineStatus: !!hideOnlineStatus,
 		publicReactions: !!publicReactions,
 		ffVisibility: ffVisibility,
+		federateBlocks: !!federateBlocks,
 	});
 }
 
