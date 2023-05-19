@@ -30,8 +30,8 @@
 				<MkInput v-model="ad.expiresAt" type="datetime-local">
 					<template #label>{{ $ts.expiration }}</template>
 				</MkInput>
-				<div><i class="far fa-clock"></i> {{ $ts.createdAt }} <MkTime :time="ad.createdAt" mode="detail"/></div>
-				<div><i class="far fa-clock"></i> {{ $ts.expiration }} <MkTime :time="ad.expiresAt" mode="detail"/></div>
+				<p v-if="ad.createdAt"><i class="far fa-clock"></i> {{ $ts.createdAt }} <MkTime :time="ad.createdAt" mode="detail"/></p>
+				<p v-if="ad.expiresAt"><i class="far fa-clock"></i> {{ $ts.expiration }} <MkTime :time="ad.expiresAt" mode="detail"/></p>
 			</FormSplit>
 			<MkTextarea v-model="ad.memo" class="_formBlock">
 				<template #label>{{ $ts.memo }}</template>
