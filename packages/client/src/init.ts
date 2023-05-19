@@ -227,15 +227,15 @@ if (lastVersion !== version) {
 	// テーマリビルドするため
 	localStorage.removeItem('theme');
 
-//	try { // 変なバージョン文字列来るとcompareVersionsでエラーになるため
-//		if (lastVersion != null && compareVersions(version, lastVersion) === 1) {
-//			// ログインしてる場合だけ
-//			if ($i) {
-//				popup(import('@/components/updated.vue'), {}, {}, 'closed');
-//			}
-//		}
-//	} catch (e) {
-//	}
+	try { // 変なバージョン文字列来るとcompareVersionsでエラーになるため
+		if (lastVersion != null && compareVersions(version, lastVersion) === 1) {
+			// ログインしてる場合だけ
+			if ($i) {
+				popup(import('@/components/updated.vue'), {}, {}, 'closed');
+			}
+		}
+	} catch (e) {
+	}
 }
 
 // NOTE: この処理は必ず↑のクライアント更新時処理より後に来ること(テーマ再構築のため)
