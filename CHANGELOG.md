@@ -8,6 +8,17 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20230519113940 (2023/05/19)
+
+## Improvements
+- Change: Show expired ads on admin @atsu1125
+- Feat: not forwarding block activities @atsu1125
+- Feat: Take back all my renotes @atsu1125
+- Revert "Remove(client): Misskey更新時にダイアログを表示しないように" @atsu1125
+
+## Bugfixes
+-  Do not accept follow request from suspended/deleted account @atsu1125
+
 ## 12.108.1-nekomiya-20230401172330 (2023/04/01)
 
 ## Improvements
