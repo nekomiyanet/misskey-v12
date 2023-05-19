@@ -269,6 +269,7 @@ export function inputNumber(props: {
 }
 
 export function inputDate(props: {
+	type?: 'date' | 'datetime-local';
 	title?: string | null;
 	text?: string | null;
 	placeholder?: string | null;
@@ -281,7 +282,7 @@ export function inputDate(props: {
 			title: props.title,
 			text: props.text,
 			input: {
-				type: 'date',
+				type: props.type,
 				placeholder: props.placeholder,
 				default: props.default,
 			}

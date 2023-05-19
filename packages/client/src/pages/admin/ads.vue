@@ -27,9 +27,11 @@
 				<MkInput v-model="ad.ratio" type="number">
 					<template #label>{{ $ts.ratio }}</template>
 				</MkInput>
-				<MkInput v-model="ad.expiresAt" type="date">
+				<MkInput v-model="ad.expiresAt" type="datetime-local">
 					<template #label>{{ $ts.expiration }}</template>
 				</MkInput>
+				<div><i class="far fa-clock"></i> {{ $ts.createdAt }} <MkTime :time="ad.createdAt" mode="detail"/></div>
+				<div><i class="far fa-clock"></i> {{ $ts.expiration }} <MkTime :time="ad.expiresAt" mode="detail"/></div>
 			</FormSplit>
 			<MkTextarea v-model="ad.memo" class="_formBlock">
 				<template #label>{{ $ts.memo }}</template>
@@ -82,8 +84,18 @@ export default defineComponent({
 	},
 
 	created() {
+		// ISO形式はTZがUTCになってしまうので、TZ分ずらして時間を初期化
+		const localTime = new Date();
+		const localTimeDiff = localTime.getTimezoneOffset() * 60 * 1000;
 		os.api('admin/ad/list').then(ads => {
-			this.ads = ads;
+			this.ads = ads.map(r => {
+				const date = new Date(r.expiresAt);
+				date.setMilliseconds(date.getMilliseconds() - localTimeDiff);
+				return {
+					...r,
+					expiresAt: date.toISOString().slice(0, 16),
+				};
+			});
 		});
 	},
 
@@ -150,8 +162,18 @@ export default defineComponent({
 		},
 
 		refresh() {
+			// ISO形式はTZがUTCになってしまうので、TZ分ずらして時間を初期化
+			const localTime = new Date();
+			const localTimeDiff = localTime.getTimezoneOffset() * 60 * 1000;
 			os.api('admin/ad/list').then(ads => {
-				this.ads = ads;
+				this.ads = ads.map(r => {
+					const date = new Date(r.expiresAt);
+					date.setMilliseconds(date.getMilliseconds() - localTimeDiff);
+					return {
+						...r,
+						expiresAt: date.toISOString().slice(0, 16),
+					};
+				});
 			});
 		}
 
