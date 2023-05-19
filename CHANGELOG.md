@@ -8,6 +8,11 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20230519181040 (2023/05/19)
+
+## Improvements
+- Show created/expired date on annoucements/ads admin view @atsu1125
+
 ## 12.108.1-nekomiya-20230519113940 (2023/05/19)
 
 ## Improvements
