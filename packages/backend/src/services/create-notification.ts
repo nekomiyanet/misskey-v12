@@ -48,7 +48,7 @@ export async function createNotification(
 		});
 		const blockings = await Blockings.find({
 			blockerId: notifieeId,
-		})
+		});
 		if (data.notifierId && mutings.map(m => m.muteeId).includes(data.notifierId)) {
 			return;
 		}
