@@ -1,7 +1,7 @@
 import { User } from '@/models/entities/user.js';
 import { UserGroup } from '@/models/entities/user-group.js';
 import { DriveFile } from '@/models/entities/drive-file.js';
-import { MessagingMessages, UserGroupJoinings, Mutings, Users } from '@/models/index.js';
+import { MessagingMessages, UserGroupJoinings, Mutings, Users, Blockings } from '@/models/index.js';
 import { genId } from '@/misc/gen-id.js';
 import { MessagingMessage } from '@/models/entities/messaging-message.js';
 import { publishMessagingStream, publishMessagingIndexStream, publishMainStream, publishGroupMessagingStream } from '@/services/stream.js';
