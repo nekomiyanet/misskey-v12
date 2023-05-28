@@ -8,6 +8,18 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20230528195800 (2023/05/28)
+
+## Improvements
+- インスタンスティッカーにソフトウェア名を表示するように Show software name on instance ticker @atsu1125
+- リアクションをオリジナルノートのインスタンス以外にはブロードキャストしないオプション Feat: not broadcast like activities @atsu1125
+- トレンドはローカル投稿のみを対象にする @atsu1125
+
+## Bugfixes
+- fix: show created/expired date on announcements/ads @atsu1125
+- fix: delete following when blocking creates @atsu1125
+- Fix: ブロックしているユーザーからの通知を無視 @atsu1125
+
 ## 12.108.1-nekomiya-20230519181040 (2023/05/19)
 
 ## Improvements
