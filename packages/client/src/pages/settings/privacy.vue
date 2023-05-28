@@ -32,6 +32,10 @@
 		{{ $ts.federateBlocks }}
 		<template #caption>{{ $ts.federateBlocksDescription }}</template>
 	</FormSwitch>
+	<FormSwitch v-model="broadcastReactions" class="_formBlock" @update:modelValue="save()">
+		{{ $ts.broadcastReactions }}
+		<template #caption>{{ $ts.broadcastReactionsDescription }}</template>
+	</FormSwitch>
 
 	<FormSection>
 		<FormSwitch v-model="rememberNoteVisibility" class="_formBlock" @update:modelValue="save()">{{ $ts.rememberNoteVisibility }}</FormSwitch>
@@ -71,6 +75,7 @@ let hideOnlineStatus = $ref($i.hideOnlineStatus);
 let publicReactions = $ref($i.publicReactions);
 let ffVisibility = $ref($i.ffVisibility);
 let federateBlocks = $ref($i.federateBlocks);
+let broadcastReactions = $ref($i.broadcastReactions);
 
 let defaultNoteVisibility = $computed(defaultStore.makeGetterSetter('defaultNoteVisibility'));
 let defaultNoteLocalOnly = $computed(defaultStore.makeGetterSetter('defaultNoteLocalOnly'));
@@ -87,6 +92,7 @@ function save() {
 		publicReactions: !!publicReactions,
 		ffVisibility: ffVisibility,
 		federateBlocks: !!federateBlocks,
+		broadcastReactions: !!broadcastReactions,
 	});
 }
 

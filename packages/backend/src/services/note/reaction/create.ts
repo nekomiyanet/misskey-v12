@@ -124,7 +124,7 @@ export default async (user: { id: User['id']; host: User['host']; }, note: Note,
 			const reactee = await Users.findOne(note.userId);
 			dm.addDirectRecipe(reactee as IRemoteUser);
 		}
-		dm.addFollowersRecipe();
+		if (user.broadcastReactions) dm.addFollowersRecipe();
 		dm.execute();
 	}
 	//#endregion

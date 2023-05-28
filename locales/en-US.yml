@@ -893,6 +893,8 @@ selfSilencedInstancesDescription: "Instances to deliver with maximum visibility 
 instanceSilencing: "Silencing Instances"
 silencedInstances: "Silencing Instances"
 silencedInstancesDescription: "Instances to recieve with maximum visibility home. One host per line. "
+broadcastReactions: "BroadCast Reactions"
+broadcastReactionsDescription: "If disabled, reaction activities will be sent only to an instance of original note."
 
 _emailUnavailable:
   used: "This email address is already being used"

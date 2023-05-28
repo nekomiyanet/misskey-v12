@@ -253,6 +253,11 @@ export class User {
 	})
 	public federateBlocks: boolean;
 
+	@Column('boolean', {
+		default: true,
+	})
+	public broadcastReactions: boolean;
+
 	constructor(data: Partial<User>) {
 		if (data == null) return;
 

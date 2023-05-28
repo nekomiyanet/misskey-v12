@@ -117,6 +117,7 @@ export const paramDef = {
 			type: 'string',
 		} },
 		federateBlocks: { type: 'boolean' },
+		broadcastReactions: { type: 'boolean' },
 	},
 } as const;
 
@@ -166,6 +167,7 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 	if (typeof ps.autoAcceptFollowed === 'boolean') profileUpdates.autoAcceptFollowed = ps.autoAcceptFollowed;
 	if (typeof ps.noCrawle === 'boolean') profileUpdates.noCrawle = ps.noCrawle;
 	if (typeof ps.federateBlocks === 'boolean') updates.federateBlocks = ps.federateBlocks;
+	if (typeof ps.broadcastReactions === 'boolean') updates.broadcastReactions = ps.broadcastReactions;
 	if (typeof ps.isCat === 'boolean') updates.isCat = ps.isCat;
 	if (typeof ps.injectFeaturedNote === 'boolean') profileUpdates.injectFeaturedNote = ps.injectFeaturedNote;
 	if (typeof ps.receiveAnnouncementEmail === 'boolean') profileUpdates.receiveAnnouncementEmail = ps.receiveAnnouncementEmail;

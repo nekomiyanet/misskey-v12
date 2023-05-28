@@ -335,6 +335,10 @@ export const packedMeDetailedOnlySchema = {
 			type: 'boolean',
 			nullable: false, optional: false,
 		},
+		broadcastReactions: {
+			type: 'boolean',
+			nullable: false, optional: false,
+		},
 		hideOnlineStatus: {
 			type: 'boolean',
 			nullable: false, optional: false,
