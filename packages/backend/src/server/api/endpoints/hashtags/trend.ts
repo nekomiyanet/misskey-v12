@@ -74,6 +74,7 @@ export default define(meta, paramDef, async () => {
 			.orWhere(`note.visibility = 'home'`);
 		}))
 		.andWhere(`note.tags != '{}'`)
+		.andWhere(`note.userHost IS NULL`)
 		.select(['note.tags', 'note.userId'])
 		.cache(60000) // 1 min
 		.getMany();
