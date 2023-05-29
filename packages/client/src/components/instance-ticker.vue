@@ -2,6 +2,7 @@
 <div class="hpaizdrt" :style="bg">
 	<img v-if="instance.faviconUrl" class="icon" :src="instance.faviconUrl"/>
 	<span class="name">{{ instance.name }}</span>
+	<span v-if="instance.softwareVersion" class="software">{{ instance.softwareVersion }}</span>
 	<span v-if="instance.softwareName" class="software">{{ instance.softwareName }}</span>
 </div>
 </template>
