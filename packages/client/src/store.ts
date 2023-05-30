@@ -265,6 +265,22 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false
 	},
+	instanceTickerPosition: {
+		where: 'device',
+		default: 'bottomleft' as 'leftedge' | 'rightedge' | 'bottomleft' | 'bottomright',
+	},
+	instanceTickerStyle: {
+		where: 'device',
+		default: 'original' as 'original' | 'taiy' | 'calckey',
+	},
+	showTickerSoftWareName: {
+		where: 'device',
+		default: true
+	},
+	showTickerSoftWareVersion: {
+		where: 'device',
+		default: false
+	},
 }));
 
 // TODO: 他のタブと永続化されたstateを同期

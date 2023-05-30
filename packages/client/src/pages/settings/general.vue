@@ -80,6 +80,24 @@
 		<option value="always">{{ $ts._instanceTicker.always }}</option>
 	</FormSelect>
 
+	<FormSelect v-model="instanceTickerStyle" class="_formBlock">
+		<template #label>Instance Ticker Style</template>
+		<option value="original">Original</option>
+		<option value="taiy">Taiy</option>
+		<option value="calckey">Calckey</option>
+	</FormSelect>
+
+	<FormSwitch v-if="instanceTickerStyle !== 'calckey'" v-model="showTickerSoftWareName" class="_formBlock">Show Software Name on instance ticker</FormSwitch>
+	<FormSwitch v-if="instanceTickerStyle !== 'calckey'" v-model="showTickerSoftWareVersion" class="_formBlock">Show Software Version on instance ticker</FormSwitch>
+
+	<FormSelect v-if="instanceTickerStyle === 'taiy'" v-model="instanceTickerPosition" class="_formBlock">
+		<template #label>Instance Ticker Position</template>
+		<option value="leftedge">Left Edge</option>
+		<option value="rightedge">Right Edge</option>
+		<option value="bottomleft">Bottom Left</option>
+		<option value="bottomright">Bottom Right</option>
+	</FormSelect>
+
 	<FormSelect v-model="nsfw" class="_formBlock">
 		<template #label>{{ $ts.nsfw }}</template>
 		<option value="respect">{{ $ts._nsfw.respect }}</option>
@@ -170,6 +188,10 @@ export default defineComponent({
 		enableGTL: defaultStore.makeGetterSetter('enableGTL'),
 		enableMTL: defaultStore.makeGetterSetter('enableMTL'),
 		enableMfm: defaultStore.makeGetterSetter('enableMfm'),
+		instanceTickerPosition: defaultStore.makeGetterSetter('instanceTickerPosition'),
+		instanceTickerStyle: defaultStore.makeGetterSetter('instanceTickerStyle'),
+		showTickerSoftWareName: defaultStore.makeGetterSetter('showTickerSoftWareName'),
+		showTickerSoftWareVersion: defaultStore.makeGetterSetter('showTickerSoftWareVersion'),
 	},
 
 	watch: {
