@@ -895,6 +895,10 @@ silencedInstances: "インスタンスサイレンス"
 silencedInstancesDescription: "最大公開範囲ホームで受信するインスタンス。1行に1ホスト記述します。"
 broadcastReactions: "リアクションをブロードキャスト"
 broadcastReactionsDescription: "オフにするとリアクションのアクティビティはオリジナルノートのインスタンスにのみ送信されます。"
+instanceTickerStyle: "インスタンスティッカースタイル"
+instanceTickerPosition: "インスタンスティッカー位置"
+showTickerSoftWareName: "インスタンスティッカーにソフトウェア名を表示"
+showTickerSoftWareVersion: "インスタンスティッカーにバージョンを表示"
 
 _emailUnavailable:
   used: "既に使用されています"
@@ -1039,6 +1043,17 @@ _instanceTicker:
   none: "表示しない"
   remote: "リモートユーザーに表示"
   always: "常に表示"
+
+_instanceTickerStyle:
+  original: "オリジナルスタイル(Foundkey)"
+  taiy: "Taiyスタイル"
+  calckey: "Calckeyスタイル"
+
+_instanceTickerPosition:
+  leftedge: "左端"
+  rightedge: "右端"
+  bottomleft: "左下"
+  bottomright: "右下"
 
 _serverDisconnectedBehavior:
   reload: "自動でリロード"

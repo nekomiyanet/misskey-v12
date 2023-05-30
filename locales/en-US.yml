@@ -895,6 +895,10 @@ silencedInstances: "Silencing Instances"
 silencedInstancesDescription: "Instances to recieve with maximum visibility home. One host per line. "
 broadcastReactions: "BroadCast Reactions"
 broadcastReactionsDescription: "If disabled, reaction activities will be sent only to an instance of original note."
+instanceTickerStyle: "Instance Ticker Style"
+instanceTickerPosition: "Instance Ticker Position"
+showTickerSoftWareName: "Show Software Name on Instance Ticker"
+showTickerSoftWareVersion: "Show Software Version on Instance Ticker"
 
 _emailUnavailable:
   used: "This email address is already being used"
@@ -1026,6 +1030,15 @@ _instanceTicker:
   none: "Never show"
   remote: "Show for remote users"
   always: "Always show"
+_instanceTickerStyle:
+  original: "Original style like Foundkey"
+  taiy: "Taiy style"
+  calckey: "Calckey style"
+_instanceTickerPosition:
+  leftedge: "Left Edge"
+  rightedge: "Right Edge"
+  bottomleft: "Bottom Left"
+  bottomright: "Bottom Right"
 _serverDisconnectedBehavior:
   reload: "Automatically reload"
   dialog: "Show warning dialog"

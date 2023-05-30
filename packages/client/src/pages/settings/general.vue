@@ -81,21 +81,21 @@
 	</FormSelect>
 
 	<FormSelect v-model="instanceTickerStyle" class="_formBlock">
-		<template #label>Instance Ticker Style</template>
-		<option value="original">Original</option>
-		<option value="taiy">Taiy</option>
-		<option value="calckey">Calckey</option>
+		<template #label>{{ $ts.instanceTickerStyle }}</template>
+		<option value="original">{{ $ts._instanceTickerStyle.original }}</option>
+		<option value="taiy">{{ $ts._instanceTickerStyle.taiy }}</option>
+		<option value="calckey">{{ $ts._instanceTickerStyle.calckey }}</option>
 	</FormSelect>
 
-	<FormSwitch v-if="instanceTickerStyle !== 'calckey'" v-model="showTickerSoftWareName" class="_formBlock">Show Software Name on instance ticker</FormSwitch>
-	<FormSwitch v-if="instanceTickerStyle !== 'calckey'" v-model="showTickerSoftWareVersion" class="_formBlock">Show Software Version on instance ticker</FormSwitch>
+	<FormSwitch v-if="instanceTickerStyle !== 'calckey'" v-model="showTickerSoftWareName" class="_formBlock">{{ $ts.showTickerSoftWareName }}</FormSwitch>
+	<FormSwitch v-if="instanceTickerStyle !== 'calckey'" v-model="showTickerSoftWareVersion" class="_formBlock">{{ $ts.showTickerSoftWareVersion }}</FormSwitch>
 
 	<FormSelect v-if="instanceTickerStyle === 'taiy'" v-model="instanceTickerPosition" class="_formBlock">
-		<template #label>Instance Ticker Position</template>
-		<option value="leftedge">Left Edge</option>
-		<option value="rightedge">Right Edge</option>
-		<option value="bottomleft">Bottom Left</option>
-		<option value="bottomright">Bottom Right</option>
+		<template #label>{{ $ts.instanceTickerPosition }}</template>
+		<option value="leftedge">{{ $ts._instanceTickerPosition.leftedge }}</option>
+		<option value="rightedge">{{ $ts._instanceTickerPosition.rightedge }}</option>
+		<option value="bottomleft">{{ $ts._instanceTickerPosition.bottomleft }}</option>
+		<option value="bottomright">{{ $ts._instanceTickerPosition.bottomright }}</option>
 	</FormSelect>
 
 	<FormSelect v-model="nsfw" class="_formBlock">

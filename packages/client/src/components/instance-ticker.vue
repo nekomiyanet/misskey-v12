@@ -134,19 +134,6 @@ const ableToShowInstanceDetails = (defaultStore.state.instanceTickerPosition ===
 	background: var(--ticker-bg, #777777);
 	color: var(--ticker-fg, #ffffff);
 	overflow: hidden;
-	text-shadow: /* .866 ≈ sin(60deg) */
-		1px 0 1px #000,
-		.866px .5px 1px #000,
-		.5px .866px 1px #000,
-		0 1px 1px #000,
-		-.5px .866px 1px #000,
-		-.866px .5px 1px #000,
-		-1px 0 1px #000,
-		-.866px -.5px 1px #000,
-		-.5px -.866px 1px #000,
-		0 -1px 1px #000,
-		.5px -.866px 1px #000,
-		.866px -.5px 1px #000;
 
 	> .icon {
 		aspect-ratio: 1 / 1;
@@ -291,7 +278,7 @@ const ableToShowInstanceDetails = (defaultStore.state.instanceTickerPosition ===
 .root {
 	$height: 1.1rem;
 	position: static;
-	margin-left: 80%;
+	margin-left: 70%;
 	margin-right: 0;
 	display: flex;
 	height: $height;
@@ -333,6 +320,8 @@ const ableToShowInstanceDetails = (defaultStore.state.instanceTickerPosition ===
 		white-space: nowrap;
 		oberflow: hidden;
 		text-size-adjust: auto;
+		width: 100%;
+		height: 100%;
 	}
 }
 </style>
