@@ -84,6 +84,10 @@ export async function checkHitAntenna(antenna: Antenna, note: (Note | Packed<'No
 		if (note.fileIds && note.fileIds.length === 0) return false;
 	}
 
+	if (antenna.local) {
+		if (noteUser.host !== null) return false;
+	}
+
 	// TODO: eval expression
 
 	return true;

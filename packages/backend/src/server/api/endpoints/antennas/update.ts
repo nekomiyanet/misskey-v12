@@ -62,6 +62,7 @@ export const paramDef = {
 		withReplies: { type: 'boolean' },
 		withFile: { type: 'boolean' },
 		notify: { type: 'boolean' },
+		local: { type: 'boolean' },
 	},
 	required: ['antennaId', 'name', 'src', 'keywords', 'excludeKeywords', 'users', 'caseSensitive', 'withReplies', 'withFile', 'notify'],
 } as const;
@@ -113,6 +114,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		withReplies: ps.withReplies,
 		withFile: ps.withFile,
 		notify: ps.notify,
+		local: ps.local,
 	});
 
 	publishInternalEvent('antennaUpdated', await Antennas.findOneOrFail(antenna.id));
