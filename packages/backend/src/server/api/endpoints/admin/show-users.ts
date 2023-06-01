@@ -25,7 +25,7 @@ export const paramDef = {
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
 		offset: { type: 'integer', default: 0 },
 		sort: { type: 'string', enum: ['+follower', '-follower', '+createdAt', '-createdAt', '+updatedAt', '-updatedAt'] },
-		state: { type: 'string', enum: ['all', 'available', 'admin', 'moderator', 'adminOrModerator', 'silenced', 'localsilenced', 'privatesilenced', 'forcesensitive', 'disabled', 'hidden', 'suspended', 'cat', 'bot'], default: "all" },
+		state: { type: 'string', enum: ['all', 'available', 'admin', 'moderator', 'adminOrModerator', 'silenced', 'localsilenced', 'privatesilenced', 'forcesensitive', 'disabled', 'hidden', 'suspended', 'cat', 'bot', 'fox'], default: "all" },
 		origin: { type: 'string', enum: ['combined', 'local', 'remote'], default: "local" },
 		username: { type: 'string', default: null },
 		hostname: { type: 'string', default: null },
@@ -52,6 +52,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		case 'suspended': query.where('user.isSuspended = TRUE'); break;
 		case 'cat': query.where('user.isCat = TRUE'); break;
 		case 'bot': query.where('user.isBot = TRUE'); break;
+		case 'fox': query.where('user.isFox = TRUE'); break;
 	}
 
 	switch (ps.origin) {

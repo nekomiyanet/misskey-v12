@@ -5,6 +5,7 @@ import { User } from '@/models/entities/user.js';
 import { Users, PollVotes, DriveFiles, NoteReactions, Followings, Polls, Channels } from '../index.js';
 import { Packed } from '@/misc/schema.js';
 import { nyaize } from '@/misc/nyaize.js';
+import { nojaize } from '@/misc/nojaize.js';
 import { awaitAll } from '@/prelude/await-all.js';
 import { convertLegacyReaction, convertLegacyReactions, decodeReaction } from '@/misc/reaction-lib.js';
 import { NoteReaction } from '@/models/entities/note-reaction.js';
@@ -270,6 +271,17 @@ export class NoteRepository extends Repository<Note> {
 				if (node.type === 'text') {
 					// TODO: quoteなtextはskip
 					node.props.text = nyaize(node.props.text);
+				}
+			});
+			packed.text = mfm.toString(tokens);
+		}
+
+		if (packed.user.isFox && packed.text) {
+			const tokens = packed.text ? mfm.parse(packed.text) : [];
+			mfm.inspect(tokens, node => {
+				if (node.type === 'text') {
+					// TODO: quoteなtextはskip
+					node.props.text = nojaize(node.props.text);
 				}
 			});
 			packed.text = mfm.toString(tokens);

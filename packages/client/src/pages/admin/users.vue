@@ -24,6 +24,7 @@
 				<option value="suspended">{{ $ts.suspend }}</option>
 				<option value="cat">{{ $ts.cat }}</option>
 				<option value="bot">{{ $ts.bot }}</option>
+				<option value="fox">{{ $ts.fox }}</option>
 			</MkSelect>
 			<MkSelect v-model="origin" style="flex: 1;">
 				<template #label>{{ $ts.instance }}</template>

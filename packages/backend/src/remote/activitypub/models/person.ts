@@ -164,6 +164,7 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 				tags,
 				isBot,
 				isCat: (person as any).isCat === true,
+				isFox: (person as any).isFox === true,
 				showTimelineReplies: false,
 			})) as IRemoteUser;
 
@@ -322,6 +323,7 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 		tags,
 		isBot: getApType(object) === 'Service',
 		isCat: (person as any).isCat === true,
+		isFox: (person as any).isFox === true,
 		isLocked: !!person.manuallyApprovesFollowers,
 		isExplorable: !!person.discoverable,
 	} as Partial<User>;
