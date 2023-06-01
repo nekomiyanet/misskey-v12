@@ -107,6 +107,9 @@
 					<i class="fas fa-ellipsis-h"></i>
 				</button>
 				<XQuoteButton class="button" :note="appearNote"/>
+				<button v-if="isMyRenote && showDeleteButtonOnTop" class="button _button" @click="del(appearNote)">
+					<i class="fas fa-trash-alt"></i>
+				</button>
 			</footer>
 		</div>
 	</article>
@@ -194,6 +197,7 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 const conversation = ref<misskey.entities.Note[]>([]);
 const replies = ref<misskey.entities.Note[]>([]);
 const enableAbsoluteTime = defaultStore.state.enableAbsoluteTime;
+const showDeleteButtonOnTop = defaultStore.state.showDeleteButtonOnTop;
 
 const keymap = {
 	'r': () => reply(true),
@@ -288,6 +292,19 @@ function focus() {
 
 function blur() {
 	el.value.blur();
+}
+
+function del(): void {
+	os.confirm({
+		type: 'warning',
+		text: (appearNote.userId == $i.id) ? i18n.ts.noteDeleteConfirm : i18n.ts.noteDeleteAsAdminConfirm,
+	}).then(({ canceled }) => {
+		if (canceled) return;
+
+		os.api('notes/delete', {
+			noteId: appearNote.id
+		});
+	});
 }
 
 os.api('notes/children', {

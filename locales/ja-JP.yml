@@ -905,6 +905,7 @@ showTickerSoftWareVersion: "インスタンスティッカーにバージョン�
 notesCountVisibility: "ノート数の公開範囲"
 notesCountVisibilityDescription: "自分のノート数の公開範囲を設定できます。"
 seperateRenoteQuote: "リノートボタンと引用ボタンを分離する"
+showDeleteButtonOnTop: "投稿削除ボタンを手前に表示する"
 
 _emailUnavailable:
   used: "既に使用されています"

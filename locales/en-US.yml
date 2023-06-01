@@ -905,6 +905,7 @@ showTickerSoftWareVersion: "Show Software Version on Instance Ticker"
 notesCountVisibility: "Notes Count Visibility"
 notesCountVisibilityDescription: "Allows you to configure who can see who your notes count."
 seperateRenoteQuote: "Seperate renote and quote buttons"
+showDeleteButtonOnTop: "Show Delete Note Button on Top"
 
 _emailUnavailable:
   used: "This email address is already being used"

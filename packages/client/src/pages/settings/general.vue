@@ -40,6 +40,7 @@
 	<FormSection>
 		<template #label>{{ $ts.appearance }}</template>
 		<FormSwitch v-model="seperateRenoteQuote" class="_formBlock">{{ $ts.seperateRenoteQuote }}</FormSwitch>
+		<FormSwitch v-model="showDeleteButtonOnTop" class="_formBlock">{{ $ts.showDeleteButtonOnTop }}</FormSwitch>
 		<FormSwitch v-model="disableAnimatedMfm" class="_formBlock">{{ $ts.disableAnimatedMfm }}</FormSwitch>
 		<FormSwitch v-model="enableMfm" class="_formBlock">{{ $ts.enableMfm }}</FormSwitch>
 		<FormSwitch v-model="reduceAnimation" class="_formBlock">{{ $ts.reduceUiAnimation }}</FormSwitch>
@@ -195,6 +196,7 @@ export default defineComponent({
 		showTickerSoftWareName: defaultStore.makeGetterSetter('showTickerSoftWareName'),
 		showTickerSoftWareVersion: defaultStore.makeGetterSetter('showTickerSoftWareVersion'),
 		seperateRenoteQuote: defaultStore.makeGetterSetter('seperateRenoteQuote'),
+		showDeleteButtonOnTop: defaultStore.makeGetterSetter('showDeleteButtonOnTop'),
 	},
 
 	watch: {
