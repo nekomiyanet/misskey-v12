@@ -59,10 +59,15 @@ export default defineComponent({
 
 		const renote = (viaKeyboard = false) => {
 			pleaseLogin();
-			if (defaultStore.state.seperateRenoteQuote) {
+			if (defaultStore.state.seperateRenoteQuote && props.note.visibility !== 'public') {
 				os.api('notes/create', {
 					renoteId: props.note.id,
 					visibility: props.note.visibility,
+				});
+			} else if (defaultStore.state.seperateRenoteQuote && props.note.visibility === 'public') {
+				os.api('notes/create', {
+					renoteId: props.note.id,
+					visibility: 'home',
 				});
 			} else {
 			os.popupMenu([{
