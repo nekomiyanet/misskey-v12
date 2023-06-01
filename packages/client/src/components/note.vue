@@ -91,7 +91,7 @@
 					<i class="fas fa-ellipsis-h"></i>
 				</button>
 				<XQuoteButton class="button" :note="appearNote"/>
-				<button v-if="isMyRenote && showDeleteButtonOnTop" class="button _button" @click="del(appearNote)">
+				<button v-if="isMyNote && showDeleteButtonOnTop" class="button _button" @click="del(appearNote)">
 					<i class="fas fa-trash-alt"></i>
 				</button>
 			</footer>
@@ -170,6 +170,7 @@ const renoteButton = ref<InstanceType<typeof XRenoteButton>>();
 const renoteTime = ref<HTMLElement>();
 const reactButton = ref<HTMLElement>();
 let appearNote = $computed(() => isRenote ? note.renote as misskey.entities.Note : note);
+const isMyNote = $i && ($i.id === appearNote.userId);
 const isMyRenote = $i && ($i.id === note.userId);
 const showContent = ref(false);
 const urls = appearNote.text ? extractUrlFromMfm(mfm.parse(appearNote.text)) : null;
