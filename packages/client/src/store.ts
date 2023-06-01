@@ -271,7 +271,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	instanceTickerStyle: {
 		where: 'device',
-		default: 'original' as 'original' | 'taiy' | 'calckey',
+		default: 'original' as 'original' | 'compact' | 'taiy' | 'calckey',
 	},
 	showTickerSoftWareName: {
 		where: 'device',

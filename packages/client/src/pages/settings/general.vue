@@ -83,12 +83,13 @@
 	<FormSelect v-model="instanceTickerStyle" class="_formBlock">
 		<template #label>{{ $ts.instanceTickerStyle }}</template>
 		<option value="original">{{ $ts._instanceTickerStyle.original }}</option>
+		<option value="compact">{{ $ts._instanceTickerStyle.compact }}</option>
 		<option value="taiy">{{ $ts._instanceTickerStyle.taiy }}</option>
 		<option value="calckey">{{ $ts._instanceTickerStyle.calckey }}</option>
 	</FormSelect>
 
-	<FormSwitch v-if="instanceTickerStyle !== 'calckey'" v-model="showTickerSoftWareName" class="_formBlock">{{ $ts.showTickerSoftWareName }}</FormSwitch>
-	<FormSwitch v-if="instanceTickerStyle !== 'calckey'" v-model="showTickerSoftWareVersion" class="_formBlock">{{ $ts.showTickerSoftWareVersion }}</FormSwitch>
+	<FormSwitch v-if="instanceTickerStyle !== 'calckey' && instanceTickerStyle !== 'compact'" v-model="showTickerSoftWareName" class="_formBlock">{{ $ts.showTickerSoftWareName }}</FormSwitch>
+	<FormSwitch v-if="instanceTickerStyle !== 'calckey' && instanceTickerStyle !== 'compact'" v-model="showTickerSoftWareVersion" class="_formBlock">{{ $ts.showTickerSoftWareVersion }}</FormSwitch>
 
 	<FormSelect v-if="instanceTickerStyle === 'taiy'" v-model="instanceTickerPosition" class="_formBlock">
 		<template #label>{{ $ts.instanceTickerPosition }}</template>

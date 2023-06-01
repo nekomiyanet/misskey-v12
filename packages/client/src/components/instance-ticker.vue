@@ -1,4 +1,7 @@
 <template>
+<div class="compact" v-if="tickerCompactStyle">
+	<img v-if="instance.faviconUrl" class="icon" :src="instance.faviconUrl"/>
+</div>
 <div class="hpaizdrt" :style="bg" v-if="tickerOriginalStyle">
 	<img v-if="instance.faviconUrl" class="icon" :src="instance.faviconUrl"/>
 	<span class="name">{{ instance.name }}</span>
@@ -75,6 +78,7 @@ const bg = {
 	background: `linear-gradient(90deg, ${themeColor}, ${themeColor}11)`,
 };
 const tickerOriginalStyle = defaultStore.state.instanceTickerStyle === 'original';
+const tickerCompactStyle = defaultStore.state.instanceTickerStyle === 'compact';
 const tickerTaiyStyle = defaultStore.state.instanceTickerStyle === 'taiy';
 const tickerCalckeyStyle = defaultStore.state.instanceTickerStyle === 'calckey';
 const showTickerSoftWareName = defaultStore.state.showTickerSoftWareName;
@@ -129,6 +133,19 @@ const ableToShowInstanceDetails = (defaultStore.state.instanceTickerPosition ===
 		text-transform: capitalize;
 	}
 }
+
+.compact {
+	$height: 1.1rem;
+	height: $height;
+	border-radius: 4px 0 0 4px;
+	overflow: hidden;
+
+	> .icon {
+		height: 100%;
+	}
+
+}
+
 
 .mk-instance-ticker {
 	background: var(--ticker-bg, #777777);

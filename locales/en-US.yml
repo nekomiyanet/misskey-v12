@@ -1032,6 +1032,7 @@ _instanceTicker:
   always: "Always show"
 _instanceTickerStyle:
   original: "Original style like Foundkey"
+  compact: "Compact style"
   taiy: "Taiy style"
   calckey: "Calckey style"
 _instanceTickerPosition:

@@ -1046,6 +1046,7 @@ _instanceTicker:
 
 _instanceTickerStyle:
   original: "オリジナルスタイル(Foundkey)"
+  compact: "コンパクトスタイル"
   taiy: "Taiyスタイル"
   calckey: "Calckeyスタイル"
 
