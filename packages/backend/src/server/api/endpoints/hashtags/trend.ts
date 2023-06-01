@@ -17,6 +17,7 @@ const rangeA = 1000 * 60 * 60; // 60分
 //const rangeB = 1000 * 60 * 120; // 2時間
 //const coefficient = 1.25; // 「n倍」の部分
 //const requiredUsers = 3; // 最低何人がそのタグを投稿している必要があるか
+const rangeC = 1000 * 60 * 720; // 12時間
 
 const max = 5;
 
@@ -68,7 +69,7 @@ export default define(meta, paramDef, async () => {
 	now.setMinutes(Math.round(now.getMinutes() / 5) * 5, 0, 0);
 
 	const tagNotes = await Notes.createQueryBuilder('note')
-		.where(`note.createdAt > :date`, { date: new Date(now.getTime() - rangeA) })
+		.where(`note.createdAt > :date`, { date: new Date(now.getTime() - rangeC) })
 		.andWhere(new Brackets(qb => { qb
 			.where(`note.visibility = 'public'`)
 			.orWhere(`note.visibility = 'home'`);
@@ -138,7 +139,7 @@ export default define(meta, paramDef, async () => {
 	const totalCounts = await Promise.all(hots.map(tag => Notes.createQueryBuilder('note')
 		.select('count(distinct note.userId)')
 		.where(`'{"${safeForSql(tag) ? tag : 'aichan_kawaii'}"}' <@ note.tags`)
-		.andWhere('note.createdAt > :gt', { gt: new Date(now.getTime() - rangeA) })
+		.andWhere('note.createdAt > :gt', { gt: new Date(now.getTime() - rangeC) })
 		.cache(60000 * 60) // 60 min
 		.getRawOne()
 		.then(x => parseInt(x.count, 10))
