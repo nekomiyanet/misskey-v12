@@ -8,6 +8,20 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20230601200000 (2023/06/01)
+
+## Improvements
+- インスタンスティッカーを４種類のフォークのデザインから選択可能に @atsu1125
+- インスタンスティッカーにバージョンとソフトウェア名を表示するか任意で選択可能に @atsu1125
+- アンテナをローカルのみで取得するオプションを追加 @atsu1125
+- トレンドの集計期間を1時間から12時間にする（前バージョンでローカルのみになってる） @atsu1125
+- isFoxに対応させる（リモートのみ） @atsu1125
+- ノート数の公開範囲を選べるように（デフォルトで公開してる、フォロワーのみ、非公開が可能になる） @atsu1125
+- リノートボタンと引用ボタンを分離できるように @atsu1125
+- 投稿削除ボタンを手前に表示できるオプションを追加 @atsu1125
+- Remove: Feat: Take back all my renotes @atsu1125
+- Do not show follow button when race condition @atsu1125
+
 ## 12.108.1-nekomiya-20230528195800 (2023/05/28)
 
 ## Improvements
