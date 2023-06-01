@@ -104,6 +104,7 @@ export const paramDef = {
 		receiveAnnouncementEmail: { type: 'boolean' },
 		alwaysMarkNsfw: { type: 'boolean' },
 		ffVisibility: { type: 'string', enum: ['public', 'followers', 'private'] },
+		notesCountVisibility: { type: 'string', enum: ['public', 'followers', 'private'] },
 		pinnedPageId: { type: 'array', items: {
 			type: 'string', format: 'misskey:id',
 		} },
@@ -138,6 +139,7 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 	if (ps.location !== undefined) profileUpdates.location = ps.location;
 	if (ps.birthday !== undefined) profileUpdates.birthday = ps.birthday;
 	if (ps.ffVisibility !== undefined) profileUpdates.ffVisibility = ps.ffVisibility;
+	if (ps.notesCountVisibility !== undefined) profileUpdates.notesCountVisibility = ps.notesCountVisibility;
 	if (ps.avatarId !== undefined) updates.avatarId = ps.avatarId;
 	if (ps.bannerId !== undefined) updates.bannerId = ps.bannerId;
 	if (ps.mutedWords !== undefined) {

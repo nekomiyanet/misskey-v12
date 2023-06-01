@@ -241,6 +241,11 @@ export class UserRepository extends Repository<User> {
 			(profile.ffVisibility === 'followers') && (relation && relation.isFollowing) ? user.followersCount :
 			null;
 
+		const notesCount = profile == null ? null :
+			(profile.notesCountVisibility === 'public') || isMe ? user.notesCount :
+			(profile.notesCountVisibility === 'followers') && (relation && relation.isFollowing) ? user.notesCount :
+			null;
+
 		const falsy = opts.detail ? false : undefined;
 
 		const packed = {
@@ -292,7 +297,7 @@ export class UserRepository extends Repository<User> {
 				fields: profile!.fields,
 				followersCount: followersCount || 0,
 				followingCount: followingCount || 0,
-				notesCount: user.notesCount,
+				notesCount: notesCount || 0,
 				pinnedNoteIds: pins.map(pin => pin.noteId),
 				pinnedNotes: Notes.packMany(pins.map(pin => pin.note!), me, {
 					detail: true,
@@ -301,6 +306,7 @@ export class UserRepository extends Repository<User> {
 				pinnedPage: profile!.pinnedPageId ? Pages.pack(profile!.pinnedPageId, me) : null,
 				publicReactions: profile!.publicReactions,
 				ffVisibility: profile!.ffVisibility,
+				notesCountVisibility: profile!.notesCountVisibility,
 				twoFactorEnabled: profile!.twoFactorEnabled,
 				usePasswordLessLogin: profile!.usePasswordLessLogin,
 				securityKeys: profile!.twoFactorEnabled

@@ -902,6 +902,8 @@ instanceTickerStyle: "インスタンスティッカースタイル"
 instanceTickerPosition: "インスタンスティッカー位置"
 showTickerSoftWareName: "インスタンスティッカーにソフトウェア名を表示"
 showTickerSoftWareVersion: "インスタンスティッカーにバージョンを表示"
+notesCountVisibility: "ノート数の公開範囲"
+notesCountVisibilityDescription: "自分のノート数の公開範囲を設定できます。"
 
 _emailUnavailable:
   used: "既に使用されています"

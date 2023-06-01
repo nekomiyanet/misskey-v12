@@ -16,6 +16,14 @@
 		<template #caption>{{ $ts.ffVisibilityDescription }}</template>
 	</FormSelect>
 
+	<FormSelect v-model="notesCountVisibility" class="_formBlock" @update:modelValue="save()">
+		<template #label>{{ $ts.notesCountVisibility }}</template>
+		<option value="public">{{ $ts._ffVisibility.public }}</option>
+		<option value="followers">{{ $ts._ffVisibility.followers }}</option>
+		<option value="private">{{ $ts._ffVisibility.private }}</option>
+		<template #caption>{{ $ts.notesCountVisibilityDescription }}</template>
+	</FormSelect>
+
 	<FormSwitch v-model="hideOnlineStatus" class="_formBlock" @update:modelValue="save()">
 		{{ $ts.hideOnlineStatus }}
 		<template #caption>{{ $ts.hideOnlineStatusDescription }}</template>
@@ -74,6 +82,7 @@ let isExplorable = $ref($i.isExplorable);
 let hideOnlineStatus = $ref($i.hideOnlineStatus);
 let publicReactions = $ref($i.publicReactions);
 let ffVisibility = $ref($i.ffVisibility);
+let notesCountVisibility = $ref($i.notesCountVisibility);
 let federateBlocks = $ref($i.federateBlocks);
 let broadcastReactions = $ref($i.broadcastReactions);
 
@@ -91,6 +100,7 @@ function save() {
 		hideOnlineStatus: !!hideOnlineStatus,
 		publicReactions: !!publicReactions,
 		ffVisibility: ffVisibility,
+		notesCountVisibility: notesCountVisibility,
 		federateBlocks: !!federateBlocks,
 		broadcastReactions: !!broadcastReactions,
 	});
