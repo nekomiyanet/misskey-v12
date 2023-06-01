@@ -20,6 +20,7 @@ import * as os from '@/os';
 import { $i } from '@/account';
 import { useTooltip } from '@/scripts/use-tooltip';
 import { i18n } from '@/i18n';
+import { defaultStore } from "@/store";
 
 export default defineComponent({
 	props: {
@@ -58,6 +59,12 @@ export default defineComponent({
 
 		const renote = (viaKeyboard = false) => {
 			pleaseLogin();
+			if (defaultStore.state.seperateRenoteQuote) {
+				os.api('notes/create', {
+					renoteId: props.note.id,
+					visibility: props.note.visibility,
+				});
+			} else {
 			os.popupMenu([{
 				text: i18n.ts.renote,
 				icon: 'fas fa-retweet',
@@ -93,6 +100,7 @@ export default defineComponent({
 			}], buttonRef.value, {
 				viaKeyboard
 			});
+		}
 		};
 
 		return {

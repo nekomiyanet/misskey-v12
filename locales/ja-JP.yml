@@ -904,6 +904,7 @@ showTickerSoftWareName: "インスタンスティッカーにソフトウェア�
 showTickerSoftWareVersion: "インスタンスティッカーにバージョンを表示"
 notesCountVisibility: "ノート数の公開範囲"
 notesCountVisibilityDescription: "自分のノート数の公開範囲を設定できます。"
+seperateRenoteQuote: "リノートボタンと引用ボタンを分離する"
 
 _emailUnavailable:
   used: "既に使用されています"

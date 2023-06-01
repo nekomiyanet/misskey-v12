@@ -97,6 +97,7 @@
 					<p v-if="appearNote.repliesCount > 0" class="count">{{ appearNote.repliesCount }}</p>
 				</button>
 				<XRenoteButton ref="renoteButton" class="button" :note="appearNote" :count="appearNote.renoteCount"/>
+				<XQuoteButton class="button" :note="appearNote"/>
 				<button v-if="appearNote.myReaction == null" ref="reactButton" class="button _button" @click="react()">
 					<i class="fas fa-plus"></i>
 				</button>
@@ -133,6 +134,7 @@ import XMediaList from './media-list.vue';
 import XCwButton from './cw-button.vue';
 import XPoll from './poll.vue';
 import XRenoteButton from './renote-button.vue';
+import XQuoteButton from './quote-button.vue';
 import MkUrlPreview from '@/components/url-preview.vue';
 import MkInstanceTicker from '@/components/instance-ticker.vue';
 import { pleaseLogin } from '@/scripts/please-login';
