@@ -324,6 +324,28 @@ export class ColdDeviceStorage {
 		sound_channel: { type: 'syuilo/square-pico', volume: 1 },
 	};
 
+	public static v13default = {
+		sound_masterVolume: 0.5,
+		sound_note: { type: 'syuilo/n-aec', volume: 0.5 },
+		sound_noteMy: { type: 'syuilo/n-cea', volume: 0.5 },
+		sound_notification: { type: 'syuilo/n-ea', volume: 0.5 },
+		sound_chat: { type: 'syuilo/pope1', volume: 0.5 },
+		sound_chatBg: { type: 'syuilo/waon', volume: 0.5 },
+		sound_antenna: { type: 'syuilo/triple', volume: 0.5 },
+		sound_channel: { type: 'syuilo/square-pico', volume: 0.5 },
+	};
+
+	public static v10default = {
+		sound_masterVolume: 0.5,
+		sound_note: { type: 'syuilo/post', volume: 1 },
+		sound_noteMy: { type: 'syuilo/post', volume: 1 },
+		sound_notification: { type: 'syuilo/piko', volume: 1 },
+		sound_chat: { type: 'syuilo/message', volume: 1 },
+		sound_chatBg: { type: 'syuilo/message', volume: 1 },
+		sound_antenna: { type: 'syuilo/piko', volume: 1 },
+		sound_channel: { type: 'syuilo/piko', volume: 1 },
+	};
+
 	public static watchers = [];
 
 	public static get<T extends keyof typeof ColdDeviceStorage.default>(key: T): typeof ColdDeviceStorage.default[T] {

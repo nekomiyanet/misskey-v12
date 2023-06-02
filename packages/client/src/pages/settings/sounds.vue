@@ -14,6 +14,8 @@
 	</FormSection>
 
 	<FormButton danger class="_formBlock" @click="reset()"><i class="fas fa-redo"></i> {{ $ts.default }}</FormButton>
+	<FormButton danger class="_formBlock" @click="v10()"><i class="fas fa-redo"></i> {{ $ts.v10default }}</FormButton>
+	<FormButton danger class="_formBlock" @click="v13()"><i class="fas fa-redo"></i> {{ $ts.v13default }}</FormButton>
 </div>
 </template>
 
@@ -53,6 +55,12 @@ const soundsTypes = [
 	'aisha/3',
 	'noizenecio/kick_gaba',
 	'noizenecio/kick_gaba2',
+	'syuilo/n-aec',
+	'syuilo/n-cea',
+	'syuilo/n-ea',
+	'syuilo/piko',
+	'syuilo/post',
+	'syuilo/message',
 ];
 
 export default defineComponent({
@@ -139,6 +147,22 @@ export default defineComponent({
 		reset() {
 			for (const sound of Object.keys(this.sounds)) {
 				const v = ColdDeviceStorage.default['sound_' + sound];
+				ColdDeviceStorage.set('sound_' + sound, v);
+				this.sounds[sound] = v;
+			}
+		}
+
+		v13() {
+			for (const sound of Object.keys(this.sounds)) {
+				const v = ColdDeviceStorage.v13default['sound_' + sound];
+				ColdDeviceStorage.set('sound_' + sound, v);
+				this.sounds[sound] = v;
+			}
+		}
+
+		v10() {
+			for (const sound of Object.keys(this.sounds)) {
+				const v = ColdDeviceStorage.v10default['sound_' + sound];
 				ColdDeviceStorage.set('sound_' + sound, v);
 				this.sounds[sound] = v;
 			}

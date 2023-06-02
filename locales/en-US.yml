@@ -904,6 +904,8 @@ notesCountVisibility: "Notes Count Visibility"
 notesCountVisibilityDescription: "Allows you to configure who can see who your notes count."
 seperateRenoteQuote: "Seperate renote and quote buttons"
 showDeleteButtonOnTop: "Show Delete Note Button on Top"
+v13default: "Misskey v13 Default"
+v10default: "Misskey v10 Default"
 
 _emailUnavailable:
   used: "This email address is already being used"
