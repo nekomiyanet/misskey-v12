@@ -57,6 +57,17 @@
 			</FormSelect>
 			<FormSwitch v-model="defaultNoteLocalOnly" class="_formBlock">{{ $ts._visibility.localOnly }}</FormSwitch>
 		</FormGroup>
+		<FormSwitch v-model="useDefaultNoteVisibilityOnRenote" @update:model-value="save()">{{ $ts.useDefaultNoteVisibilityOnRenote }}</FormSwitch>
+		<FormGroup v-if="!useDefaultNoteVisibilityOnRenote" class="_formBlock">
+			<template #label>{{ $ts.defaultRenoteVisibility }}</template>
+			<FormSelect v-model="defaultRenoteVisibility" class="_formBlock">
+				<option value="public">{{ $ts._visibility.public }}</option>
+				<option value="home">{{ $ts._visibility.home }}</option>
+				<option value="followers">{{ $ts._visibility.followers }}</option>
+				<option value="specified">{{ $ts._visibility.specified }}</option>
+			</FormSelect>
+			<FormSwitch v-model="defaultRenoteLocalOnly" class="_formBlock">{{ $ts._visibility.localOnly }}</FormSwitch>
+		</FormGroup>
 	</FormSection>
 
 	<FormSwitch v-model="keepCw" class="_formBlock" @update:modelValue="save()">{{ $ts.keepCw }}</FormSwitch>
@@ -90,6 +101,9 @@ let defaultNoteVisibility = $computed(defaultStore.makeGetterSetter('defaultNote
 let defaultNoteLocalOnly = $computed(defaultStore.makeGetterSetter('defaultNoteLocalOnly'));
 let rememberNoteVisibility = $computed(defaultStore.makeGetterSetter('rememberNoteVisibility'));
 let keepCw = $computed(defaultStore.makeGetterSetter('keepCw'));
+let defaultRenoteVisibility = $computed(defaultStore.makeGetterSetter('defaultRenoteVisibility'));
+let defaultRenoteLocalOnly = $computed(defaultStore.makeGetterSetter('defaultRenoteLocalOnly'));
+let useDefaultNoteVisibilityOnRenote = $computed(defaultStore.makeGetterSetter('useDefaultNoteVisibilityOnRenote'));
 
 function save() {
 	os.api('i/update', {

@@ -35,6 +35,18 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: false
 	},
+	useDefaultNoteVisibilityOnRenote: {
+		where: 'account',
+		default: true
+	},
+	defaultRenoteVisibility: {
+		where: 'account',
+		default: 'public'
+	},
+	defaultRenoteLocalOnly: {
+		where: 'account',
+		default: false
+	},
 	uploadFolder: {
 		where: 'account',
 		default: null as string | null

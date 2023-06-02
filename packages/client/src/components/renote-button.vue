@@ -69,6 +69,14 @@ export default defineComponent({
 
 			const hasRenotedBefore = renotes.length > 0;
 
+			const visibility = defaultStore.state.useDefaultNoteVisibilityOnRenote ? (
+				defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility
+			) : defaultStore.state.defaultRenoteVisibility;
+
+			const localOnly = defaultStore.state.useDefaultNoteVisibilityOnRenote ? (
+				defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly
+			) : defaultStore.state.defaultRenoteLocalOnly;
+
 			if (defaultStore.state.seperateRenoteQuote && hasRenotedBefore) {
 				os.api('notes/unrenote', {
 					noteId: props.note.id,
@@ -76,7 +84,8 @@ export default defineComponent({
 			} else if (defaultStore.state.seperateRenoteQuote) {
 				os.api('notes/create', {
 					renoteId: props.note.id,
-					visibility: props.note.visibility,
+					visibility: visibility as never,
+					localOnly,
 				});
 				const el =
 					ev &&
@@ -96,7 +105,9 @@ export default defineComponent({
 				icon: 'fas fa-retweet',
 				action: () => {
 					os.api('notes/create', {
-						renoteId: props.note.id
+						renoteId: props.note.id,
+						visibility: visibility as never,
+						localOnly,
 					});
 					const el =
 						ev &&

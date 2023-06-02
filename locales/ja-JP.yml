@@ -906,6 +906,8 @@ seperateRenoteQuote: "リノートボタンと引用ボタンを分離する"
 showDeleteButtonOnTop: "投稿削除ボタンを手前に表示する"
 v13default: "Misskey v13 デフォルト"
 v10default: "Misskey v10 デフォルト"
+useDefaultNoteVisibilityOnRenote: "リノートにノートのデフォルト公開範囲を適用する"
+defaultRenoteVisibility: "デフォルトリノート公開範囲"
 
 _emailUnavailable:
   used: "既に使用されています"
