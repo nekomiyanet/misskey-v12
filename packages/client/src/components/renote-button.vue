@@ -73,27 +73,10 @@ export default defineComponent({
 				os.api('notes/unrenote', {
 					noteId: props.note.id,
 				});
-			} else if (defaultStore.state.seperateRenoteQuote && props.note.visibility !== 'public') {
+			} else if (defaultStore.state.seperateRenoteQuote) {
 				os.api('notes/create', {
 					renoteId: props.note.id,
 					visibility: props.note.visibility,
-				});
-				const el =
-					ev &&
-					((ev.currentTarget ?? ev.target) as
-						| HTMLElement
-						| null
-						| undefined);
-				if (el) {
-					const rect = el.getBoundingClientRect();
-					const x = rect.left + el.offsetWidth / 2;
-					const y = rect.top + el.offsetHeight / 2;
-					os.popup(Ripple, { x, y }, {}, "end");
-				}
-			} else if (defaultStore.state.seperateRenoteQuote && props.note.visibility === 'public') {
-				os.api('notes/create', {
-					renoteId: props.note.id,
-					visibility: 'home',
 				});
 				const el =
 					ev &&
@@ -115,6 +98,18 @@ export default defineComponent({
 					os.api('notes/create', {
 						renoteId: props.note.id
 					});
+					const el =
+						ev &&
+						((ev.currentTarget ?? ev.target) as
+							| HTMLElement
+							| null
+							| undefined);
+					if (el) {
+						const rect = el.getBoundingClientRect();
+						const x = rect.left + el.offsetWidth / 2;
+						const y = rect.top + el.offsetHeight / 2;
+						os.popup(Ripple, { x, y }, {}, "end");
+					}
 				}
 			}, {
 				text: i18n.ts.quote,
