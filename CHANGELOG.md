@@ -8,6 +8,14 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20230602202145 (2023/06/02)
+
+## Improvements
+- Misskey v10 / Misskey v13の効果音など一部追加 @atsu1125
+- リノートでアニメーションが出るように @atsu1125
+- 連続リノートできないように、一度リノートされてたら全て取り消すようにする、とりあえず @atsu1125
+- リノートのデフォルト公開範囲をユーザーが設定できるように @atsu1125
+
 ## 12.108.1-nekomiya-20230601200000 (2023/06/01)
 
 ## Improvements
