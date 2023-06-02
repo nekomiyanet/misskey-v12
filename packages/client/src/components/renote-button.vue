@@ -2,7 +2,7 @@
 <button v-if="canRenote"
 	ref="buttonRef"
 	class="eddddedb _button canRenote"
-	@click="renote()"
+	@click="renote(false, $event)"
 >
 	<i class="fas fa-retweet"></i>
 	<p v-if="count > 0" class="count">{{ count }}</p>
@@ -14,6 +14,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
+import Ripple from '@/components/ripple.vue';
 import XDetails from '@/components/renote.details.vue';
 import { pleaseLogin } from '@/scripts/please-login';
 import * as os from '@/os';
@@ -57,18 +58,55 @@ export default defineComponent({
 			}, {}, 'closed');
 		});
 
-		const renote = (viaKeyboard = false) => {
+		const renote = async (viaKeyboard = false, ev?: MouseEvent) => {
 			pleaseLogin();
-			if (defaultStore.state.seperateRenoteQuote && props.note.visibility !== 'public') {
+
+			const renotes = await os.api("notes/renotes", {
+				noteId: props.note.id,
+				userId: $i.id,
+				limit: 1,
+			});
+
+			const hasRenotedBefore = renotes.length > 0;
+
+			if (defaultStore.state.seperateRenoteQuote && hasRenotedBefore) {
+				os.api('notes/unrenote', {
+					noteId: props.note.id,
+				});
+			} else if (defaultStore.state.seperateRenoteQuote && props.note.visibility !== 'public') {
 				os.api('notes/create', {
 					renoteId: props.note.id,
 					visibility: props.note.visibility,
 				});
+				const el =
+					ev &&
+					((ev.currentTarget ?? ev.target) as
+						| HTMLElement
+						| null
+						| undefined);
+				if (el) {
+					const rect = el.getBoundingClientRect();
+					const x = rect.left + el.offsetWidth / 2;
+					const y = rect.top + el.offsetHeight / 2;
+					os.popup(Ripple, { x, y }, {}, "end");
+				}
 			} else if (defaultStore.state.seperateRenoteQuote && props.note.visibility === 'public') {
 				os.api('notes/create', {
 					renoteId: props.note.id,
 					visibility: 'home',
 				});
+				const el =
+					ev &&
+					((ev.currentTarget ?? ev.target) as
+						| HTMLElement
+						| null
+						| undefined);
+				if (el) {
+					const rect = el.getBoundingClientRect();
+					const x = rect.left + el.offsetWidth / 2;
+					const y = rect.top + el.offsetHeight / 2;
+					os.popup(Ripple, { x, y }, {}, "end");
+				}
 			} else {
 			os.popupMenu([{
 				text: i18n.ts.renote,
