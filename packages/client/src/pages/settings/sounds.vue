@@ -61,6 +61,7 @@ const soundsTypes = [
 	'syuilo/piko',
 	'syuilo/post',
 	'syuilo/message',
+	'jk/boop'
 ];
 
 export default defineComponent({
