@@ -1,0 +1,95 @@
+# Nekomiya net features
+
+## Server (Backend)
+
+- Prevent Password reset from moderator to another moderator
+- Prevent Delete All Files from moderator to another moderator
+- Force Follow Request (Disable Auto Follow Accept) if the Follow activity is from Silenced Account
+- Add "Force Set as sensitive" to the Account (As Moderation)
+- Add "Disable Login" of the Account instead of Suspend (As Moderation)
+- Add "Force Local Only visibility" to the Account (As Moderation)
+- Owner and Moderator is able to Delete Channel
+- Moderator is able to Delete Page (As Moderation)
+- Email Setting is moved to file (.config/default.yml)
+- Object Storage Setting is moved to file (.config/default.yml)
+- Add "Email Domain Blocking" (As Moderation)
+- Admin is able to view Email Address (As Moderation)
+- Moderator is able to check Email Registration Status(Verified or Not Verified) (As Moderation)
+- Apply "Domain Blocking" and "Email Domain Blocking" to Sub Domain
+- Add "Silence to Follower Only Visibility" to the Remote Account (As Moderation)
+- Add "Cat Timeline". (Groundpolis🌿 Misskey Fork)
+  - Only Cat user is accessible to this Timeline. (Not in Groundpolis)
+  - Show Public Note of Local and Cat Account. (Not in Groundpolis)
+- Add "Mode Timeline".
+  - Only Moderator and Admin is accessible to this Timeline.
+  - Show Public Note of Moderator and Admin Account.
+- Add "Limited Timeline".
+  - All user is accessible to this timeline.
+  - Show Follower Only Note of Following Account and My Account.
+- Featured Cat (Featured Note of Local Cat Account)
+  - Only Cat user is accessible.
+- Popular Cat (Popular User of Local Cat Account)
+- Ability to find Cat Account from User Management
+- Ability to find Bot Account from User Management
+- Self Silenced Instance (Meisskey❤️ Misskey Fork)
+  - Ability to Set Instances to deliver notes with maximum visibility home
+- Silencing Instance
+  - Ability to Set Instances to recieve notes with maximum visibility home
+- Not to Unfollow All on suspend
+- Hide account from Explore if the account is silenced or disabled login
+- Deliver rejectFollow before blocking activity sending
+- Hide User Info from Non Follower (As Moderation)
+- Blocked Words (Set As Blocked Words cannot be noted) (As Moderation)
+- Logging More Moderation actions
+- Only Admin is now able to UnFollow All to the instance
+- Block Notifications from Blocking Users
+- Hide Notes of Blocking Users from Timeline
+- Ability that User sets Not to Send Blocking Activity to other Instances (Foundkey🔑 Misskey Fork)
+  - Reject Follow is send even this Option is enabled (Not in Foundkey)
+- Show Expired Ads on Admin Setting
+- Reject Follow Request from Suspended Account
+- Ability that User sets Not to broadcast Like Activity other than Original Instance.
+  - Ported from Meisskey❤️ (Misskey Fork) and changed to be able to set by user
+- Ability to receive "isFox" and nojaize (gummisawa🦊 Misskey Fork)
+  - This fork is disabled to set "isFox"
+- Add Set Notes Count Visibility (Public / Followers Only / Private) (Default is Public)
+- Add Local Notes Only Property to Antenna
+- Trend is Local Only and recent 12 hours
+- Add userId property to notes/renotes (Calckey Misskey Fork)
+
+## Client (Frondend)
+
+- Put back button to Delete All Files on User Info (Foundkey🔑 Misskey Fork)
+- Show Created at to Announcements
+- Hide Suspend Button on User Menu
+- Show "Delete As Admin" if appearNote is not mine (Meisskey❤️ Misskey Fork)
+- Add "Unrenote As Admin" (As Moderation) (Taiy Misskey Fork)
+- Add "Nekomiya-net" Theme (Set As Default)
+- Support Twemoji 14.0
+- Sound is muted by default
+- Changed Collapsed Note Condition
+- Disable Blur by Default
+- Ability to Hide Specific Timelines
+- Show Warning if Email Registration is Active
+- Ability to Disable Standard Markup language For Misskey
+- Add Showing As Absolute Time of Notes and Notifications
+- Add Confirmation dialog to Moderation Actions
+- Change Default Font like CherryPick🍒 (Misskey Fork)
+- Add I love Nekomiya_net button to About Misskey
+- Option of Showing SoftWare Name on instance Ticker (Default behavior) (Foundkey🔑 Misskey Fork)
+- Option of Showing SoftWare Version on instance Ticker
+- Hide Follow Button if race condition (ex. Blocking) (Groundpolis🌿 Misskey Fork)
+- Add Instance Ticker Style
+  - Foundkey Misskey Fork
+  - Compact Style (Show Only Instance Icons)
+  - Taiy Misskey Fork
+  - Calckey Misskey Fork
+- Show "Kemomimi" of the account flagged as Fox🦊 (gummisawa🦊 Misskey Fork)
+- Option of Separate Renote button and Quote Button (Default behavior) (Calckey Misskey Fork)
+  - Clicking Renote Button immediately renotes using Default Renote Visibility (Renote as Public Visibility by default setting)
+  - Clicking Renote Button Unrenotes if the note is already Renoted by me
+  - Clicking Quote Button Opens window to write notes
+- Set Default Renote Visibility (Ebisskey🦐 Misskey Fork)
+  - Default Setting is "Use Default Note Visibility on Renote"
+- Option of Showing Delete Note Button on Top
+- Add Misskey v10 / Misskey v13 Sound
