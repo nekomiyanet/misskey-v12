@@ -82,8 +82,8 @@ export default defineComponent({
 
 			this.state = 'accepted';
 			if (this.callback) {
-				const url = new URL(this.session.app.callbackUrl);
-				if (['javascript:', 'file:', 'data:', 'mailto:', 'tel:'].includes(url.protocol)) throw new Error('invalid url');
+				const cburl = new URL(this.callback);
+				if (['javascript:', 'file:', 'data:', 'mailto:', 'tel:'].includes(cburl.protocol)) throw new Error('invalid url');
 				location.href = `${this.callback}?session=${this.session}`;
 			}
 		},
