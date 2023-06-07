@@ -29,6 +29,8 @@ export class InstanceRepository extends Repository<Instance> {
 			maintainerEmail: instance.maintainerEmail,
 			iconUrl: sanitizeUrl(instance.iconUrl) ?? null,
 			infoUpdatedAt: instance.infoUpdatedAt ? instance.infoUpdatedAt.toISOString() : null,
+			latestStatus: instance.latestStatus,
+			latestRequestReceivedAt: instance.latestRequestReceivedAt ? instance.latestRequestReceivedAt.toISOString() : null,
 		};
 	}
 
