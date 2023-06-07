@@ -8,6 +8,11 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20230607090740 (2023/06/07)
+
+## Bugfixes
+- MiAuthでコールバックURLのチェックを修正、認証できるように @atsu1125
+
 ## 12.108.1-nekomiya-20230602202145 (2023/06/02)
 
 ## Improvements
