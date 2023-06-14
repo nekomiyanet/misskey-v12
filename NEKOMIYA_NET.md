@@ -56,6 +56,14 @@
 - Add Local Notes Only Property to Antenna
 - Trend is Local Only and recent 12 hours
 - Add userId property to notes/renotes (Calckey Misskey Fork)
+- Automatic Delivery Management System
+  - Stop delivery after failing for 1 week
+  - Resume delivery when new activities arrive
+- Do not send old notes/create activities to relay
+- Ability to All users of delete closed instance
+- Timed Delete Note function (#exp5s #exp5m #exp5h)
+  - Minimum is 5 seconds
+  - Maximum is 24 hours
 
 ## Client (Frondend)
 
