@@ -2,7 +2,7 @@ import { createSystemUser } from './create-system-user.js';
 import { renderFollowRelay } from '@/remote/activitypub/renderer/follow-relay.js';
 import { renderActivity, attachLdSignature } from '@/remote/activitypub/renderer/index.js';
 import renderUndo from '@/remote/activitypub/renderer/undo.js';
-import { deliver } from '@/queue/index.js';
+import { deliver, createDeliverRelaysJob } from '@/queue/index.js';
 import { ILocalUser, User } from '@/models/entities/user.js';
 import { Users, Relays } from '@/models/index.js';
 import { genId } from '@/misc/gen-id.js';
@@ -75,8 +75,11 @@ export async function relayRejected(id: string) {
 	return JSON.stringify(result);
 }
 
-export async function deliverToRelays(user: { id: User['id']; host: null; }, activity: any) {
+export async function deliverToRelays(user: { id: User['id']; host: null; }, activity: any, retryable: boolean) {
 	if (activity == null) return;
+	if (retryable == null) {
+		retryable = true;
+	}
 
 	const relays = await Relays.find({
 		status: 'accepted',
@@ -89,6 +92,6 @@ export async function deliverToRelays(user: { id: User['id']; host: null; }, act
 	const signed = await attachLdSignature(copy, user);
 
 	for (const relay of relays) {
-		deliver(user, signed, relay.inbox);
+		createDeliverRelaysJob(user, signed, relay.inbox, retryable);
 	}
 }
