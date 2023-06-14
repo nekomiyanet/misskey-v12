@@ -34,7 +34,7 @@ import { deliverToRelays } from '../relay.js';
 import { Channel } from '@/models/entities/channel.js';
 import { normalizeForSearch } from '@/misc/normalize-for-search.js';
 import { getAntennas } from '@/misc/antenna-cache.js';
-import { endedPollNotificationQueue } from '@/queue/queues.js';
+import { endedPollNotificationQueue, createDeleteNoteQueue } from '@/queue/queues.js';
 import { fetchMeta } from '@/misc/fetch-meta.js';
 
 type NotificationType = 'reply' | 'renote' | 'quote' | 'mention';
@@ -240,6 +240,10 @@ export default async (user: { id: User['id']; username: User['username']; host: 
 	const note = await insertNote(user, data, tags, emojis, mentionedUsers);
 
 	res(note);
+
+	if (Users.isLocalUser(user)) {
+		queueDelete(note, tags);
+	}
 
 	// 統計を更新
 	notesChart.update(note, true);
@@ -465,6 +469,24 @@ export default async (user: { id: User['id']; username: User['username']; host: 
 	// Register to search database
 	index(note);
 });
+
+async function queueDelete(note: Note, tags: string[]) {
+	for (const tag of tags) {
+		const m = tag.match(/^exp(\d{1,5})([smh])$/);
+		if (!m) continue;
+
+		let delay = 1000 * Number(m[1]) * (m[2] === 'm' ? 60 : m[2] === 'h' ? 3600 : 1);
+		if (delay < 1000 * 5) delay = 1000 * 5; //最小5秒
+		if (delay > 1000 * 86400) delay = 1000 * 86400; //最大24時間
+
+		createDeleteNoteQueue.add({
+			noteId: note.id,
+		}, {
+			delay
+		});
+		break;
+	}
+}
 
 async function renderNoteOrRenoteActivity(data: Option, note: Note) {
 	if (data.localOnly) return null;

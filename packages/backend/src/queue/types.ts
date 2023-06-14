@@ -46,6 +46,10 @@ export type EndedPollNotificationJobData = {
 	noteId: Note['id'];
 };
 
+export type DeleteNoteJobData = {
+	noteId: Note['id'];
+};
+
 export type ThinUser = {
 	id: User['id'];
 };

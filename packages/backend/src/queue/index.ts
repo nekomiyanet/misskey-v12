@@ -9,10 +9,11 @@ import processDb from './processors/db/index.js';
 import processObjectStorage from './processors/object-storage/index.js';
 import processSystemQueue from './processors/system/index.js';
 import { endedPollNotification } from './processors/ended-poll-notification.js';
+import { createDeleteNote } from './processors/delete-note.js';
 import { queueLogger } from './logger.js';
 import { DriveFile } from '@/models/entities/drive-file.js';
 import { getJobInfo } from './get-job-info.js';
-import { systemQueue, dbQueue, deliverQueue, inboxQueue, objectStorageQueue, endedPollNotificationQueue } from './queues.js';
+import { systemQueue, dbQueue, deliverQueue, inboxQueue, objectStorageQueue, endedPollNotificationQueue, createDeleteNoteQueue } from './queues.js';
 import { ThinUser } from './types.js';
 import { IActivity } from '@/remote/activitypub/type.js';
 
@@ -283,6 +284,7 @@ export default function() {
 	deliverQueue.process(config.deliverJobConcurrency || 128, processDeliver);
 	inboxQueue.process(config.inboxJobConcurrency || 16, processInbox);
 	endedPollNotificationQueue.process(endedPollNotification);
+	createDeleteNoteQueue.process(createDeleteNote);
 	processDb(dbQueue);
 	processObjectStorage(objectStorageQueue);
 
