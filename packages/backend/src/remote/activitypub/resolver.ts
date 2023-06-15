@@ -58,6 +58,10 @@ export default class Resolver {
 			throw new Error('Instance is blocked');
 		}
 
+		if (meta.privateMode && config.host !== host && !meta.allowedHosts.includes(host)) {
+			throw new Error('Instance is not allowed');
+		}
+
 		if (config.signToActivityPubGet && !this.user) {
 			this.user = await getInstanceActor();
 		}

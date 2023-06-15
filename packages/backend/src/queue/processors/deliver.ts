@@ -33,6 +33,10 @@ export default async (job: Bull.Job<DeliverJobData>) => {
 		job.data.content = publicToHome(job.data.content, job.data.user);
 	}
 
+	if (meta.privateMode && !meta.allowedHosts.includes(toPuny(host))) {
+		return 'skip (not allowed)';
+	}
+
 	// isSuspendedなら中断
 	let suspendedHosts = suspendedHostsCache.get(null);
 	if (suspendedHosts == null) {

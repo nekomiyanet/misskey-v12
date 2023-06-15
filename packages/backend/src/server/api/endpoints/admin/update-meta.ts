@@ -33,6 +33,9 @@ export const paramDef = {
 		selfSilencedHosts: { type: 'array', nullable: true, items: {
 			type: 'string',
 		} },
+		allowedHosts: { type: 'array', nullable: true, items: {
+			type: 'string',
+		} },
 		blockedEmailDomains: { type: 'array', nullable: true, items: {
 			type: 'string',
 		} },
@@ -87,6 +90,8 @@ export const paramDef = {
 		tosUrl: { type: 'string', nullable: true },
 		repositoryUrl: { type: 'string' },
 		feedbackUrl: { type: 'string' },
+		privateMode: { type: 'boolean' },
+		secureMode: { type: 'boolean' },
 	},
 	required: [],
 } as const;
@@ -129,6 +134,10 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (Array.isArray(ps.selfSilencedHosts)) {
 		set.selfSilencedHosts = ps.selfSilencedHosts.filter(Boolean).map(x => x.toLowerCase());
+	}
+
+	if (Array.isArray(ps.allowedHosts)) {
+		set.allowedHosts = ps.allowedHosts.filter(Boolean).map(x => x.toLowerCase());
 	}
 
 	if (Array.isArray(ps.blockedEmailDomains)) {
@@ -317,6 +326,14 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (ps.deeplIsPro !== undefined) {
 		set.deeplIsPro = ps.deeplIsPro;
+	}
+
+	if (ps.privateMode !== undefined) {
+		set.privateMode = ps.privateMode;
+	}
+
+	if (ps.secureMode !== undefined) {
+		set.secureMode = ps.secureMode;
 	}
 
 	await getConnection().transaction(async transactionalEntityManager => {

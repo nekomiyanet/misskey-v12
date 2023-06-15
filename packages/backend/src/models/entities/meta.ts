@@ -92,6 +92,21 @@ export class Meta {
 	})
 	public blockedEmailDomains: string[];
 
+	@Column('boolean', {
+		default: false
+	})
+	public secureMode: boolean;
+
+	@Column('boolean', {
+		default: false
+	})
+	public privateMode: boolean;
+
+	@Column('varchar', {
+		length: 256, array: true, default: '{}'
+	})
+	public allowedHosts: string[];
+
 	@Column('varchar', {
 		length: 256, array: true, default: '{}',
 	})

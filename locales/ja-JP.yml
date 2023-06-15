@@ -912,6 +912,13 @@ v10default: "Misskey v10 デフォルト"
 useDefaultNoteVisibilityOnRenote: "リノートにノートのデフォルト公開範囲を適用する"
 defaultRenoteVisibility: "デフォルトリノート公開範囲"
 approveSeperateRenoteButton: "Renoteと引用のボタンは分けた方がよいですか？ (これは後で設定で変更可能です。)"
+secureMode: "セキュアモード (Authorized Fetch)"
+instanceSecurity: "インスタンスのセキュリティー"
+secureModeInfo: "他のインスタンスからリクエストするときに、証明を付けなければ返送しません。他のインスタンスの設定ファイルでsignToActivityPubGetはtrueにしてください。"
+privateMode: "非公開モード"
+privateModeInfo: "有効にして、許可されているインスタンスのみがリクエストできます。すべてのノートが公開に非表示にします。"
+allowedInstances: "許可されたインスタンス"
+allowedInstancesDescription: "許可したいインスタンスのホストを改行で区切って設定します。非公開モードだけで有効です。"
 
 _emailUnavailable:
   used: "既に使用されています"

@@ -912,6 +912,15 @@ v10default: "Misskey v10 Default"
 useDefaultNoteVisibilityOnRenote: "Use Default Note Visibility on Renote"
 defaultRenoteVisibility: "Default Renote Visibility"
 approveSeperateRenoteButton: "Do you prefer to separate the Renote and Quote buttons? (This can be changed later in the settings.)"
+secureMode: "Secure Mode (Authorized Fetch)"
+instanceSecurity: "Server Security"
+secureModeInfo: "When requesting from other servers, do not send back without proof."
+privateMode: "Private Mode"
+privateModeInfo: "When enabled, only whitelisted servers can federate with your server.
+  All posts will be hidden from the public."
+allowedInstances: "Whitelisted Servers"
+allowedInstancesDescription: "Hosts of servers to be whitelisted for federation, each
+  separated by a new line (only applies in private mode)."
 
 _emailUnavailable:
   used: "This email address is already being used"

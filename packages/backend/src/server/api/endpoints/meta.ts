@@ -391,6 +391,24 @@ export const meta = {
 				type: 'string',
 				optional: true, nullable: true,
 			},
+			secureMode: {
+				type: 'boolean',
+				optional: true, nullable: false,
+				default: false,
+			},
+			privateMode: {
+				type: 'boolean',
+				optional: true, nullable: false,
+				default: false,
+			},
+			allowedHosts: {
+				type: 'array',
+				optional: true, nullable: false,
+				items: {
+					type: 'string',
+					optional: false, nullable: false,
+				},
+			},
 		},
 	},
 } as const;
@@ -530,6 +548,9 @@ export default define(meta, paramDef, async (ps, me) => {
 			response.swPrivateKey = instance.swPrivateKey;
 			response.deeplAuthKey = instance.deeplAuthKey;
 			response.deeplIsPro = instance.deeplIsPro;
+			response.secureMode = instance.secureMode;
+			response.privateMode = instance.privateMode;
+			response.allowedHosts = instance.allowedHosts;
 		}
 	}
 
