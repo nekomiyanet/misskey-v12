@@ -82,11 +82,6 @@ export default defineComponent({
 					noteId: props.note.id,
 				});
 			} else if (defaultStore.state.seperateRenoteQuote) {
-				os.api('notes/create', {
-					renoteId: props.note.id,
-					visibility: visibility as never,
-					localOnly,
-				});
 				const el =
 					ev &&
 					((ev.currentTarget ?? ev.target) as
@@ -99,16 +94,16 @@ export default defineComponent({
 					const y = rect.top + el.offsetHeight / 2;
 					os.popup(Ripple, { x, y }, {}, "end");
 				}
+				os.api('notes/create', {
+					renoteId: props.note.id,
+					visibility: visibility as never,
+					localOnly,
+				});
 			} else {
 			os.popupMenu([{
 				text: i18n.ts.renote,
 				icon: 'fas fa-retweet',
 				action: () => {
-					os.api('notes/create', {
-						renoteId: props.note.id,
-						visibility: visibility as never,
-						localOnly,
-					});
 					const el =
 						ev &&
 						((ev.currentTarget ?? ev.target) as
@@ -121,6 +116,11 @@ export default defineComponent({
 						const y = rect.top + el.offsetHeight / 2;
 						os.popup(Ripple, { x, y }, {}, "end");
 					}
+					os.api('notes/create', {
+						renoteId: props.note.id,
+						visibility: visibility as never,
+						localOnly,
+					});
 				}
 			}, {
 				text: i18n.ts.quote,
