@@ -77,7 +77,7 @@ export default defineComponent({
 				defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly
 			) : defaultStore.state.defaultRenoteLocalOnly;
 
-			if (!defaultStore.state.approveSeperateRenoteButton && !defaultStore.state.seperateRenoteQuote) {
+			if (!defaultStore.state.approveSeperateRenoteButton && defaultStore.state.seperateRenoteQuote) {
 				os.confirm({
 					type: 'info',
 					text: i18n.ts.approveSeperateRenoteButton,
