@@ -87,6 +87,8 @@ export type Source = {
 	proxyRemoteFiles?: boolean;
 
 	signToActivityPubGet?: boolean;
+
+	hideServerInfo?: boolean;
 };
 
 /**

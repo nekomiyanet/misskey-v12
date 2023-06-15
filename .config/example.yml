@@ -120,6 +120,9 @@ id: 'aid'
 #   ┌─────────────────────┐
 #───┘ Other configuration └─────────────────────────────────────
 
+# Hide Server Logical stats
+#hideServerInfo: true
+
 # Whether disable HSTS
 #disableHsts: true
 
