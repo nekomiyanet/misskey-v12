@@ -7,7 +7,7 @@ import channels from './channels/index.js';
 import { EventEmitter } from 'events';
 import { User } from '@/models/entities/user.js';
 import { Channel as ChannelModel } from '@/models/entities/channel.js';
-import { Users, Followings, Mutings, UserProfiles, ChannelFollowings, Blockings } from '@/models/index.js';
+import { Users, Followings, Mutings, RenoteMutings, UserProfiles, ChannelFollowings, Blockings } from '@/models/index.js';
 import { ApiError } from '../error.js';
 import { AccessToken } from '@/models/entities/access-token.js';
 import { UserProfile } from '@/models/entities/user-profile.js';
@@ -24,6 +24,7 @@ export default class Connection {
 	public userProfile?: UserProfile;
 	public following: Set<User['id']> = new Set();
 	public muting: Set<User['id']> = new Set();
+	public renoteMuting: Set<User['id']> = new Set();
 	public blocking: Set<User['id']> = new Set(); // blocking
 	public blocked: Set<User['id']> = new Set(); // "被"block
 	public followingChannels: Set<ChannelModel['id']> = new Set();
@@ -59,6 +60,7 @@ export default class Connection {
 		if (this.user) {
 			this.updateFollowing();
 			this.updateMuting();
+			this.updateRenoteMuting();
 			this.updateBlocking();
 			this.updateBlocked();
 			this.updateFollowingChannels();
@@ -86,6 +88,7 @@ export default class Connection {
 				this.muting.delete(data.body.id);
 				break;
 
+			// TODO: renote mute events
 			// TODO: block events
 
 			case 'followChannel':
@@ -363,6 +366,17 @@ export default class Connection {
 		});
 
 		this.muting = new Set<string>(mutings.map(x => x.muteeId));
+	}
+
+	private async updateRenoteMuting() {
+		const renoteMutings = await RenoteMutings.find({
+			where: {
+				muterId: this.user!.id,
+			},
+			select: ['muteeId'],
+		});
+
+		this.renoteMuting = new Set<string>(renoteMutings.map(x => x.muteeId));
 	}
 
 	private async updateBlocking() { // ここでいうBlockingはBlockingの意

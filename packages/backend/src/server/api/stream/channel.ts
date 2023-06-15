@@ -38,6 +38,10 @@ export default abstract class Channel {
 		return this.connection.subscriber;
 	}
 
+	protected get renoteMuting() {
+		return this.connection.renoteMuting;
+	}
+
 	constructor(id: string, connection: Connection) {
 		this.id = id;
 		this.connection = connection;

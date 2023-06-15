@@ -6,6 +6,7 @@ import { isBlockeeUserRelated } from '@/misc/is-blockee-user-related.js';
 import { User } from '@/models/entities/user.js';
 import { StreamMessages } from '../types.js';
 import { Packed } from '@/misc/schema.js';
+import { isUserRelated } from '@/misc/is-user-related.js'
 
 export default class extends Channel {
 	public readonly chName = 'channel';
@@ -51,6 +52,7 @@ export default class extends Channel {
 		if (!this.user.isAdmin && !this.user.isModerator && isBlockerUserRelated(note, this.blocking)) return;
 		// 流れてきたNoteがブロックしているユーザーが関わるものだったら無視する
 		if (isBlockeeUserRelated(note, this.blocking)) return;
+		if (note.renote && !note.text && isUserRelated(note, this.renoteMuting)) return;
 
 		this.connection.cacheNote(note);
 

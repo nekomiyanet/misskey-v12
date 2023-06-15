@@ -16,6 +16,7 @@ import { packedDriveFileSchema } from '@/models/schema/drive-file.js';
 import { packedDriveFolderSchema } from '@/models/schema/drive-folder.js';
 import { packedFollowingSchema } from '@/models/schema/following.js';
 import { packedMutingSchema } from '@/models/schema/muting.js';
+import { packedRenoteMutingSchema } from '@/models/schema/renote-muting.js';
 import { packedBlockingSchema } from '@/models/schema/blocking.js';
 import { packedNoteReactionSchema } from '@/models/schema/note-reaction.js';
 import { packedHashtagSchema } from '@/models/schema/hashtag.js';
@@ -51,6 +52,7 @@ export const refs = {
 	DriveFolder: packedDriveFolderSchema,
 	Following: packedFollowingSchema,
 	Muting: packedMutingSchema,
+	RenoteMuting: packedRenoteMutingSchema,
 	Blocking: packedBlockingSchema,
 	Hashtag: packedHashtagSchema,
 	Page: packedPageSchema,
@@ -125,13 +127,13 @@ type NullOrUndefined<p extends Schema, T> =
 			: T;
 
 // https://stackoverflow.com/questions/54938141/typescript-convert-union-to-intersection
-// Get intersection from union 
+// Get intersection from union
 type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends ((k: infer I) => void) ? I : never;
 
 // https://github.com/misskey-dev/misskey/pull/8144#discussion_r785287552
 // To get union, we use `Foo extends any ? Hoge<Foo> : never`
 type UnionSchemaType<a extends readonly any[], X extends Schema = a[number]> = X extends any ? SchemaType<X> : never;
-type ArrayUnion<T> = T extends any ? Array<T> : never; 
+type ArrayUnion<T> = T extends any ? Array<T> : never;
 
 export type SchemaTypeDef<p extends Schema> =
 	p['type'] extends 'null' ? null :

@@ -5,6 +5,7 @@ import { checkWordMute } from '@/misc/check-word-mute.js';
 import { isBlockerUserRelated } from '@/misc/is-blocker-user-related.js';
 import { isBlockeeUserRelated } from '@/misc/is-blockee-user-related.js';
 import { Packed } from '@/misc/schema.js';
+import { isUserRelated } from '@/misc/is-user-related.js'
 
 export default class extends Channel {
 	public readonly chName = 'catTimeline';
@@ -55,6 +56,7 @@ export default class extends Channel {
 		if (!this.user.isAdmin && !this.user.isModerator && isBlockerUserRelated(note, this.blocking)) return;
 		// 流れてきたNoteがブロックしているユーザーが関わるものだったら無視する
 		if (isBlockeeUserRelated(note, this.blocking)) return;
+		if (note.renote && !note.text && isUserRelated(note, this.renoteMuting)) return;
 
 		// 流れてきたNoteがミュートすべきNoteだったら無視する
 		// TODO: 将来的には、単にMutedNoteテーブルにレコードがあるかどうかで判定したい(以下の理由により難しそうではある)

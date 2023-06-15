@@ -5,6 +5,7 @@ import { normalizeForSearch } from '@/misc/normalize-for-search.js';
 import { isBlockerUserRelated } from '@/misc/is-blocker-user-related.js';
 import { isBlockeeUserRelated } from '@/misc/is-blockee-user-related.js';
 import { Packed } from '@/misc/schema.js';
+import { isUserRelated } from '@/misc/is-user-related.js'
 
 export default class extends Channel {
 	public readonly chName = 'hashtag';
@@ -44,6 +45,7 @@ export default class extends Channel {
 		if (!this.user.isAdmin && !this.user.isModerator && isBlockerUserRelated(note, this.blocking)) return;
 		// 流れてきたNoteがブロックしているユーザーが関わるものだったら無視する
 		if (isBlockeeUserRelated(note, this.blocking)) return;
+		if (note.renote && !note.text && isUserRelated(note, this.renoteMuting)) return;
 
 		this.connection.cacheNote(note);
 

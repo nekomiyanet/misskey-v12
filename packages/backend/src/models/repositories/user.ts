@@ -1,7 +1,7 @@
 import { EntityRepository, Repository, In, Not } from 'typeorm';
 import Ajv from 'ajv';
 import { User, ILocalUser, IRemoteUser } from '@/models/entities/user.js';
-import { Notes, NoteUnreads, FollowRequests, Notifications, MessagingMessages, UserNotePinings, Followings, Blockings, Mutings, UserProfiles, UserSecurityKeys, UserGroupJoinings, Pages, Announcements, AnnouncementReads, Antennas, AntennaNotes, ChannelFollowings, Instances, DriveFiles } from '../index.js';
+import { Notes, NoteUnreads, FollowRequests, Notifications, MessagingMessages, UserNotePinings, Followings, Blockings, Mutings, RenoteMutings, UserProfiles, UserSecurityKeys, UserGroupJoinings, Pages, Announcements, AnnouncementReads, Antennas, AntennaNotes, ChannelFollowings, Instances, DriveFiles } from '../index.js';
 import config from '@/config/index.js';
 import { Packed } from '@/misc/schema.js';
 import { awaitAll, Promiseable } from '@/prelude/await-all.js';
@@ -39,7 +39,7 @@ export class UserRepository extends Repository<User> {
 	//#endregion
 
 	public async getRelation(me: User['id'], target: User['id']) {
-		const [following1, following2, followReq1, followReq2, toBlocking, fromBlocked, mute] = await Promise.all([
+		const [following1, following2, followReq1, followReq2, toBlocking, fromBlocked, mute, renotemute] = await Promise.all([
 			Followings.findOne({
 				followerId: me,
 				followeeId: target,
@@ -68,6 +68,10 @@ export class UserRepository extends Repository<User> {
 				muterId: me,
 				muteeId: target,
 			}),
+			RenoteMutings.findOne({
+				muterId: me,
+				muteeId: target,
+			}),
 		]);
 
 		return {
@@ -79,6 +83,7 @@ export class UserRepository extends Repository<User> {
 			isBlocking: toBlocking != null,
 			isBlocked: fromBlocked != null,
 			isMuted: mute != null,
+			isRenoteMuted: renotemute != null,
 		};
 	}
 
@@ -372,6 +377,7 @@ export class UserRepository extends Repository<User> {
 				isBlocking: relation.isBlocking,
 				isBlocked: relation.isBlocked,
 				isMuted: relation.isMuted,
+				isRenoteMuted: relation.isRenoteMuted,
 			} : {}),
 		} as Promiseable<Packed<'User'>> as Promiseable<IsMeAndIsUserDetailed<ExpectsMe, D>>;
 

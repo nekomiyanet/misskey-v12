@@ -96,6 +96,14 @@ export function getUserMenu(user) {
 		}
 	}
 
+	async function toggleRenoteMute(): Promise<void> {
+		os.apiWithDialog(user.isRenoteMuted ? 'renote-mute/delete' : 'renote-mute/create', {
+			userId: user.id,
+		}).then(() => {
+			user.isRenoteMuted = !user.isRenoteMuted;
+		});
+	}
+
 	async function toggleBlock() {
 		if (!await getConfirmed(user.isBlocking ? i18n.ts.unblockConfirm : i18n.ts.blockConfirm)) return;
 
@@ -184,6 +192,10 @@ export function getUserMenu(user) {
 			icon: 'fas fa-ban',
 			text: user.isBlocking ? i18n.ts.unblock : i18n.ts.block,
 			action: toggleBlock
+		}, {
+			icon: user.isRenoteMuted ? 'fas fa-eye' : 'fas fa-eye-slash',
+			text: user.isRenoteMuted ? i18n.ts.renoteUnmute : i18n.ts.renoteMute,
+			action: toggleRenoteMute
 		}]);
 
 		if (user.isFollowed) {
