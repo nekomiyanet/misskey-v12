@@ -92,6 +92,10 @@ export class UserRepository extends Repository<User> {
 			muterId: userId,
 		});
 
+		const block = await Blockings.find({
+			blockerId: userId,
+		});
+
 		const joinings = await UserGroupJoinings.find({ userId: userId });
 
 		const groupQs = Promise.all(joinings.map(j => MessagingMessages.createQueryBuilder('message')
@@ -107,6 +111,7 @@ export class UserRepository extends Repository<User> {
 					recipientId: userId,
 					isRead: false,
 					...(mute.length > 0 ? { userId: Not(In(mute.map(x => x.muteeId))) } : {}),
+					...(block.length > 0 ? { userId: Not(In(block.map(x => x.blockeeId))) } : {}),
 				},
 				take: 1,
 			}).then(count => count > 0),
@@ -155,11 +160,16 @@ export class UserRepository extends Repository<User> {
 			muterId: userId,
 		});
 		const mutedUserIds = mute.map(m => m.muteeId);
+		const block = await Blockings.find({
+			blockerId: userId,
+		});
+		const blockedUserIds = block.map(m => m.blockeeId);
 
 		const count = await Notifications.count({
 			where: {
 				notifieeId: userId,
 				...(mutedUserIds.length > 0 ? { notifierId: Not(In(mutedUserIds)) } : {}),
+				...(blockedUserIds.length > 0 ? { notifierId: Not(In(blockedUserIds)) } : {}),
 				isRead: false,
 			},
 			take: 1,
