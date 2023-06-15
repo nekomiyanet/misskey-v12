@@ -211,6 +211,7 @@ blockedWordsDescription: "投稿禁止したいワードを改行で区切って
 muteAndBlock: "ミュートとブロック"
 mutedUsers: "ミュートしたユーザー"
 blockedUsers: "ブロックしたユーザー"
+renotemutedUsers: "リノートミュートしたユーザー"
 noUsers: "ユーザーはいません"
 editProfile: "プロフィールを編集"
 noteDeleteConfirm: "このノートを削除しますか？"

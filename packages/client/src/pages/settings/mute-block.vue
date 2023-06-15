@@ -3,6 +3,7 @@
 	<MkTab v-model="tab" style="margin-bottom: var(--margin);">
 		<option value="mute">{{ $ts.mutedUsers }}</option>
 		<option value="block">{{ $ts.blockedUsers }}</option>
+		<option value="renotemute">{{ $ts.renotemutedUsers }}</option>
 	</MkTab>
 	<div v-if="tab === 'mute'">
 		<MkPagination :pagination="mutingPagination" class="muting">
@@ -20,6 +21,16 @@
 			<template v-slot="{items}">
 				<FormLink v-for="block in items" :key="block.id" :to="userPage(block.blockee)">
 					<MkAcct :user="block.blockee"/>
+				</FormLink>
+			</template>
+		</MkPagination>
+	</div>
+	<div v-if="tab === 'renotemute'">
+		<MkPagination :pagination="renotemutingPagination" class="renotemuting">
+			<template #empty><FormInfo>{{ $ts.noUsers }}</FormInfo></template>
+			<template v-slot="{items}">
+				<FormLink v-for="renotemute in items" :key="renotemute.id" :to="userPage(renotemute.mutee)">
+					<MkAcct :user="renotemute.mutee"/>
 				</FormLink>
 			</template>
 		</MkPagination>
@@ -47,6 +58,11 @@ const mutingPagination = {
 
 const blockingPagination = {
 	endpoint: 'blocking/list' as const,
+	limit: 10,
+};
+
+const renotemutingPagination = {
+	endpoint: 'renote-mute/list' as const,
 	limit: 10,
 };
 

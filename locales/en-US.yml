@@ -211,6 +211,7 @@ blockedWordsDescription: "List the Words that you want to block. Listed words wi
 muteAndBlock: "Mutes and Blocks"
 mutedUsers: "Muted users"
 blockedUsers: "Blocked users"
+renotemutedUsers: "Renote Muted users"
 noUsers: "There are no users"
 editProfile: "Edit profile"
 noteDeleteConfirm: "Are you sure you want to delete this note?"
