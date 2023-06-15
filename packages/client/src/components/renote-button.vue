@@ -77,7 +77,75 @@ export default defineComponent({
 				defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly
 			) : defaultStore.state.defaultRenoteLocalOnly;
 
-			if (defaultStore.state.seperateRenoteQuote && hasRenotedBefore) {
+			if (!defaultStore.state.approveSeperateRenoteButton) {
+				os.confirm({
+					type: 'info',
+					text: i18n.ts.approveSeperateRenoteButton,
+				}).then(({ canceled }) => {
+				if (canceled) {
+					defaultStore.set('seperateRenoteQuote', false);
+					defaultStore.set('approveSeperateRenoteButton', true);
+					os.popupMenu([{
+						text: i18n.ts.renote,
+						icon: 'fas fa-retweet',
+						action: () => {
+							const el =
+								ev &&
+								((ev.currentTarget ?? ev.target) as
+									| HTMLElement
+									| null
+									| undefined);
+							if (el) {
+								const rect = el.getBoundingClientRect();
+								const x = rect.left + el.offsetWidth / 2;
+								const y = rect.top + el.offsetHeight / 2;
+								os.popup(Ripple, { x, y }, {}, "end");
+							}
+							os.api('notes/create', {
+								renoteId: props.note.id,
+								visibility: visibility as never,
+								localOnly,
+							});
+						}
+					}, {
+						text: i18n.ts.quote,
+						icon: 'fas fa-quote-right',
+						action: () => {
+							os.post({
+								renote: props.note,
+							});
+						}
+					}], buttonRef.value, {
+						viaKeyboard
+					});
+				} else {
+					defaultStore.set('seperateRenoteQuote', true);
+					defaultStore.set('approveSeperateRenoteButton', true);
+					if (hasRenotedBefore) {
+						os.api('notes/unrenote', {
+							noteId: props.note.id,
+						});
+					} else {
+						const el =
+							ev &&
+							((ev.currentTarget ?? ev.target) as
+								| HTMLElement
+								| null
+								| undefined);
+						if (el) {
+							const rect = el.getBoundingClientRect();
+							const x = rect.left + el.offsetWidth / 2;
+							const y = rect.top + el.offsetHeight / 2;
+							os.popup(Ripple, { x, y }, {}, "end");
+						}
+						os.api('notes/create', {
+							renoteId: props.note.id,
+							visibility: visibility as never,
+							localOnly,
+						});
+					}
+				}
+			} else if (defaultStore.state.seperateRenoteQuote && hasRenotedBefore) {
 				os.api('notes/unrenote', {
 					noteId: props.note.id,
 				});

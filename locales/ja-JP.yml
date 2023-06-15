@@ -908,6 +908,7 @@ v13default: "Misskey v13 デフォルト"
 v10default: "Misskey v10 デフォルト"
 useDefaultNoteVisibilityOnRenote: "リノートにノートのデフォルト公開範囲を適用する"
 defaultRenoteVisibility: "デフォルトリノート公開範囲"
+approveSeperateRenoteButton: "Renoteと引用のボタンは分けた方がよいですか？ (これは後で設定で変更可能です。)"
 
 _emailUnavailable:
   used: "既に使用されています"
