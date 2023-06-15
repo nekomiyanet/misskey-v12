@@ -65,6 +65,8 @@
   - Minimum is 5 seconds
   - Maximum is 24 hours
 - Renote Muting (Foundkey🔑 Misskey Fork)
+- Private Mode and Secure Mode (Calckey Misskey Fork)
+- Hide Server info (Meisskey❤️ Misskey Fork)
 
 ## Client (Frondend)
 
