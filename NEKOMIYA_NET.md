@@ -64,6 +64,7 @@
 - Timed Delete Note function (#exp5s #exp5m #exp5h) (Meisskey❤️ Misskey Fork)
   - Minimum is 5 seconds
   - Maximum is 24 hours
+- Renote Muting (Foundkey🔑 Misskey Fork)
 
 ## Client (Frondend)
 
