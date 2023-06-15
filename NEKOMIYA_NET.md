@@ -60,8 +60,8 @@
   - Stop delivery after failing for 1 week
   - Resume delivery when new activities arrive
 - Do not send old notes/create activities to relay
-- Ability to All users of delete closed instance
-- Timed Delete Note function (#exp5s #exp5m #exp5h)
+- Ability to All users of delete closed instance (Meisskey❤️ Misskey Fork)
+- Timed Delete Note function (#exp5s #exp5m #exp5h) (Meisskey❤️ Misskey Fork)
   - Minimum is 5 seconds
   - Maximum is 24 hours
 
