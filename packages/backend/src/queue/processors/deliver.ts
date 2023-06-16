@@ -90,6 +90,7 @@ export default async (job: Bull.Job<DeliverJobData>) => {
 				Instances.update(i.id, {
 					isSuspended: true,
 				});
+				suspendedHostsCache.set(null);
 			}
 
 			instanceChart.requestSent(i.host, false);
