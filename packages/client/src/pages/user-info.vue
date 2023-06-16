@@ -327,7 +327,7 @@ export default defineComponent({
 
 		async sendModNotification() {
 			const { canceled, result: comment } = await os.inputText({
-				title: "Moderation Notification 運営からのお知らせ",
+				title: "Moderation Notification / 運営からのお知らせ",
 			});
 			if (canceled) return;
 			await os.api('admin/send-notification', {

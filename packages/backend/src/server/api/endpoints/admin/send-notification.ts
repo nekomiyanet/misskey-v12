@@ -45,7 +45,7 @@ export default define(meta, paramDef, async (ps) => {
 
 	createNotification(user.id, "app", {
 		customBody: ps.comment,
-		customHeader: "Moderation Notification 運営からのお知らせ",
-		customIcon: "/static-assets/user-unknown.png",
+		customHeader: "Moderation Notification / 運営からのお知らせ",
+		customIcon: "/static-assets/mi-white.png",
 	});
 });
