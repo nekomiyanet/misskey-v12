@@ -67,6 +67,7 @@
 - Renote Muting (Foundkey🔑 Misskey Fork)
 - Private Mode and Secure Mode (Calckey Misskey Fork)
 - Hide Server info (Meisskey❤️ Misskey Fork)
+- Moderator can send notification to each user (Calckey Misskey Fork)
 
 ## Client (Frondend)
 
@@ -104,3 +105,5 @@
   - Default Setting is "Use Default Note Visibility on Renote"
 - Option of Showing Delete Note Button on Top
 - Add Misskey v10 / Misskey v13 Sound
+- Show Expiration of mute
+- UnMuteAll / UnBlockAll from Setting
