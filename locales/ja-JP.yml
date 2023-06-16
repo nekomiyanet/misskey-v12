@@ -919,6 +919,7 @@ privateMode: "非公開モード"
 privateModeInfo: "有効にすると、許可したサーバーのみとアクティビティを送受信します。全ての投稿は連合から隠されます。"
 allowedInstances: "許可されたインスタンス"
 allowedInstancesDescription: "許可したいインスタンスのホストを改行で区切って設定します。非公開モードだけで有効です。"
+sendModNotification: "管理上のお知らせを送信する"
 
 _emailUnavailable:
   used: "既に使用されています"

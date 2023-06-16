@@ -47,6 +47,7 @@
 				<FormSwitch v-model="suspended" class="_formBlock" @update:modelValue="toggleSuspend">{{ $ts.suspend }}</FormSwitch>
 				<FormButton v-if="user.host == null && iAmModerator" class="_formBlock" @click="resetPassword"><i class="fas fa-key"></i> {{ $ts.resetPassword }}</FormButton>
 				<FormButton v-if="iAmModerator" class="_formBlock" @click="deleteAllFiles"><i class="fas fa-trash-alt"></i> {{ $ts.deleteAllFiles }}</FormButton>
+				<FormButton v-if="user.host == null && iAmModerator" class="_formBlock" @click="sendModNotification"><i class="fas fa-bell"></i> {{ $ts.sendModNotification }}</FormButton>
 			</FormSection>
 
 			<FormSection>
@@ -322,6 +323,18 @@ export default defineComponent({
 		async toggleModerator(v) {
 			await os.api(v ? 'admin/moderators/add' : 'admin/moderators/remove', { userId: this.user.id });
 			await this.refreshUser();
+		},
+
+		async sendModNotification() {
+			const { canceled, result: comment } = await os.inputText({
+				title: "Moderation Notification 運営からのお知らせ",
+			});
+			if (canceled) return;
+			await os.api('admin/send-notification', {
+			 	comment: comment,
+				userId: this.user.id,
+			});
+			os.success();
 		},
 
 		async deleteAllFiles() {

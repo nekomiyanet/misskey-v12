@@ -921,6 +921,7 @@ privateModeInfo: "When enabled, only whitelisted servers can federate with your 
 allowedInstances: "Whitelisted Servers"
 allowedInstancesDescription: "Hosts of servers to be whitelisted for federation, each
   separated by a new line (only applies in private mode)."
+sendModNotification: "Send Moderation Notification"
 
 _emailUnavailable:
   used: "This email address is already being used"
