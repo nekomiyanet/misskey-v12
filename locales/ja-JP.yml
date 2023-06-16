@@ -916,7 +916,7 @@ secureMode: "セキュアモード (Authorized Fetch)"
 instanceSecurity: "インスタンスのセキュリティー"
 secureModeInfo: "他のインスタンスからリクエストするときに、証明を付けなければ返送しません。他のインスタンスの設定ファイルでsignToActivityPubGetはtrueにしてください。"
 privateMode: "非公開モード"
-privateModeInfo: "有効にして、許可されているインスタンスのみがリクエストできます。すべてのノートが公開に非表示にします。"
+privateModeInfo: "有効にすると、許可したサーバーのみとアクティビティを送受信します。全ての投稿は連合から隠されます。"
 allowedInstances: "許可されたインスタンス"
 allowedInstancesDescription: "許可したいインスタンスのホストを改行で区切って設定します。非公開モードだけで有効です。"
 
