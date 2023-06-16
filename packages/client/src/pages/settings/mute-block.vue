@@ -15,6 +15,7 @@
 						<i class="fas fa-hourglass"></i><MkTime :time="mute.expiresAt" mode="detail"/>
 					</div>
 				</FormLink>
+				<MkButton class="unmute" danger @click="unmute()"><i class="fas fa-trash-alt"></i>{{ $ts.unmuteAll }}</MkButton>
 			</template>
 		</MkPagination>
 	</div>
@@ -25,6 +26,7 @@
 				<FormLink v-for="block in items" :key="block.id" :to="userPage(block.blockee)">
 					<MkAcct :user="block.blockee"/>
 				</FormLink>
+				<MkButton class="unblock" danger @click="unblock()"><i class="fas fa-trash-alt"></i>{{ $ts.unblockAll }}</MkButton>
 			</template>
 		</MkPagination>
 	</div>
@@ -35,6 +37,7 @@
 				<FormLink v-for="renotemute in items" :key="renotemute.id" :to="userPage(renotemute.mutee)">
 					<MkAcct :user="renotemute.mutee"/>
 				</FormLink>
+				<MkButton class="renoteunmute" danger @click="renoteunmute()"><i class="fas fa-trash-alt"></i>{{ $ts.renoteUnmuteAll }}</MkButton>
 			</template>
 		</MkPagination>
 	</div>
@@ -51,6 +54,7 @@ import { userPage } from '@/filters/user';
 import * as os from '@/os';
 import * as symbols from '@/symbols';
 import { i18n } from '@/i18n';
+import MkButton from '@/components/ui/button.vue';
 
 let tab = $ref('mute');
 
@@ -68,6 +72,63 @@ const renotemutingPagination = {
 	endpoint: 'renote-mute/list' as const,
 	limit: 10,
 };
+
+async function unmute(): Promise<void> {
+	const { canceled } = await os.confirm({
+		type: 'warning',
+		text: i18n.ts.deleteConfirm,
+	});
+
+	if (canceled) return;
+
+	const mutes = await os.api('mute/list', {
+		limit: 100,
+	});
+
+	for (const mute of mutes) {
+		await os.api('mute/delete', {
+			userId: mute.muteeId,
+		});
+	}
+}
+
+async function unblock(): Promise<void> {
+	const { canceled } = await os.confirm({
+		type: 'warning',
+		text: i18n.ts.deleteConfirm,
+	});
+
+	if (canceled) return;
+
+	const blocks = await os.api('blocking/list', {
+		limit: 100,
+	});
+
+	for (const block of blocks) {
+		await os.api('blocking/delete', {
+			userId: block.blockeeId,
+		});
+	}
+}
+
+async function renoteunmute(): Promise<void> {
+	const { canceled } = await os.confirm({
+		type: 'warning',
+		text: i18n.ts.deleteConfirm,
+	});
+
+	if (canceled) return;
+
+	const renotemutes = await os.api('renote-mute/list', {
+		limit: 100,
+	});
+
+	for (const renotemute of renotemutes) {
+		await os.api('renote-mute/delete', {
+			userId: renotemute.muteeId,
+		});
+	}
+}
 
 defineExpose({
 	[symbols.PAGE_INFO]: {
