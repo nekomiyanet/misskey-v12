@@ -31,6 +31,10 @@ export default async function(blocker: User, blockee: User) {
 		const content = renderActivity(renderBlock(blocker, blockee));
 		deliver(blocker, content, blockee.inbox);
 	}
+
+	if (Users.isLocalUser(blockee)) {
+		publishUserEvent(blockee.id, 'blocked', blocker);
+	}
 }
 
 async function cancelRequest(follower: User, followee: User) {
