@@ -34,6 +34,10 @@ describe('Streaming', () => {
 		let akari: any;
 		let chinatsu: any;
 
+		// Local Cats
+		let mugi: any;
+		let sora: any;
+
 		let kyokoNote: any;
 		let list: any;
 
@@ -45,6 +49,8 @@ describe('Streaming', () => {
 			ayano = await signup({ username: 'ayano' });
 			kyoko = await signup({ username: 'kyoko' });
 			chitose = await signup({ username: 'chitose' });
+			mugi = await signup({ username: 'mugi' });
+			sora = await signup({ username: 'sora' });
 
 			akari = await signup({ username: 'akari', host: 'example.com' });
 			chinatsu = await signup({ username: 'chinatsu', host: 'example.com' });
@@ -71,6 +77,14 @@ describe('Streaming', () => {
 				listId: list.id,
 				userId: kyoko.id,
 			}, chitose);
+
+			await api('i/update', {
+				isCat: true
+			}, mugi);
+
+			await api('i/update', {
+				isCat: true
+			}, sora);
 		});
 
 		after(async () => {
@@ -215,6 +229,118 @@ describe('Streaming', () => {
 			it('フォローしていないローカルユーザーのフォロワー宛て投稿は流れない', async () => {
 				const fired = await waitFire(
 					ayano, 'localTimeline',	// ayano:Local
+					() => api('notes/create', { text: 'foo', visibility: 'followers' }, chitose),
+					msg => msg.type === 'note' && msg.body.userId === chitose.id	// wait chitose
+				);
+
+				assert.strictEqual(fired, false);
+			});
+		});
+
+		describe('Cat Timeline', () => {
+			it('ねこではない自分の投稿が流れない', async () => {
+				const fired = await waitFire(
+					ayano, 'catTimeline',	// ayano:Local
+					() => api('notes/create', { text: 'bowbow' }, ayano),	// ayano posts
+					msg => msg.type === 'note' && msg.body.text === 'bowbow'
+				);
+
+				assert.strictEqual(fired, false);
+			});
+
+			it('ねこではある自分の投稿が流れる', async () => {
+				const fired = await waitFire(
+					mugi, 'catTimeline',	// mugi:Local
+					() => api('notes/create', { text: 'nyanya' }, mugi),	// mugi posts
+					msg => msg.type === 'note' && msg.body.text === 'nyanya'
+				);
+
+				assert.strictEqual(fired, true);
+			});
+
+			it('ねこではない自分がフォローしていないねこユーザーの投稿が流れない', async () => {
+				const fired = await waitFire(
+					ayano, 'catTimeline',	// ayano:Local
+					() => api('notes/create', { text: 'nyanya' }, sora),	// sora posts
+					msg => msg.type === 'note' && msg.body.userId === sora.id	// wait sora
+				);
+
+				assert.strictEqual(fired, false);
+			});
+
+			it('ねこである自分がフォローしていないねこユーザーの投稿が流れる', async () => {
+				const fired = await waitFire(
+					mugi, 'catTimeline',	// mugi:Local
+					() => api('notes/create', { text: 'nyanya' }, sora),	// sora posts
+					msg => msg.type === 'note' && msg.body.userId === sora.id	// wait sora
+				);
+
+				assert.strictEqual(fired, true);
+			});
+
+			it('ねこである自分がフォローしていないねこではないユーザーの投稿が流れない', async () => {
+				const fired = await waitFire(
+					mugi, 'catTimeline',	// mugi:Local
+					() => api('notes/create', { text: 'bowbow' }, ayano),	// ayano posts
+					msg => msg.type === 'note' && msg.body.userId === ayano.id	// wait ayano
+				);
+
+				assert.strictEqual(fired, false);
+			});
+
+			it('リモートユーザーの投稿は流れない', async () => {
+				const fired = await waitFire(
+					mugi, 'catTimeline',	// mugi:Local
+					() => api('notes/create', { text: 'foo' }, chinatsu),	// chinatsu posts
+					msg => msg.type === 'note' && msg.body.userId === chinatsu.id	// wait chinatsu
+				);
+
+				assert.strictEqual(fired, false);
+			});
+
+			it('フォローしてたとしてもリモートユーザーの投稿は流れない', async () => {
+				const fired = await waitFire(
+					mugi, 'catTimeline',	// mugi:Local
+					() => api('notes/create', { text: 'foo' }, akari),	// akari posts
+					msg => msg.type === 'note' && msg.body.userId === akari.id	// wait akari
+				);
+
+				assert.strictEqual(fired, false);
+			});
+
+			it('ホーム指定のねこの投稿は流れない', async () => {
+				const fired = await waitFire(
+					mugi, 'catTimeline',	// mugi:Local
+					() => api('notes/create', { text: 'nyanya', visibility: 'home' }, sora),	// sora home posts
+					msg => msg.type === 'note' && msg.body.userId === kyoko.id	// wait sora
+				);
+
+				assert.strictEqual(fired, false);
+			});
+
+			it('ホーム指定のねこではない投稿は流れない', async () => {
+				const fired = await waitFire(
+					mugi, 'catTimeline',	// mugi:Local
+					() => api('notes/create', { text: 'foo', visibility: 'home' }, kyoko),	// kyoko home posts
+					msg => msg.type === 'note' && msg.body.userId === kyoko.id	// wait kyoko
+				);
+
+				assert.strictEqual(fired, false);
+			});
+
+			it('フォローしているローカルユーザーのダイレクト投稿は流れない', async () => {
+				const fired = await waitFire(
+					mugi, 'catTimeline',	// mugi:Local
+					() => api('notes/create', { text: 'foo', visibility: 'specified', visibleUserIds: [mugi.id] }, kyoko),	// kyoko DM => mugi
+					msg => msg.type === 'note' && msg.body.userId === kyoko.id	// wait kyoko
+				);
+
+				assert.strictEqual(fired, false);
+			});
+
+			it('フォローしていないローカルユーザーのフォロワー宛て投稿は流れない', async () => {
+				const fired = await waitFire(
+					mugi, 'catTimeline',	// mugi:Local
 					() => api('notes/create', { text: 'foo', visibility: 'followers' }, chitose),
 					msg => msg.type === 'note' && msg.body.userId === chitose.id	// wait chitose
 				);
@@ -408,7 +534,7 @@ describe('Streaming', () => {
 				let fooCount = 0;
 				let barCount = 0;
 				let fooBarCount = 0;
-	
+
 				const ws = await connectStream(chitose, 'hashtag', ({ type, body }) => {
 					if (type == 'note') {
 						if (body.text === '#foo') fooCount++;
@@ -420,19 +546,19 @@ describe('Streaming', () => {
 						['foo', 'bar'],
 					],
 				});
-	
+
 				post(chitose, {
 					text: '#foo',
 				});
-	
+
 				post(chitose, {
 					text: '#bar',
 				});
-	
+
 				post(chitose, {
 					text: '#foo #bar',
 				});
-	
+
 				setTimeout(() => {
 					assert.strictEqual(fooCount, 0);
 					assert.strictEqual(barCount, 0);
