@@ -135,9 +135,12 @@ export const paramDef = {
 
 // eslint-disable-next-line import/no-default-export
 export default define(meta, paramDef, async (ps, user) => {
-	//Check Word Blocking
+	//Check Word Blocking これに正規表現使えないのはわざと(その処理はSensitive Wordsでやろう)
 	const m = await fetchMeta();
 	if (ps.text && m.blockedWords.some(w => ps.text!.includes(w))) {
+		throw new ApiError(meta.errors.blockedWords);
+	}
+	if (ps.cw && m.blockedWords.some(w => ps.cw!.includes(w))) {
 		throw new ApiError(meta.errors.blockedWords);
 	}
 
