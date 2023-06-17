@@ -2,8 +2,8 @@ process.env.NODE_ENV = 'test';
 
 import * as assert from 'assert';
 import * as childProcess from 'child_process';
-import { async, signup, request, post, uploadFile, startServer, shutdownServer, initTestDb } from './utils.js';
 import { Note } from '../src/models/entities/note.js';
+import { async, signup, request, post, uploadUrl, startServer, shutdownServer, initTestDb, api } from './utils.js';
 
 describe('Note', () => {
 	let p: childProcess.ChildProcess;
@@ -37,7 +37,7 @@ describe('Note', () => {
 	}));
 
 	it('ファイルを添付できる', async(async () => {
-		const file = await uploadFile(alice);
+		const file = await uploadUrl(alice, 'https://raw.githubusercontent.com/misskey-dev/misskey/develop/packages/backend/test/resources/Lenna.jpg');
 
 		const res = await request('/notes/create', {
 			fileIds: [file.id]
@@ -49,7 +49,7 @@ describe('Note', () => {
 	}));
 
 	it('他人のファイルは無視', async(async () => {
-		const file = await uploadFile(bob);
+		const file = await uploadUrl(bob, 'https://raw.githubusercontent.com/misskey-dev/misskey/develop/packages/backend/test/resources/Lenna.jpg');
 
 		const res = await request('/notes/create', {
 			text: 'test',
@@ -136,7 +136,7 @@ describe('Note', () => {
 
 	it('文字数ぎりぎりで怒られない', async(async () => {
 		const post = {
-			text: '!'.repeat(500)
+			text: '!'.repeat(3000),
 		};
 		const res = await request('/notes/create', post, alice);
 		assert.strictEqual(res.status, 200);
@@ -144,7 +144,7 @@ describe('Note', () => {
 
 	it('文字数オーバーで怒られる', async(async () => {
 		const post = {
-			text: '!'.repeat(501)
+			text: '!'.repeat(3001),
 		};
 		const res = await request('/notes/create', post, alice);
 		assert.strictEqual(res.status, 400);
@@ -207,7 +207,7 @@ describe('Note', () => {
 		assert.strictEqual(typeof res.body === 'object' && !Array.isArray(res.body), true);
 		assert.strictEqual(res.body.createdNote.text, post.text);
 
-		const noteDoc = await Notes.findOne(res.body.createdNote.id);
+		const noteDoc = await Notes.findOne({ id: res.body.createdNote.id });
 		assert.deepStrictEqual(noteDoc.mentions, [bob.id]);
 	}));
 
@@ -331,6 +331,38 @@ describe('Note', () => {
 			}, alice);
 
 			assert.strictEqual(res.status, 400);
+		}));
+	});
+
+	describe('notes/delete', () => {
+		it('delete a reply', async(async () => {
+			const mainNoteRes = await api('notes/create', {
+				text: 'main post',
+			}, alice);
+			const replyOneRes = await api('notes/create', {
+				text: 'reply one',
+				replyId: mainNoteRes.body.createdNote.id,
+			}, alice);
+			const replyTwoRes = await api('notes/create', {
+				text: 'reply two',
+				replyId: mainNoteRes.body.createdNote.id,
+			}, alice);
+
+			const deleteOneRes = await api('notes/delete', {
+				noteId: replyOneRes.body.createdNote.id,
+			}, alice);
+
+			assert.strictEqual(deleteOneRes.status, 204);
+			let mainNote = await Notes.findOne({ id: mainNoteRes.body.createdNote.id });
+			assert.strictEqual(mainNote.repliesCount, 1);
+
+			const deleteTwoRes = await api('notes/delete', {
+				noteId: replyTwoRes.body.createdNote.id,
+			}, alice);
+
+			assert.strictEqual(deleteTwoRes.status, 204);
+			mainNote = await Notes.findOne({ id: mainNoteRes.body.createdNote.id });
+			assert.strictEqual(mainNote.repliesCount, 0);
 		}));
 	});
 });

@@ -8,6 +8,8 @@ import Logger from '@/services/logger.js';
 const logger = new Logger('limiter');
 
 export const limiter = (endpoint: IEndpoint & { meta: { limit: NonNullable<IEndpoint['meta']['limit']> } }, user: User) => new Promise<void>((ok, reject) => {
+	if (process.env.NODE_ENV === 'test') ok();
+
 	const limitation = endpoint.meta.limit;
 
 	const key = Object.prototype.hasOwnProperty.call(limitation, 'key')
