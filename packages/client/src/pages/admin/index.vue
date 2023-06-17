@@ -216,6 +216,11 @@ export default defineComponent({
 				to: '/admin/word-block',
 				active: page.value === 'word-block',
 			}, {
+				icon: 'fas fa-comment-slash',
+				text: i18n.ts.wordSensitive,
+				to: '/admin/word-sensitive',
+				active: page.value === 'word-sensitive',
+			}, {
 				icon: 'fas fa-ghost',
 				text: i18n.ts.proxyAccount,
 				to: '/admin/proxy-account',
@@ -253,6 +258,7 @@ export default defineComponent({
 				case 'self-silence': return defineAsyncComponent(() => import('./self-silence.vue'));
 				case 'email-block': return defineAsyncComponent(() => import('./email-block.vue'));
 				case 'word-block': return defineAsyncComponent(() => import('./word-block.vue'));
+				case 'word-sensitive': return defineAsyncComponent(() => import('./word-sensitive.vue'));
 				case 'proxy-account': return defineAsyncComponent(() => import('./proxy-account.vue'));
 				case 'other-settings': return defineAsyncComponent(() => import('./other-settings.vue'));
 			}

@@ -36,6 +36,7 @@ import { normalizeForSearch } from '@/misc/normalize-for-search.js';
 import { getAntennas } from '@/misc/antenna-cache.js';
 import { endedPollNotificationQueue, createDeleteNoteQueue } from '@/queue/queues.js';
 import { fetchMeta } from '@/misc/fetch-meta.js';
+import RE2 from 're2';
 
 type NotificationType = 'reply' | 'renote' | 'quote' | 'mention';
 
@@ -160,6 +161,14 @@ export default async (user: { id: User['id']; username: User['username']; host: 
 	const meta = await fetchMeta();
 	if (meta.silencedHosts.some(x => x.endsWith(user.host)) && data.visibility === 'public' && data.channel == null) {
 		data.visibility = 'home';
+	}
+
+	// センシティブワード
+	if (data.visibility === 'public' && data.channel == null) {
+		const sensitiveWord = meta.sensitiveWords;
+		if (isSensitive(data, sensitiveWord)) {
+			data.visibility = 'home';
+		}
 	}
 
 	// Renote対象が「ホームまたは全体」以外の公開範囲ならreject
@@ -692,4 +701,28 @@ async function extractMentionedUsers(user: { host: User['host']; }, tokens: mfm.
 	);
 
 	return mentionedUsers;
+}
+
+function isSensitive(note: Option, sensitiveWord: string[]): boolean {
+	if (sensitiveWord.length > 0) {
+		const text = note.cw ?? note.text ?? '';
+		if (text === '') return false;
+		const matched = sensitiveWord.some(filter => {
+			// represents RegExp
+			const regexp = filter.match(/^\/(.+)\/(.*)$/);
+			// This should never happen due to input sanitisation.
+			if (!regexp) {
+				const words = filter.split(' ');
+				return words.every(keyword => text.includes(keyword));
+			}
+			try {
+				return new RE2(regexp[1], regexp[2]).test(text);
+			} catch (err) {
+				// This should never happen due to input sanitisation.
+				return false;
+			}
+		});
+		if (matched) return true;
+	}
+	return false;
 }

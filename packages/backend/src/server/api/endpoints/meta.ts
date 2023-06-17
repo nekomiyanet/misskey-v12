@@ -346,6 +346,14 @@ export const meta = {
 					optional: false, nullable: false,
 				},
 			},
+			sensitiveWords: {
+				type: 'array',
+				optional: true, nullable: false,
+				items: {
+					type: 'string',
+					optional: false, nullable: false,
+				},
+			},
 			hcaptchaSecretKey: {
 				type: 'string',
 				optional: true, nullable: true,
@@ -535,6 +543,7 @@ export default define(meta, paramDef, async (ps, me) => {
 			response.selfSilencedHosts = instance.selfSilencedHosts;
 			response.blockedEmailDomains = instance.blockedEmailDomains;
 			response.blockedWords = instance.blockedWords;
+			response.sensitiveWords = instance.sensitiveWords;
 			response.hcaptchaSecretKey = instance.hcaptchaSecretKey;
 			response.recaptchaSecretKey = instance.recaptchaSecretKey;
 			response.proxyAccountId = instance.proxyAccountId;

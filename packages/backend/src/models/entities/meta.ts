@@ -113,6 +113,11 @@ export class Meta {
 	public blockedWords: string[];
 
 	@Column('varchar', {
+		length: 1024, array: true, default: '{}',
+	})
+	public sensitiveWords: string[];
+
+	@Column('varchar', {
 		length: 512, array: true, default: '{"/featured", "/channels", "/explore", "/pages", "/about-misskey"}',
 	})
 	public pinnedPages: string[];

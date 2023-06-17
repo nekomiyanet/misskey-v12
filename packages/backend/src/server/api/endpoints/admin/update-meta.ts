@@ -42,6 +42,9 @@ export const paramDef = {
 		blockedWords: { type: 'array', nullable: true, items: {
 			type: 'string',
 		} },
+		sensitiveWords: { type: 'array', nullable: true, items: {
+			type: 'string',
+		} },
 		themeColor: { type: 'string', nullable: true },
 		mascotImageUrl: { type: 'string', nullable: true },
 		bannerUrl: { type: 'string', nullable: true },
@@ -146,6 +149,10 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (Array.isArray(ps.blockedWords)) {
 		set.blockedWords = ps.blockedWords.filter(Boolean);
+	}
+
+	if (Array.isArray(ps.sensitiveWords)) {
+		set.sensitiveWords = ps.sensitiveWords.filter(Boolean);
 	}
 
 	if (ps.themeColor !== undefined) {
