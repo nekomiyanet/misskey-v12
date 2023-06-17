@@ -60,7 +60,7 @@ export default class extends Channel {
 		if (isMutedUserRelated(note, this.muting)) return;
 
 		// 流れてきたNoteがブロックされているユーザーが関わるものだったら無視する
-		if (!this.user.isAdmin && !this.user.isModerator && isBlockerUserRelated(note, this.blocking)) return;
+		if (!this.user.isAdmin && !this.user.isModerator && isBlockerUserRelated(note, this.blocked)) return;
 
 		// 流れてきたNoteがブロックしているユーザーが関わるものだったら無視する
 		if (isBlockeeUserRelated(note, this.blocking)) return;

@@ -5,6 +5,7 @@ import { ApiError } from '../../error.js';
 import { getUser } from '../../common/getters.js';
 import { Blockings, NoteWatchings, Users } from '@/models/index.js';
 import deleteFollowing from '@/services/following/delete.js';
+import { publishUserEvent } from '@/services/stream.js';
 
 export const meta = {
 	tags: ['account'],
@@ -93,4 +94,9 @@ export default define(meta, paramDef, async (ps, user) => {
 	return await Users.pack(blockee.id, blocker, {
 		detail: true,
 	});
+
+	publishUserEvent(user.id, 'block', blockee);
+	if (Users.isLocalUser(blockee)) {
+		publishUserEvent(blockee.id, 'blocked', blocker);
+	}
 });

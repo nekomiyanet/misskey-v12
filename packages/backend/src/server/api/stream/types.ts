@@ -36,6 +36,12 @@ export interface UserStreamTypes {
 	updateUserProfile: UserProfile;
 	mute: User;
 	unmute: User;
+	renoteMute: User;
+	renoteUnmute: User;
+	block: User;
+	unblock: User;
+	blocked: User;
+	unblocked: User;
 	follow: Packed<'UserDetailedNotMe'>;
 	unfollow: Packed<'User'>;
 	userAdded: Packed<'User'>;

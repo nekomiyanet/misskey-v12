@@ -4,6 +4,7 @@ import define from '../../define.js';
 import { ApiError } from '../../error.js';
 import { getUser } from '../../common/getters.js';
 import { Blockings, Users } from '@/models/index.js';
+import { publishUserEvent } from '@/services/stream.js';
 
 export const meta = {
 	tags: ['account'],
@@ -83,4 +84,9 @@ export default define(meta, paramDef, async (ps, user) => {
 	return await Users.pack(blockee.id, blocker, {
 		detail: true,
 	});
+
+	publishUserEvent(user.id, 'unblock', blockee);
+	if (Users.isLocalUser(blockee)) {
+		publishUserEvent(blockee.id, 'unblocked', blocker);
+	}
 });

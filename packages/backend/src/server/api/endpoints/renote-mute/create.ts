@@ -4,6 +4,7 @@ import { RenoteMuting } from '@/models/entities/renote-muting.js';
 import define from '../../define.js';
 import { ApiError } from '../../error.js';
 import { getUser } from '../../common/getters.js';
+import { publishUserEvent } from '@/services/stream.js';
 
 export const meta = {
 	tags: ['account'],
@@ -74,5 +75,5 @@ export default define(meta, paramDef, async (ps, user) => {
 		muteeId: mutee.id,
 	} as RenoteMuting);
 
-	// publishUserEvent(user.id, 'mute', mutee);
+	publishUserEvent(user.id, 'renoteMute', mutee);
 });
