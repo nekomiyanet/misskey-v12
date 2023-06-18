@@ -68,6 +68,7 @@
 - Private Mode and Secure Mode (Calckey Misskey Fork)
 - Hide Server info (Meisskey❤️ Misskey Fork)
 - Moderator can send notification to each user (Calckey Misskey Fork)
+- Sensitive Word (Admin can set the word which should be home visibility)
 
 ## Client (Frondend)
 
