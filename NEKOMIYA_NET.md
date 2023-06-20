@@ -69,6 +69,9 @@
 - Hide Server info (Meisskey❤️ Misskey Fork)
 - Moderator can send notification to each user (Calckey Misskey Fork)
 - Sensitive Word (Admin can set the word which should be home visibility)
+- User deletion is not cascade
+- Prevent delete drive file which is used as emoji
+- Option of Do not Allow Follow
 
 ## Client (Frondend)
 
