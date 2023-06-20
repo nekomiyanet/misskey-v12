@@ -1,7 +1,8 @@
 <template>
 <div class="_formRoot">
-	<FormSwitch v-model="isLocked" class="_formBlock" @update:modelValue="save()">{{ $ts.makeFollowManuallyApprove }}<template #caption>{{ $ts.lockedAccountInfo }}</template></FormSwitch>
-	<FormSwitch v-if="isLocked" v-model="autoAcceptFollowed" class="_formBlock" @update:modelValue="save()">{{ $ts.autoAcceptFollowed }}</FormSwitch>
+	<FormSwitch v-model="allowFollow" class="_formBlock" @update:modelValue="save()">{{ $ts.allowFollow }}</FormSwitch>
+	<FormSwitch v-if="allowFollow" v-model="isLocked" class="_formBlock" @update:modelValue="save()">{{ $ts.makeFollowManuallyApprove }}<template #caption>{{ $ts.lockedAccountInfo }}</template></FormSwitch>
+	<FormSwitch v-if="!allowFollow || isLocked" v-model="autoAcceptFollowed" class="_formBlock" @update:modelValue="save()">{{ $ts.autoAcceptFollowed }}</FormSwitch>
 
 	<FormSwitch v-model="publicReactions" class="_formBlock" @update:modelValue="save()">
 		{{ $ts.makeReactionsPublic }}
@@ -96,6 +97,7 @@ let ffVisibility = $ref($i.ffVisibility);
 let notesCountVisibility = $ref($i.notesCountVisibility);
 let federateBlocks = $ref($i.federateBlocks);
 let broadcastReactions = $ref($i.broadcastReactions);
+let allowFollow = $ref($i.allowFollow);
 
 let defaultNoteVisibility = $computed(defaultStore.makeGetterSetter('defaultNoteVisibility'));
 let defaultNoteLocalOnly = $computed(defaultStore.makeGetterSetter('defaultNoteLocalOnly'));
@@ -117,6 +119,7 @@ function save() {
 		notesCountVisibility: notesCountVisibility,
 		federateBlocks: !!federateBlocks,
 		broadcastReactions: !!broadcastReactions,
+		allowFollow: !!allowFollow,
 	});
 }
 

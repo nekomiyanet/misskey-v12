@@ -120,6 +120,7 @@ export const paramDef = {
 		} },
 		federateBlocks: { type: 'boolean' },
 		broadcastReactions: { type: 'boolean' },
+		allowFollow: { type: 'boolean' },
 	},
 } as const;
 
@@ -171,6 +172,7 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 	if (typeof ps.noCrawle === 'boolean') profileUpdates.noCrawle = ps.noCrawle;
 	if (typeof ps.federateBlocks === 'boolean') updates.federateBlocks = ps.federateBlocks;
 	if (typeof ps.broadcastReactions === 'boolean') updates.broadcastReactions = ps.broadcastReactions;
+	if (typeof ps.allowFollow === 'boolean') profileUpdates.allowFollow = ps.allowFollow;
 	if (typeof ps.isCat === 'boolean') updates.isCat = ps.isCat;
 	//if (typeof ps.isFox === 'boolean') updates.isFox = ps.isFox;
 	if (typeof ps.injectFeaturedNote === 'boolean') profileUpdates.injectFeaturedNote = ps.injectFeaturedNote;
@@ -249,9 +251,9 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 	publishUserEvent(user.id, 'updateUserProfile', await UserProfiles.findOne(user.id));
 
 	// 鍵垢を解除したとき、溜まっていたフォローリクエストがあるならすべて承認
-	if (user.isLocked && ps.isLocked === false) {
-		acceptAllFollowRequests(user);
-	}
+	//if (user.isLocked && ps.isLocked === false) {
+	//	acceptAllFollowRequests(user);
+	//}
 
 	// フォロワーにUpdateを配信
 	publishToFollowers(user.id);

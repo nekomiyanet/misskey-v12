@@ -143,6 +143,11 @@ export class UserProfile {
 	public autoAcceptFollowed: boolean;
 
 	@Column('boolean', {
+		default: true,
+	})
+	public allowFollow: boolean;
+
+	@Column('boolean', {
 		default: false,
 		comment: 'Whether reject index by crawler.',
 	})

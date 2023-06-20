@@ -60,6 +60,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		email: profile.email,
 		emailVerified: profile.emailVerified,
 		autoAcceptFollowed: profile.autoAcceptFollowed,
+		allowFollow: profile.allowFollow,
 		noCrawle: profile.noCrawle,
 		alwaysMarkNsfw: profile.alwaysMarkNsfw,
 		carefulBot: profile.carefulBot,

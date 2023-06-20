@@ -339,6 +339,7 @@ export class UserRepository extends Repository<User> {
 				alwaysMarkNsfw: profile!.alwaysMarkNsfw,
 				carefulBot: profile!.carefulBot,
 				autoAcceptFollowed: profile!.autoAcceptFollowed,
+				allowFollow: profile!.allowFollow,
 				noCrawle: profile!.noCrawle,
 				isExplorable: user.isExplorable,
 				isDeleted: user.isDeleted,

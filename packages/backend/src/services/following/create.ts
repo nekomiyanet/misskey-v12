@@ -156,7 +156,7 @@ export default async function(_follower: { id: User['id'] }, _followee: { id: Us
 	// フォロワーがサイレンスされている or
 	// フォロワーインスタンスがサイレンスされている or
 	// 上記のいずれかに当てはまる場合はすぐフォローせずにフォローリクエストを発行しておく
-	if (followee.isLocked || (followeeProfile.carefulBot && follower.isBot) || (Users.isLocalUser(follower) && Users.isRemoteUser(followee)) || follower.isSilenced || follower.isLocalSilenced || meta.silencedHosts.some(x => x.endsWith(follower.host))) {
+	if (!followeeProfile.allowFollow || followee.isLocked || (followeeProfile.carefulBot && follower.isBot) || (Users.isLocalUser(follower) && Users.isRemoteUser(followee)) || follower.isSilenced || follower.isLocalSilenced || meta.silencedHosts.some(x => x.endsWith(follower.host))) {
 		let autoAccept = false;
 
 		// 鍵アカウントであっても、既にフォローされていた場合はスルー
@@ -176,6 +176,17 @@ export default async function(_follower: { id: User['id'] }, _followee: { id: Us
 			});
 
 			if (followed) autoAccept = true;
+		}
+
+		if (!autoAccept && Users.isLocalUser(followee) && !followeeProfile.allowFollow) {
+			if (Users.isRemoteUser(follower) && Users.isLocalUser(followee)) {
+				const content = renderActivity(renderReject(renderFollow(follower, followee, requestId), followee));
+				deliver(followee , content, follower.inbox);
+				return;
+			} else {
+				throw new IdentifiableError('3338392a-f764-498d-8855-db939dcf8c48', 'blocked');
+				return;
+			}
 		}
 
 		if (!autoAccept) {

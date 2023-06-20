@@ -327,6 +327,10 @@ export const packedMeDetailedOnlySchema = {
 			type: 'boolean',
 			nullable: true, optional: false,
 		},
+		allowFollow: {
+			type: 'boolean',
+			nullable: true, optional: false,
+		},
 		noCrawle: {
 			type: 'boolean',
 			nullable: true, optional: false,
