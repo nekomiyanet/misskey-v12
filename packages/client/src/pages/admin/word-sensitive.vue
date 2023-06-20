@@ -1,4 +1,4 @@
-sensitiveWords<template>
+<template>
 <MkSpacer :content-max="700" :margin-min="16" :margin-max="32">
 	<FormSuspense :p="init">
 		<FormTextarea v-model="sensitiveWords" class="_formBlock">
