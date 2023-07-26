@@ -200,21 +200,6 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 				inbox: person.inbox,
 				sharedInbox: person.sharedInbox || (person.endpoints ? person.endpoints.sharedInbox : undefined),
 				followersUri: person.followers ? getApId(person.followers) : undefined,
-				followersCount: followersCount !== undefined
-						? followersCount
-						: person.followers && typeof person.followers !== "string" && isCollectionOrOrderedCollection(person.followers)
-							? person.followers.totalItems
-							: undefined,
-				followingCount: followingCount !== undefined
-						? followingCount
-						: person.following && typeof person.following !== "string" && isCollectionOrOrderedCollection(person.following)
-							? person.following.totalItems
-							: undefined,
-				notesCount: notesCount !== undefined
-						? notesCount
-						: person.outbox && typeof person.outbox !== "string" && isCollectionOrOrderedCollection(person.outbox)
-							? person.outbox.totalItems
-							: undefined,
 				featured: person.featured ? getApId(person.featured) : undefined,
 				uri: person.id,
 				tags,
@@ -312,6 +297,30 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 		await Users.update({ id: user!.id }, {
 			createdAt: registerDate.toISOString(),
 		});
+	}
+
+	if (followersCount !== undefined) {
+		if (person.followers && typeof person.followers !== "string" && isCollectionOrOrderedCollection(person.followers)) {
+			await Users.update({ id: user!.id }, {
+				followersCount: person.followers.totalItems,
+			});
+		}
+	}
+
+	if (followingCount !== undefined) {
+		if (person.following && typeof person.following !== "string" && isCollectionOrOrderedCollection(person.following)) {
+			await Users.update({ id: user!.id }, {
+				followingCount: person.following.totalItems,
+			});
+		}
+	}
+
+	if (notesCount !== undefined) {
+		if (person.outbox && typeof person.outbox !== "string" && isCollectionOrOrderedCollection(person.outbox)) {
+			await Users.update({ id: user!.id }, {
+				notesCount: person.outbox.totalItems,
+			});
+		}
 	}
 
 	await updateFeatured(user!.id, resolver).catch(err => logger.error(err));
@@ -420,21 +429,6 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 		inbox: person.inbox,
 		sharedInbox: person.sharedInbox || (person.endpoints ? person.endpoints.sharedInbox : undefined),
 		followersUri: person.followers ? getApId(person.followers) : undefined,
-		followersCount: followersCount !== undefined
-				? followersCount
-				: person.followers && typeof person.followers !== "string" && isCollectionOrOrderedCollection(person.followers)
-					? person.followers.totalItems
-					: undefined,
-		followingCount: followingCount !== undefined
-				? followingCount
-				: person.following && typeof person.following !== "string" && isCollectionOrOrderedCollection(person.following)
-					? person.following.totalItems
-					: undefined,
-		notesCount: notesCount !== undefined
-				? notesCount
-				: person.outbox && typeof person.outbox !== "string" && isCollectionOrOrderedCollection(person.outbox)
-					? person.outbox.totalItems
-					: undefined,
 		featured: person.featured,
 		emojis: emojiNames,
 		name: truncate(person.name, nameLength),
@@ -476,6 +470,30 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 		await Users.update({ id: exist.id }, {
 			createdAt: registerDate.toISOString(),
 		});
+	}
+
+	if (followersCount !== undefined) {
+		if (person.followers && typeof person.followers !== "string" && isCollectionOrOrderedCollection(person.followers)) {
+			await Users.update({ id: exist.id }, {
+				followersCount: person.followers.totalItems,
+			});
+		}
+	}
+
+	if (followingCount !== undefined) {
+		if (person.following && typeof person.following !== "string" && isCollectionOrOrderedCollection(person.following)) {
+			await Users.update({ id: exist.id }, {
+				followingCount: person.following.totalItems,
+			});
+		}
+	}
+
+	if (notesCount !== undefined) {
+		if (person.outbox && typeof person.outbox !== "string" && isCollectionOrOrderedCollection(person.outbox)) {
+			await Users.update({ id: exist.id }, {
+				notesCount: person.outbox.totalItems,
+			});
+		}
 	}
 
 	// ハッシュタグ更新
