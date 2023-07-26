@@ -300,27 +300,33 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 	}
 
 	if (followersCount !== undefined) {
-		if (person.followers && typeof person.followers !== "string" && isCollectionOrOrderedCollection(person.followers)) {
-			await Users.update({ id: user!.id }, {
-				followersCount: person.followers.totalItems,
-			});
-		}
+		await Users.update({ id: user!.id }, {
+			followersCount: followersCount,
+		});
+	} else if (person.followers && typeof person.followers !== "string" && isCollectionOrOrderedCollection(person.followers)) {
+		await Users.update({ id: user!.id }, {
+			followersCount: person.followers.totalItems,
+		});
 	}
 
 	if (followingCount !== undefined) {
-		if (person.following && typeof person.following !== "string" && isCollectionOrOrderedCollection(person.following)) {
-			await Users.update({ id: user!.id }, {
-				followingCount: person.following.totalItems,
-			});
-		}
+		await Users.update({ id: user!.id }, {
+			followingCount: followingCount,
+		});
+	}	else if (person.following && typeof person.following !== "string" && isCollectionOrOrderedCollection(person.following)) {
+		await Users.update({ id: user!.id }, {
+			followingCount: person.following.totalItems,
+		});
 	}
 
 	if (notesCount !== undefined) {
-		if (person.outbox && typeof person.outbox !== "string" && isCollectionOrOrderedCollection(person.outbox)) {
-			await Users.update({ id: user!.id }, {
-				notesCount: person.outbox.totalItems,
-			});
-		}
+		await Users.update({ id: user!.id }, {
+			notesCount: notesCount,
+		});
+	}	else if (person.outbox && typeof person.outbox !== "string" && isCollectionOrOrderedCollection(person.outbox)) {
+		await Users.update({ id: user!.id }, {
+			notesCount: person.outbox.totalItems,
+		});
 	}
 
 	await updateFeatured(user!.id, resolver).catch(err => logger.error(err));
@@ -473,27 +479,33 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 	}
 
 	if (followersCount !== undefined) {
-		if (person.followers && typeof person.followers !== "string" && isCollectionOrOrderedCollection(person.followers)) {
-			await Users.update({ id: exist.id }, {
-				followersCount: person.followers.totalItems,
-			});
-		}
+		await Users.update({ id: exist.id }, {
+			followersCount: followersCount,
+		});
+	} else if (person.followers && typeof person.followers !== "string" && isCollectionOrOrderedCollection(person.followers)) {
+		await Users.update({ id: exist.id }, {
+			followersCount: person.followers.totalItems,
+		});
 	}
 
 	if (followingCount !== undefined) {
-		if (person.following && typeof person.following !== "string" && isCollectionOrOrderedCollection(person.following)) {
-			await Users.update({ id: exist.id }, {
-				followingCount: person.following.totalItems,
-			});
-		}
+		await Users.update({ id: exist.id }, {
+			followingCount: followingCount,
+		});
+	}	else if (person.following && typeof person.following !== "string" && isCollectionOrOrderedCollection(person.following)) {
+		await Users.update({ id: exist.id }, {
+			followingCount: person.following.totalItems,
+		});
 	}
 
 	if (notesCount !== undefined) {
-		if (person.outbox && typeof person.outbox !== "string" && isCollectionOrOrderedCollection(person.outbox)) {
-			await Users.update({ id: exist.id }, {
-				notesCount: person.outbox.totalItems,
-			});
-		}
+		await Users.update({ id: exist.id }, {
+			notesCount: notesCount,
+		});
+	}	else if (person.outbox && typeof person.outbox !== "string" && isCollectionOrOrderedCollection(person.outbox)) {
+		await Users.update({ id: exist.id }, {
+			notesCount: person.outbox.totalItems,
+		});
 	}
 
 	// ハッシュタグ更新
