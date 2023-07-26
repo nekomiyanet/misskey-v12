@@ -295,7 +295,7 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 
 	if (registerDate) {
 		await Users.update({ id: user!.id }, {
-			createdAt: registerDate.toISOString(),
+			createdAt: person['published'] || user!.createdAt,
 		});
 	}
 
@@ -468,7 +468,7 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 
 	if (registerDate) {
 		await Users.update({ id: exist.id }, {
-			createdAt: registerDate.toISOString(),
+			createdAt: person['published'] || exist.createdAt,
 		});
 	}
 
