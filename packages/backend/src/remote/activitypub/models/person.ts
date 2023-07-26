@@ -301,31 +301,31 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 
 	if (followersCount !== undefined) {
 		await Users.update({ id: user!.id }, {
-			followersCount: followersCount,
+			followersCount: followersCount || user!.followersCount,
 		});
 	} else if (person.followers && typeof person.followers !== "string" && isCollectionOrOrderedCollection(person.followers)) {
 		await Users.update({ id: user!.id }, {
-			followersCount: person.followers.totalItems,
+			followersCount: person.followers.totalItems || user!.followersCount,
 		});
 	}
 
 	if (followingCount !== undefined) {
 		await Users.update({ id: user!.id }, {
-			followingCount: followingCount,
+			followingCount: followingCount || user!.followingCount,
 		});
 	}	else if (person.following && typeof person.following !== "string" && isCollectionOrOrderedCollection(person.following)) {
 		await Users.update({ id: user!.id }, {
-			followingCount: person.following.totalItems,
+			followingCount: person.following.totalItems || user!.followingCount,
 		});
 	}
 
 	if (notesCount !== undefined) {
 		await Users.update({ id: user!.id }, {
-			notesCount: notesCount,
+			notesCount: notesCount || user!.notesCount,
 		});
 	}	else if (person.outbox && typeof person.outbox !== "string" && isCollectionOrOrderedCollection(person.outbox)) {
 		await Users.update({ id: user!.id }, {
-			notesCount: person.outbox.totalItems,
+			notesCount: person.outbox.totalItems || user!.notesCount,
 		});
 	}
 
@@ -480,31 +480,31 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 
 	if (followersCount !== undefined) {
 		await Users.update({ id: exist.id }, {
-			followersCount: followersCount,
+			followersCount: followersCount || exist.followersCount,
 		});
 	} else if (person.followers && typeof person.followers !== "string" && isCollectionOrOrderedCollection(person.followers)) {
 		await Users.update({ id: exist.id }, {
-			followersCount: person.followers.totalItems,
+			followersCount: person.followers.totalItems || exist.followersCount,
 		});
 	}
 
 	if (followingCount !== undefined) {
 		await Users.update({ id: exist.id }, {
-			followingCount: followingCount,
+			followingCount: followingCount || exist.followingCount,
 		});
 	}	else if (person.following && typeof person.following !== "string" && isCollectionOrOrderedCollection(person.following)) {
 		await Users.update({ id: exist.id }, {
-			followingCount: person.following.totalItems,
+			followingCount: person.following.totalItems || exist.followingCount,
 		});
 	}
 
 	if (notesCount !== undefined) {
 		await Users.update({ id: exist.id }, {
-			notesCount: notesCount,
+			notesCount: notesCount || exist.notesCount,
 		});
 	}	else if (person.outbox && typeof person.outbox !== "string" && isCollectionOrOrderedCollection(person.outbox)) {
 		await Users.update({ id: exist.id }, {
-			notesCount: person.outbox.totalItems,
+			notesCount: person.outbox.totalItems || exist.notesCount,
 		});
 	}
 
