@@ -139,6 +139,8 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 
 	const bday = person['vcard:bday']?.match(/^\d{4}-\d{2}-\d{2}/);
 
+	const registerDate = person['published']?.match(/^\d{4}-\d{2}-\d{2}/);
+
 	let followersCount: number | undefined;
 
 	if (typeof person.followers === "string") {
@@ -306,6 +308,12 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 	});
 	//#endregion
 
+	if (registerDate) {
+		await Users.update({ id: user!.id }, {
+			createdAt: registerDate.toISOString(),
+		});
+	}
+
 	await updateFeatured(user!.id, resolver).catch(err => logger.error(err));
 
 	return user!;
@@ -365,6 +373,8 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 	const tags = extractApHashtags(person.tag).map(tag => normalizeForSearch(tag)).splice(0, 32);
 
 	const bday = person['vcard:bday']?.match(/^\d{4}-\d{2}-\d{2}/);
+
+	const registerDate = person['published']?.match(/^\d{4}-\d{2}-\d{2}/);
 
 	let followersCount: number | undefined;
 
@@ -461,6 +471,12 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 		birthday: bday ? bday[0] : null,
 		location: person['vcard:Address'] || null,
 	});
+
+	if (registerDate) {
+		await Users.update({ id: exist.id }, {
+			createdAt: registerDate.toISOString(),
+		});
+	}
 
 	// ハッシュタグ更新
 	updateUsertags(exist, tags);
