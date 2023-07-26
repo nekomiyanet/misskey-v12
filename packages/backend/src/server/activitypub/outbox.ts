@@ -11,7 +11,7 @@ import renderCreate from '@/remote/activitypub/renderer/create.js';
 import renderAnnounce from '@/remote/activitypub/renderer/announce.js';
 import { countIf } from '@/prelude/array.js';
 import * as url from '@/prelude/url.js';
-import { Users, Notes } from '@/models/index.js';
+import { Users, Notes, UserProfiles } from '@/models/index.js';
 import { makePaginationQuery } from '../api/common/make-pagination-query.js';
 import { Brackets } from 'typeorm';
 import { Note } from '@/models/entities/note.js';
@@ -53,6 +53,15 @@ export default async (ctx: Router.RouterContext) => {
 		return;
 	}
 
+	const profile = await UserProfiles.findOne({
+		userId: userId,
+		userHost: null,
+	});
+
+	const notesCount = profile == null ? 0 :
+		(profile.notesCountVisibility === 'public') ? user.notesCount :
+		0;
+
 	const limit = 20;
 	const partOf = `${config.url}/users/${userId}/outbox`;
 
@@ -76,7 +85,7 @@ export default async (ctx: Router.RouterContext) => {
 				since_id: sinceId,
 				until_id: untilId,
 			})}`,
-			user.notesCount, activities, partOf,
+			notesCount, activities, partOf,
 			notes.length ? `${partOf}?${url.query({
 				page: 'true',
 				since_id: notes[0].id,
@@ -91,7 +100,7 @@ export default async (ctx: Router.RouterContext) => {
 		setResponseType(ctx);
 	} else {
 		// index page
-		const rendered = renderOrderedCollection(partOf, user.notesCount,
+		const rendered = renderOrderedCollection(partOf, notesCount,
 			`${partOf}?page=true`,
 			`${partOf}?page=true&since_id=000000000000000000000000`
 		);
