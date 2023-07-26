@@ -49,21 +49,32 @@ export default async (ctx: Router.RouterContext) => {
 	//#region Check ff visibility
 	const profile = await UserProfiles.findOneOrFail(user.id);
 
-	if (profile.ffVisibility === 'private') {
-		ctx.status = 403;
-		ctx.set('Cache-Control', 'public, max-age=30');
-		return;
-	} else if (profile.ffVisibility === 'followers') {
-		ctx.status = 403;
-		ctx.set('Cache-Control', 'public, max-age=30');
-		return;
-	}
+	//if (profile.ffVisibility === 'private') {
+	//	ctx.status = 403;
+	//	ctx.set('Cache-Control', 'public, max-age=30');
+	//	return;
+	//} else if (profile.ffVisibility === 'followers') {
+	//	ctx.status = 403;
+	//	ctx.set('Cache-Control', 'public, max-age=30');
+	//	return;
+	//}
+
+	const followingCount = profile == null ? 0 :
+		(profile.ffVisibility === 'public') ? user.followingCount :
+		0;
+
 	//#endregion
 
 	const limit = 10;
 	const partOf = `${config.url}/users/${userId}/following`;
 
 	if (page) {
+		if (profile.ffVisibility !== 'public') {
+			ctx.status = 403;
+			ctx.set('Cache-Control', 'public, max-age=30');
+			return;
+		}
+
 		const query = {
 			followerId: user.id,
 		} as FindConditions<Following>;
@@ -90,7 +101,7 @@ export default async (ctx: Router.RouterContext) => {
 				page: 'true',
 				cursor,
 			})}`,
-			user.followingCount, renderedFollowees, partOf,
+			followingCount, renderedFollowees, partOf,
 			undefined,
 			inStock ? `${partOf}?${url.query({
 				page: 'true',
@@ -102,7 +113,7 @@ export default async (ctx: Router.RouterContext) => {
 		setResponseType(ctx);
 	} else {
 		// index page
-		const rendered = renderOrderedCollection(partOf, user.followingCount, `${partOf}?page=true`);
+		const rendered = renderOrderedCollection(partOf, followingCount, (profile.ffVisibility === 'public') ? `${partOf}?page=true` : undefined);
 		ctx.body = renderActivity(rendered);
 		setResponseType(ctx);
 	}
