@@ -207,6 +207,14 @@ export const packedUserDetailedNotMeOnlySchema = {
 			type: 'number',
 			nullable: false, optional: false,
 		},
+		referenceFollowersCount: {
+			type: 'number',
+			nullable: false, optional: false,
+		},
+		referenceFollowingCount: {
+			type: 'number',
+			nullable: false, optional: false,
+		},
 		notesCount: {
 			type: 'number',
 			nullable: false, optional: false,

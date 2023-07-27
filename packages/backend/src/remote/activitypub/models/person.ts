@@ -301,21 +301,21 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 
 	if (followersCount !== undefined) {
 		await Users.update({ id: user!.id }, {
-			followersCount: followersCount || user!.followersCount,
+			referenceFollowersCount: followersCount || user!.referenceFollowersCount,
 		});
 	} else if (person.followers && typeof person.followers !== "string" && isCollectionOrOrderedCollection(person.followers)) {
 		await Users.update({ id: user!.id }, {
-			followersCount: person.followers.totalItems || user!.followersCount,
+			referenceFollowersCount: person.followers.totalItems || user!.referenceFollowersCount,
 		});
 	}
 
 	if (followingCount !== undefined) {
 		await Users.update({ id: user!.id }, {
-			followingCount: followingCount || user!.followingCount,
+			referenceFollowingCount: followingCount || user!.referenceFollowingCount,
 		});
 	}	else if (person.following && typeof person.following !== "string" && isCollectionOrOrderedCollection(person.following)) {
 		await Users.update({ id: user!.id }, {
-			followingCount: person.following.totalItems || user!.followingCount,
+			referenceFollowingCount: person.following.totalItems || user!.referenceFollowingCount,
 		});
 	}
 
@@ -390,6 +390,18 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 	const bday = person['vcard:bday']?.match(/^\d{4}-\d{2}-\d{2}/);
 
 	const registerDate = person['published']?.match(/^\d{4}-\d{2}-\d{2}/);
+
+	const [
+		pureFollowingCount,
+		pureFollowersCount,
+	] = await Promise.all([
+		Followings.createQueryBuilder('following')
+			.where('following.followerId = :userId', { userId: exist.id })
+			.getCount(),
+		Followings.createQueryBuilder('following')
+			.where('following.followeeId = :userId', { userId: exist.id })
+			.getCount(),
+	]);
 
 	let followersCount: number | undefined;
 
@@ -480,21 +492,25 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 
 	if (followersCount !== undefined) {
 		await Users.update({ id: exist.id }, {
-			followersCount: followersCount || exist.followersCount,
+			referenceFollowersCount: followersCount || exist.referenceFollowersCount,
+			followersCount: pureFollowersCount,
 		});
 	} else if (person.followers && typeof person.followers !== "string" && isCollectionOrOrderedCollection(person.followers)) {
 		await Users.update({ id: exist.id }, {
-			followersCount: person.followers.totalItems || exist.followersCount,
+			referenceFollowersCount: person.followers.totalItems || exist.referenceFollowersCount,
+			followersCount: pureFollowersCount,
 		});
 	}
 
 	if (followingCount !== undefined) {
 		await Users.update({ id: exist.id }, {
-			followingCount: followingCount || exist.followingCount,
+			referenceFollowingCount: followingCount || exist.referenceFollowingCount,
+			followingCount: pureFollowingCount,
 		});
 	}	else if (person.following && typeof person.following !== "string" && isCollectionOrOrderedCollection(person.following)) {
 		await Users.update({ id: exist.id }, {
-			followingCount: person.following.totalItems || exist.followingCount,
+			referenceFollowingCount: person.following.totalItems || exist.referenceFollowingCount,
+			followingCount: pureFollowingCount,
 		});
 	}
 

@@ -77,10 +77,12 @@
 								</MkA>
 								<MkA v-click-anime :to="userPage(user, 'following')" :class="{ active: page === 'following' }">
 									<b>{{ number(user.followingCount) }}</b>
+									<b v-if="user.host != null">{{ '(' +  number(user.referenceFollowingCount) + ')' }}</b>
 									<span>{{ $ts.following }}</span>
 								</MkA>
 								<MkA v-click-anime :to="userPage(user, 'followers')" :class="{ active: page === 'followers' }">
 									<b>{{ number(user.followersCount) }}</b>
+									<b v-if="user.host != null">{{ '(' +  number(user.referenceFollowersCount) + ')' }}</b>
 									<span>{{ $ts.followers }}</span>
 								</MkA>
 							</div>

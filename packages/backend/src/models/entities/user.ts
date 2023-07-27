@@ -70,6 +70,18 @@ export class User {
 
 	@Column('integer', {
 		default: 0,
+		comment: 'The count of followers.',
+	})
+	public referenceFollowersCount: number;
+
+	@Column('integer', {
+		default: 0,
+		comment: 'The count of following.',
+	})
+	public referenceFollowingCount: number;
+
+	@Column('integer', {
+		default: 0,
 		comment: 'The count of notes.',
 	})
 	public notesCount: number;

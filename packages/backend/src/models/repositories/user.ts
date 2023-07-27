@@ -312,6 +312,8 @@ export class UserRepository extends Repository<User> {
 				fields: profile!.fields,
 				followersCount: followersCount || 0,
 				followingCount: followingCount || 0,
+				referenceFollowersCount: user.referenceFollowersCount || 0,
+				referenceFollowingCount: user.referenceFollowingCount || 0,
 				notesCount: notesCount || 0,
 				pinnedNoteIds: pins.map(pin => pin.noteId),
 				pinnedNotes: Notes.packMany(pins.map(pin => pin.note!), me, {
