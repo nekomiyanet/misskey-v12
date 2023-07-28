@@ -929,6 +929,7 @@ allowedInstancesDescription: "Hosts of servers to be whitelisted for federation,
   separated by a new line (only applies in private mode)."
 sendModNotification: "Send Moderation Notification"
 allowFollow: "Allow Follow"
+allowFollowDescription: "If disabled, All follows or follow requests will be rejected."
 
 _emailUnavailable:
   used: "This email address is already being used"

@@ -927,6 +927,7 @@ allowedInstances: "許可されたインスタンス"
 allowedInstancesDescription: "許可したいインスタンスのホストを改行で区切って設定します。非公開モードだけで有効です。"
 sendModNotification: "管理上のお知らせを送信する"
 allowFollow: "フォローを許可する"
+allowFollowDescription: "オフにすると全てのフォローもしくはフォローリクエストのActivityは拒否されます。"
 
 _emailUnavailable:
   used: "既に使用されています"
