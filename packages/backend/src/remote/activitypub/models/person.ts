@@ -207,6 +207,8 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 				isCat: (person as any).isCat === true,
 				isFox: (person as any).isFox === true,
 				showTimelineReplies: false,
+				movedToUri: person.movedTo,
+				alsoKnownAs: person.alsoKnownAs,
 			})) as IRemoteUser;
 
 			await transactionalEntityManager.save(new UserProfile({
@@ -456,6 +458,8 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 		isFox: (person as any).isFox === true,
 		isLocked: !!person.manuallyApprovesFollowers,
 		isExplorable: !!person.discoverable,
+		movedToUri: person.movedTo,
+		alsoKnownAs: person.alsoKnownAs,
 	} as Partial<User>;
 
 	if (avatar) {

@@ -291,6 +291,8 @@ export class UserRepository extends Repository<User> {
 			...(opts.detail ? {
 				url: sanitizeUrl(profile!.url),
 				uri: sanitizeUrl(user.uri),
+				movedToUri: sanitizeUrl(user.movedToUri) || null,
+				alsoKnownAs: user.alsoKnownAs || null,
 				createdAt: user.createdAt.toISOString(),
 				updatedAt: user.updatedAt ? user.updatedAt.toISOString() : null,
 				lastFetchedAt: user.lastFetchedAt ? user.lastFetchedAt.toISOString() : null,

@@ -99,6 +99,23 @@ export const packedUserDetailedNotMeOnlySchema = {
 			format: 'uri',
 			nullable: true, optional: false,
 		},
+		movedToUri: {
+			type: 'string',
+			format: 'uri',
+			nullable: true,
+			optional: false,
+		},
+		alsoKnownAs: {
+			type: 'array',
+			nullable: true,
+			optional: false,
+			items: {
+				type: 'string',
+				format: 'uri',
+				nullable: false,
+				optional: false,
+			},
+		},
 		createdAt: {
 			type: 'string',
 			nullable: false, optional: false,

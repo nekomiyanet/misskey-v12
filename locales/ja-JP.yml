@@ -928,6 +928,7 @@ allowedInstancesDescription: "許可したいインスタンスのホストを�
 sendModNotification: "管理上のお知らせを送信する"
 allowFollow: "フォローを許可する"
 allowFollowDescription: "オフにすると全てのフォローもしくはフォローリクエストのActivityは拒否されます。"
+movedUserCaution: "このユーザーは新しいアカウントに引っ越しました"
 
 _emailUnavailable:
   used: "既に使用されています"

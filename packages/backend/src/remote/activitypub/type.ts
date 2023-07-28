@@ -23,6 +23,8 @@ export interface IObject {
 	href?: string;
 	tag?: IObject | IObject[];
 	sensitive?: boolean;
+	movedTo?: string;
+	alsoKnownAs?: string[];
 }
 
 /**

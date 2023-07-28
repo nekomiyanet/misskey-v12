@@ -10,6 +10,7 @@
 
 					<div class="profile">
 						<MkRemoteCaution v-if="user.host != null" :href="user.url" class="warn"/>
+						<MkMovedCaution v-if="user.movedToUri != null" :href="user.movedToUri" class="warn"/>
 
 						<div :key="user.id" class="_block main">
 							<div class="banner-container" :style="style">
@@ -134,6 +135,7 @@ import MkFollowButton from '@/components/follow-button.vue';
 import MkContainer from '@/components/ui/container.vue';
 import MkFolder from '@/components/ui/folder.vue';
 import MkRemoteCaution from '@/components/remote-caution.vue';
+import MkMovedCaution from '@/components/moved-caution.vue';
 import MkTab from '@/components/tab.vue';
 import MkInfo from '@/components/ui/info.vue';
 import * as Acct from 'misskey-js/built/acct';
@@ -151,6 +153,7 @@ export default defineComponent({
 		MkFollowButton,
 		MkContainer,
 		MkRemoteCaution,
+		MkMovedCaution,
 		MkFolder,
 		MkTab,
 		MkInfo,
