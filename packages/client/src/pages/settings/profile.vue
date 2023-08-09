@@ -4,8 +4,10 @@
 		<div class="avatar _acrylic">
 			<MkAvatar class="avatar" :user="$i" :disable-link="true" @click="changeAvatar"/>
 			<MkButton primary class="avatarEdit" @click="changeAvatar">{{ i18n.ts._profile.changeAvatar }}</MkButton>
+			<MkButton primary danger class="avatarEdit" @click="deleteAvatar">{{ i18n.ts.delete }}</MkButton>
 		</div>
 		<MkButton primary class="bannerEdit" @click="changeBanner">{{ i18n.ts._profile.changeBanner }}</MkButton>
+		<MkButton primary danger class="bannerDelete" @click="deleteBanner">{{ i18n.ts.delete }}</MkButton>
 	</div>
 
 	<FormInput v-model="profile.name" :max="30" manual-save class="_formBlock">
@@ -145,6 +147,13 @@ function changeAvatar(ev) {
 	});
 }
 
+function deleteAvatar(ev) {
+	os.apiWithDialog('i/update', {
+		avatarId: null,
+		avatarUrl: null,
+	});
+}
+
 function changeBanner(ev) {
 	selectFile(ev.currentTarget ?? ev.target, i18n.ts.banner).then(async (file) => {
 		const i = await os.apiWithDialog('i/update', {
@@ -152,6 +161,13 @@ function changeBanner(ev) {
 		});
 		$i.bannerId = i.bannerId;
 		$i.bannerUrl = i.bannerUrl;
+	});
+}
+
+function deleteBanner(ev) {
+	os.apiWithDialog('i/update', {
+		bannerId: null,
+		bannerUrl: null,
 	});
 }
 
@@ -188,6 +204,12 @@ defineExpose({
 	> .bannerEdit {
 		position: absolute;
 		top: 16px;
+		right: 16px;
+	}
+
+	> .bannerDelete {
+		position: absolute;
+		bottom: 16px;
 		right: 16px;
 	}
 }
