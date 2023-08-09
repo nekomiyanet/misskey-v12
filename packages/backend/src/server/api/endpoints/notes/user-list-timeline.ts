@@ -5,6 +5,11 @@ import { makePaginationQuery } from '../../common/make-pagination-query.js';
 import { generateVisibilityQuery } from '../../common/generate-visibility-query.js';
 import { activeUsersChart } from '@/services/chart/index.js';
 import { Brackets } from 'typeorm';
+import { generateMutedUserQuery } from '../../common/generate-muted-user-query.js';
+import { generateMutedInstanceQuery } from '../../common/generate-muted-instance-query.js';
+import { generateMutedNoteQuery } from '../../common/generate-muted-note-query.js';
+import { generateBlockedUserQuery, generateBlockingUserQuery } from '../../common/generate-block-query.js';
+import { generateMutedUserRenotesQueryForNotes } from '../../common/generated-muted-renote-query.js';
 
 export const meta = {
 	tags: ['notes', 'lists'],
@@ -79,6 +84,14 @@ export default define(meta, paramDef, async (ps, user) => {
 		.setParameters(listQuery.getParameters());
 
 	generateVisibilityQuery(query, user);
+	generateMutedUserQuery(query, user);
+	generateMutedInstanceQuery(query, user);
+	generateMutedNoteQuery(query, user);
+	generateBlockingUserQuery(query, user);
+	if (user && !user.isAdmin && !user.isModerator) {
+		generateBlockedUserQuery(query, user);
+	}
+	generateMutedUserRenotesQueryForNotes(query, user);
 
 	if (ps.includeMyRenotes === false) {
 		query.andWhere(new Brackets(qb => {
