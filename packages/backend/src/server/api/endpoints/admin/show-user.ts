@@ -41,6 +41,7 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	// Calculate drive usage
 	const usage = await DriveFiles.calcDriveUsageOf(ps.userId);
+	const capacity = await Users.isLocalUser(user) ? (1024 * 1024 * instance.localDriveCapacityMb) : (1024 * 1024 * (instance.remoteDriveCapacityMb));
 
 	const maskedKeys = ['accessToken', 'accessTokenSecret', 'refreshToken'];
 	Object.keys(profile.integrations).forEach(integration => {
@@ -59,7 +60,7 @@ export default define(meta, paramDef, async (ps, me) => {
 			isForceSensitive: user.isForceSensitive,
 			isDisabled: user.isDisabled,
 			isHidden: user.isHidden,
-			capacity: 1024 * 1024 * instance.localDriveCapacityMb,
+			capacity: capacity,
 			usage: usage,
 		};
 	}
@@ -86,7 +87,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		isForceSensitive: user.isForceSensitive,
 		isDisabled: user.isDisabled,
 		isHidden: user.isHidden,
-		capacity: 1024 * 1024 * instance.localDriveCapacityMb,
+		capacity: capacity,
 		usage: usage,
 	};
 });
