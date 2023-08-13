@@ -89,6 +89,7 @@ export type Source = {
 	signToActivityPubGet?: boolean;
 
 	hideServerInfo?: boolean;
+	disableAntenna?: boolean;
 };
 
 /**
