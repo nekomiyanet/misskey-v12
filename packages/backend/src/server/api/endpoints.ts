@@ -242,6 +242,7 @@ import * as ep___notes_globalTimeline from './endpoints/notes/global-timeline.js
 import * as ep___notes_hybridTimeline from './endpoints/notes/hybrid-timeline.js';
 import * as ep___notes_localTimeline from './endpoints/notes/local-timeline.js';
 import * as ep___notes_catTimeline from './endpoints/notes/cat-timeline.js';
+import * as ep___notes_mediaTimeline from './endpoints/notes/media-timeline.js';
 import * as ep___notes_modTimeline from './endpoints/notes/mod-timeline.js';
 import * as ep___notes_limitedTimeline from './endpoints/notes/limited-timeline.js';
 import * as ep___notes_mentions from './endpoints/notes/mentions.js';
@@ -566,6 +567,7 @@ const eps = [
 	['notes/hybrid-timeline', ep___notes_hybridTimeline],
 	['notes/local-timeline', ep___notes_localTimeline],
 	['notes/cat-timeline', ep___notes_catTimeline],
+	['notes/media-timeline', ep___notes_mediaTimeline],
 	['notes/mod-timeline', ep___notes_modTimeline],
 	['notes/limited-timeline', ep___notes_limitedTimeline],
 	['notes/mentions', ep___notes_mentions],

@@ -5,6 +5,7 @@
 			<i v-if="widgetProps.src === 'home'" class="fas fa-home"></i>
 			<i v-else-if="widgetProps.src === 'local'" class="fas fa-comments"></i>
 			<i v-else-if="widgetProps.src === 'social'" class="fas fa-share-alt"></i>
+			<i v-else-if="widgetProps.src === 'media'" class="fas fa-camera"></i>
 			<i v-else-if="widgetProps.src === 'cat'" class="fas fa-paw"></i>
 			<i v-else-if="widgetProps.src === 'mod'" class="fas fa-bookmark"></i>
 			<i v-else-if="widgetProps.src === 'limited'" class="fas fa-unlock"></i>
@@ -16,7 +17,7 @@
 		</button>
 	</template>
 
-	<div v-if="((widgetProps.src === 'local' || widgetProps.src === 'social') && !isLocalTimelineAvailable) || (widgetProps.src === 'cat' && !isCatTimelineAvailable) || (widgetProps.src === 'mod' && !isModTimelineAvailable) || (widgetProps.src === 'limited' && !isLimitedTimelineAvailable) || (widgetProps.src === 'global' && !isGlobalTimelineAvailable)" class="iwaalbte">
+	<div v-if="((widgetProps.src === 'local' || widgetProps.src === 'social') && !isLocalTimelineAvailable) || (widgetProps.src === 'cat' && !isCatTimelineAvailable) || (widgetProps.src === 'mod' && !isModTimelineAvailable) || (widgetProps.src === 'limited' && !isLimitedTimelineAvailable) || (widgetProps.src === 'global' && !isGlobalTimelineAvailable) || (widgetProps.src === 'media' && !isMediaTimelineAvailable)" class="iwaalbte">
 		<p>
 			<i class="fas fa-minus-circle"></i>
 			{{ $ts.disabledTimelineTitle }}
@@ -81,6 +82,7 @@ const isGlobalTimelineAvailable = (!instance.disableGlobalTimeline || ($i != nul
 const isModTimelineAvailable = $i != null && ($i.isModerator || $i.isAdmin) && defaultStore.state.enableMTL;
 const isCatTimelineAvailable = $i != null && $i.isCat && defaultStore.state.enableCTL;
 const isLimitedTimelineAvailable = $i != null && defaultStore.state.enableLimitedTL;
+const isMediaTimelineAvailable = (!instance.disableLocalTimeline || ($i != null && ($i.isModerator || $i.isAdmin))) && defaultStore.state.enableMediaTL;
 
 const { widgetProps, configure, save } = useWidgetPropsManager(name,
 	widgetPropsDef,
@@ -137,6 +139,10 @@ const choose = async (ev) => {
 		text: i18n.ts._timelines.cat,
 		icon: 'fas fa-paw',
 		action: () => { setSrc('cat') }
+	}] : []), ...(isMediaTimelineAvailable ? [{
+		text: i18n.ts._timelines.media,
+		icon: 'fas fa-camera',
+		action: () => { setSrc('media') }
 	}] : []), ...(isModTimelineAvailable ? [{
 		text: i18n.ts._timelines.mod,
 		icon: 'fas fa-bookmark',

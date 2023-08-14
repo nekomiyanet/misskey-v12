@@ -1,6 +1,7 @@
 import main from './main.js';
 import homeTimeline from './home-timeline.js';
 import localTimeline from './local-timeline.js';
+import mediaTimeline from './media-timeline.js';
 import hybridTimeline from './hybrid-timeline.js';
 import globalTimeline from './global-timeline.js';
 import catTimeline from './cat-timeline.js';
@@ -21,6 +22,7 @@ export default {
 	main,
 	homeTimeline,
 	localTimeline,
+	mediaTimeline,
 	hybridTimeline,
 	globalTimeline,
 	catTimeline,

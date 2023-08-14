@@ -835,6 +835,7 @@ enableCTL: "ねこタイムラインを有効化"
 enableLTL: "ローカルタイムラインを有効化"
 enableGTL: "グローバルタイムラインを有効化"
 enableMTL: "モデタイムラインを有効化"
+enableMediaTL: "メディアタイムラインを有効化"
 keepCw: "CWを維持する"
 pubSub: "Pub/Subのアカウント"
 lastCommunication: "直近の通信"
@@ -1451,6 +1452,7 @@ _timelines:
   global: "グローバル"
   cat: "ねこ"
   mod: "モデ"
+  media: "メディア"
 
 _pages:
   newPage: "ページの作成"

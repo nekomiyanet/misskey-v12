@@ -3,6 +3,7 @@
 	<template #header>
 		<i v-if="column.tl === 'home'" class="fas fa-home"></i>
 		<i v-else-if="column.tl === 'local'" class="fas fa-comments"></i>
+		<i v-else-if="column.tl === 'media'" class="fas fa-camera"></i>
 		<i v-else-if="column.tl === 'social'" class="fas fa-share-alt"></i>
 		<i v-else-if="column.tl === 'cat'" class="fas fa-paw"></i>
 		<i v-else-if="column.tl === 'mod'" class="fas fa-bookmark"></i>
@@ -11,7 +12,7 @@
 		<span style="margin-left: 8px;">{{ column.name }}</span>
 	</template>
 
-	<div v-if="disabled || ((column.tl === 'local' || column.tl === 'social') && !this.enableLTL) || (column.tl === 'cat' && (!this.enableCTL || !this.$i.isCat)) || (column.tl === 'mod' && !this.enableMTL) || (column.tl === 'limited' && !this.enableLimitedTL) || (column.tl === 'global' && !this.enableGTL)" class="iwaalbte">
+	<div v-if="disabled || ((column.tl === 'local' || column.tl === 'social') && !this.enableLTL) || (column.tl === 'cat' && (!this.enableCTL || !this.$i.isCat)) || (column.tl === 'mod' && (!this.enableMTL || (!this.$i.isModerator && !this.$i.isAdmin))) || (column.tl === 'limited' && !this.enableLimitedTL) || (column.tl === 'global' && !this.enableGTL) || (column.tl === 'media' && !this.enableMediaTL)" class="iwaalbte">
 		<p>
 			<i class="fas fa-minus-circle"></i>
 			{{ $ts.disabledTimelineTitle }}
@@ -58,6 +59,7 @@ export default defineComponent({
 			enableMTL: false,
 			enableGTL: false,
 			enableLTL: false,
+			enableMediaTL: false,
 		};
 	},
 
@@ -72,7 +74,7 @@ export default defineComponent({
 			this.setType();
 		} else {
 			this.disabled = !this.$i.isModerator && !this.$i.isAdmin && (
-				this.$instance.disableLocalTimeline && ['local', 'social'].includes(this.column.tl) ||
+				this.$instance.disableLocalTimeline && ['local', 'social', 'media'].includes(this.column.tl) ||
 				this.$instance.disableGlobalTimeline && ['global'].includes(this.column.tl) ||
 				['mod'].includes(this.column.tl));
 		}
@@ -81,6 +83,7 @@ export default defineComponent({
 		this.enableCTL = defaultStore.state.enableCTL;
 		this.enableMTL = defaultStore.state.enableMTL;
 		this.enableGTL = defaultStore.state.enableGTL;
+		this.enableMediaTL = defaultStore.state.enableMediaTL;
 	},
 
 	methods: {
@@ -91,6 +94,8 @@ export default defineComponent({
 					value: 'home', text: this.$ts._timelines.home
 				}, {
 					value: 'local', text: this.$ts._timelines.local
+				}, {
+					value: 'media', text: this.$ts._timelines.media
 				}, {
 					value: 'social', text: this.$ts._timelines.social
 				}, {
