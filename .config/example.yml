@@ -126,6 +126,9 @@ id: 'aid'
 # Whether Disable Antenna
 #disableAntenna: true
 
+# Whether Disable Search
+#disableSearch: true
+
 # Whether disable HSTS
 #disableHsts: true
 

@@ -90,6 +90,7 @@ export type Source = {
 
 	hideServerInfo?: boolean;
 	disableAntenna?: boolean;
+	disableSearch?: boolean;
 };
 
 /**
