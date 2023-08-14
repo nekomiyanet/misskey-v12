@@ -162,6 +162,11 @@ export default defineComponent({
 				text: i18n.ts.abuseReports,
 				to: '/admin/abuses',
 				active: page.value === 'abuses',
+			}, {
+				icon: 'fas fa-clock-rotate-left',
+				text: i18n.ts.moderationlogs,
+				to: '/admin/moderation-logs',
+				active: page.value === 'moderation-logs',
 			}],
 		}, {
 			title: i18n.ts.settings,
@@ -248,6 +253,7 @@ export default defineComponent({
 				case 'ads': return defineAsyncComponent(() => import('./ads.vue'));
 				case 'database': return defineAsyncComponent(() => import('./database.vue'));
 				case 'abuses': return defineAsyncComponent(() => import('./abuses.vue'));
+				case 'moderation-logs': return defineAsyncComponent(() => import('./moderation-logs.vue'));
 				case 'settings': return defineAsyncComponent(() => import('./settings.vue'));
 				case 'email-settings': return defineAsyncComponent(() => import('./email-settings.vue'));
 				case 'security': return defineAsyncComponent(() => import('./security.vue'));
