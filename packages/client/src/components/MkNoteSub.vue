@@ -45,6 +45,7 @@ import { userPage } from "@/filters/user";
 import { checkWordMute } from "@/scripts/check-word-mute";
 import { defaultStore } from "@/store";
 import { i18n } from '@/i18n';
+import { $i } from '@/account';
 
 const props = withDefaults(defineProps<{
 	note: misskey.entities.Note;
