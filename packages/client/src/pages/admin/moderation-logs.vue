@@ -1,5 +1,13 @@
 <template>
 <div class="ztgjmzrw">
+	<div class="inputs" style="display: flex; padding-top: 1.2em;">
+		<MkInput v-model="searchUser" :debounce="true" type="search" style="margin: 0; flex: 1;">
+			<template #label>UserId</template>
+		</MkInput>
+		<MkInput v-model="type" :debounce="true" type="search" style="margin: 0; flex: 1;">
+			<template #label>Type</template>
+		</MkInput>
+	</div>
 	<MkPagination v-slot="{items : logs}" :pagination="pagination" class="ruryvtyk _content">
 	<section v-for="log in logs" class="_card _gap logs">
 		<div class="_content log">
@@ -19,43 +27,32 @@
 </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script lang="ts" setup>
+import { computed } from 'vue';
 import MkInput from '@/components/form/input.vue';
 import MkTextarea from '@/components/form/textarea.vue';
 import MkPagination from '@/components/ui/pagination.vue';
 import * as os from '@/os';
 import * as symbols from '@/symbols';
+import { i18n } from '@/i18n';
 
-export default defineComponent({
-	components: {
-		MkInput,
-		MkTextarea,
-		MkPagination,
-	},
+let type = $ref(null);
+let searchUser = $ref('');
+const pagination = {
+	endpoint: 'admin/show-moderation-logs' as const,
+	limit: 10,
+	params: computed(() => ({
+		type: (type && type !== '') ? type : null,
+		userId: (searchUser && searchUser !== '') ? searchUser : null,
+	})),
+};
 
-	emits: ['info'],
-
-	data() {
-		return {
-			[symbols.PAGE_INFO]: {
-				title: this.$ts.moderationlogs,
-				icon: 'fas fa-clock-rotate-left',
-				bg: 'var(--bg)',
-			},
-			logs: [],
-			pagination: {
-				endpoint: 'admin/show-moderation-logs' as const,
-				limit: 10,
-			},
-		}
-	},
-
-	created() {
-		os.api('admin/show-moderation-logs').then(logs => {
-			this.logs = logs;
-		});
-	},
+defineExpose({
+	[symbols.PAGE_INFO]: computed(() => ({
+		title: i18n.ts.moderationlogs,
+		icon: 'fas fa-clock-rotate-left',
+		bg: 'var(--bg)',
+	})),
 });
 </script>
 
