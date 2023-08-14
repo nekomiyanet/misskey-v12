@@ -4,10 +4,10 @@
 		<div class="avatar _acrylic">
 			<MkAvatar class="avatar" :user="$i" :disable-link="true" @click="changeAvatar"/>
 			<MkButton primary class="avatarEdit" @click="changeAvatar">{{ i18n.ts._profile.changeAvatar }}</MkButton>
-			<MkButton primary danger class="avatarEdit" @click="deleteAvatar">{{ i18n.ts.delete }}</MkButton>
+			<MkButton v-if="$i.avatarId != null" primary danger class="avatarEdit" @click="deleteAvatar">{{ i18n.ts.delete }}</MkButton>
 		</div>
 		<MkButton primary class="bannerEdit" @click="changeBanner">{{ i18n.ts._profile.changeBanner }}</MkButton>
-		<MkButton primary danger class="bannerDelete" @click="deleteBanner">{{ i18n.ts.delete }}</MkButton>
+		<MkButton v-if="$i.bannerId != null" primary danger class="bannerDelete" @click="deleteBanner">{{ i18n.ts.delete }}</MkButton>
 	</div>
 
 	<FormInput v-model="profile.name" :max="30" manual-save class="_formBlock">
@@ -147,7 +147,12 @@ function changeAvatar(ev) {
 	});
 }
 
-function deleteAvatar(ev) {
+async function deleteAvatar(ev) {
+	const { canceled } = await os.confirm({
+		type: 'warning',
+		text: i18n.ts.deleteConfirm,
+	});
+	if (canceled) return;
 	os.apiWithDialog('i/update', {
 		avatarId: null,
 		avatarUrl: null,
@@ -164,7 +169,12 @@ function changeBanner(ev) {
 	});
 }
 
-function deleteBanner(ev) {
+async function deleteBanner(ev) {
+	const { canceled } = await os.confirm({
+		type: 'warning',
+		text: i18n.ts.deleteConfirm,
+	});
+	if (canceled) return;
 	os.apiWithDialog('i/update', {
 		bannerId: null,
 		bannerUrl: null,
