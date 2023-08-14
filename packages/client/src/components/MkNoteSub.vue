@@ -1,5 +1,5 @@
 <template>
-<div v-size="{ max: [450] }" class="wrpstxzv" :class="{ children: depth > 1 }">
+<div v-if="!muted" v-size="{ max: [450] }" class="wrpstxzv" :class="{ children: depth > 1 }">
 	<div class="main">
 		<MkAvatar class="avatar" :user="note.user"/>
 		<div class="body">
@@ -22,16 +22,29 @@
 		<MkA class="text _link" :to="notePage(note)">{{ $ts.continueThread }} <i class="fas fa-angle-double-right"></i></MkA>
 	</div>
 </div>
+<div v-else class="muted" @click="muted = false">
+	<I18n :src="i18n.ts.userSaysSomething" tag="small">
+		<template #name>
+			<MkA v-user-preview="note.userId" class="name" :to="userPage(note.user)">
+				<MkUserName :user="note.user"/>
+			</MkA>
+		</template>
+	</I18n>
+</div>
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
+import { ref } from 'vue';
 import * as misskey from 'misskey-js';
 import { notePage } from '@/filters/note';
 import XNoteHeader from './note-header.vue';
 import MkNoteSubNoteContent from './sub-note-content.vue';
 import XCwButton from './cw-button.vue';
 import * as os from '@/os';
+import { userPage } from "@/filters/user";
+import { checkWordMute } from "@/scripts/check-word-mute";
+import { defaultStore } from "@/store";
+import { i18n } from '@/i18n';
 
 const props = withDefaults(defineProps<{
 	note: misskey.entities.Note;
@@ -42,6 +55,8 @@ const props = withDefaults(defineProps<{
 }>(), {
 	depth: 1,
 });
+
+const muted = ref(checkWordMute(props.note, $i, defaultStore.state.mutedWords));
 
 let showContent = $ref(false);
 let replies: misskey.entities.Note[] = $ref([]);
@@ -125,5 +140,11 @@ if (props.detail) {
 	> .more {
 		padding: 10px 0 0 16px;
 	}
+}
+
+.muted {
+	padding: 8px;
+	text-align: center;
+	opacity: 0.7;
 }
 </style>
