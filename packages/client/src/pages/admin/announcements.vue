@@ -21,6 +21,9 @@
 			</div>
 		</div>
 	</section>
+	<MkButton class="button" @click="more()">
+		<i class="fas fa-rotate-right"></i>{{ $ts.more }}
+	</MkButton>
 </div>
 </template>
 
@@ -117,6 +120,14 @@ export default defineComponent({
 		refresh() {
 			os.api('admin/announcements/list').then(announcements => {
 				this.announcements = announcements;
+			});
+		},
+
+		more() {
+			const announcements = this.announcements;
+
+			os.api('admin/announcements/list', { untilId: announcements.reduce((acc, announcement) => announcement.id != null ? announcement : acc).id }).then(announcements => {
+				this.announcements = this.announcements.concat(announcements);
 			});
 		}
 
