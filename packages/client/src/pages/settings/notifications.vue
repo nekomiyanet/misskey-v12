@@ -14,7 +14,7 @@ import { defineComponent } from 'vue';
 import FormButton from '@/components/ui/button.vue';
 import FormLink from '@/components/form/link.vue';
 import FormSection from '@/components/form/section.vue';
-import { notificationTypes } from 'misskey-js';
+import { notificationTypes } from '@/const';
 import * as os from '@/os';
 import * as symbols from '@/symbols';
 
@@ -26,7 +26,7 @@ export default defineComponent({
 	},
 
 	emits: ['info'],
-	
+
 	data() {
 		return {
 			[symbols.PAGE_INFO]: {
