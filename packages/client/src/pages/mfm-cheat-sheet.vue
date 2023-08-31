@@ -293,6 +293,16 @@
 			</div>
 		</div>
 	</div>
+	<div class="section _block">
+		<div class="title">{{ $ts._mfm.plain }}</div>
+		<div class="content">
+			<p>{{ $ts._mfm.plainDescription }}</p>
+			<div class="preview">
+				<Mfm :text="preview_plain"/>
+				<MkTextarea v-model="preview_plain"><span>MFM</span></MkTextarea>
+			</div>
+		</div>
+	</div>
 </div>
 </template>
 
@@ -341,6 +351,7 @@ export default defineComponent({
 			preview_rainbow: `$[rainbow 🍮]`,
 			preview_sparkle: `$[sparkle 🍮]`,
 			preview_rotate: `$[rotate 🍮]`,
+			preview_plain: '<plain>**bold** @mention #hashtag `code` $[x2 🍮]</plain>',
 		}
 	},
 });

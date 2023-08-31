@@ -20,6 +20,10 @@
 				<i class="fas fa-question-circle icon"></i>
 				<div class="text">{{ $ts.help }}</div>
 			</a>
+			<a v-click-anime to="/mfm-cheat-sheet" @click.passive="close()">
+				<i class="fas fa-question-circle icon"></i>
+				<div class="text">{{ $ts._mfm.cheatSheet }}</div>
+			</a>
 			<MkA v-click-anime to="/about" @click.passive="close()">
 				<i class="fas fa-info-circle icon"></i>
 				<div class="text">{{ $t('aboutX', { x: instanceName }) }}</div>
