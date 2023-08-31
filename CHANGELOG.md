@@ -8,6 +8,22 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20230831163450 (2023/08/31)
+## Improvements
+- Refreshボタンをメニューに追加 @atsu1125
+- feat: support <plain> syntax for mfm @syuilo
+- Bump mfm-js to 0.23.3 @atsu1125
+- MFM Cheat Sheetをメニューから辿り着けるように @atsu1125
+- 広告一覧を表示できるように @atsu1125
+- enhance(federation): use ActivityPub defined property in favour of proprietary property @Johann150
+
+## Bugfixes
+- 通知のタイプをmisskey-jsからconstに変更 @atsu1125
+- recognize null in _misskey_content for notes @Johann150
+- fix: correctly render note text @Johann150
+- fix _misskey_content of quote renotes @Johann150
+- fix(client): 「インスタンスからのお知らせを受け取る」の設定を変更できない問題を修正 @syuilo
+
 ## 12.108.1-nekomiya-20230814185036 (2023/08/14)
 ## Improvements
 - 登録日時・ノート数・フォロー数・フォロワー数を他のインスタンスと同期できるように @atsu1125
