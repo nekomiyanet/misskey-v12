@@ -174,6 +174,11 @@ export const menuDef = reactive({
 		show: computed(() => $i != null && $i.isCat),
 		to: '/cat-featured',
 	},
+	ads: {
+		title: 'ads',
+		icon: 'fas fa-audio-description',
+		to: '/ads',
+	},
 	ui: {
 		title: 'switchUi',
 		icon: 'fas fa-columns',
