@@ -37,6 +37,9 @@ import * as ep___admin_getIndexStats from './endpoints/admin/get-index-stats.js'
 import * as ep___admin_getTableStats from './endpoints/admin/get-table-stats.js';
 import * as ep___admin_hideUser from './endpoints/admin/hide-user.js';
 import * as ep___admin_invite from './endpoints/admin/invite.js';
+import * as ep___admin_invite_create from './endpoints/admin/invite/create.js';
+import * as ep___admin_invite_list from './endpoints/admin/invite/list.js';
+import * as ep___admin_invite_delete from './endpoints/admin/invite/delete.js';
 import * as ep___admin_moderators_add from './endpoints/admin/moderators/add.js';
 import * as ep___admin_moderators_remove from './endpoints/admin/moderators/remove.js';
 import * as ep___admin_promo_create from './endpoints/admin/promo/create.js';
@@ -362,6 +365,9 @@ const eps = [
 	['admin/get-table-stats', ep___admin_getTableStats],
 	['admin/hide-user', ep___admin_hideUser],
 	['admin/invite', ep___admin_invite],
+	['admin/invite/create', ep___admin_invite_create],
+	['admin/invite/list', ep___admin_invite_list],
+	['admin/invite/delete', ep___admin_invite_delete],
 	['admin/moderators/add', ep___admin_moderators_add],
 	['admin/moderators/remove', ep___admin_moderators_remove],
 	['admin/promo/create', ep___admin_promo_create],

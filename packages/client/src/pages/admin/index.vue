@@ -109,12 +109,7 @@ export default defineComponent({
 				icon: 'fas fa-search',
 				text: i18n.ts.lookup,
 				action: lookup,
-			}, ...(instance.disableRegistration ? [{
-				type: 'button',
-				icon: 'fas fa-user',
-				text: i18n.ts.invite,
-				action: invite,
-			}] : [])],
+			}],
 		}, {
 			title: i18n.ts.administration,
 			items: [{
@@ -167,6 +162,11 @@ export default defineComponent({
 				text: i18n.ts.moderationlogs,
 				to: '/admin/moderation-logs',
 				active: page.value === 'moderation-logs',
+			}, {
+				icon: 'fas fa-user',
+				text: i18n.ts.invite,
+				to: '/admin/invites',
+				active: page.value === 'invites',
 			}],
 		}, {
 			title: i18n.ts.settings,
@@ -254,6 +254,7 @@ export default defineComponent({
 				case 'database': return defineAsyncComponent(() => import('./database.vue'));
 				case 'abuses': return defineAsyncComponent(() => import('./abuses.vue'));
 				case 'moderation-logs': return defineAsyncComponent(() => import('./moderation-logs.vue'));
+				case 'invites': return defineAsyncComponent(() => import('./invites.vue'));
 				case 'settings': return defineAsyncComponent(() => import('./settings.vue'));
 				case 'email-settings': return defineAsyncComponent(() => import('./email-settings.vue'));
 				case 'security': return defineAsyncComponent(() => import('./security.vue'));
@@ -296,20 +297,6 @@ export default defineComponent({
 			}
 		});
 
-		const invite = () => {
-			os.api('admin/invite').then(x => {
-				os.alert({
-					type: 'info',
-					text: x.code
-				});
-			}).catch(e => {
-				os.alert({
-					type: 'error',
-					text: e
-				});
-			});
-		};
-
 		const lookup = (ev) => {
 			os.popupMenu([{
 				text: i18n.ts.user,
@@ -338,7 +325,6 @@ export default defineComponent({
 			childInfo,
 			pageProps,
 			component,
-			invite,
 			lookup,
 		};
 	},
