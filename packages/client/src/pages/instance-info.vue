@@ -28,7 +28,7 @@
 		<FormSection v-if="iAmModerator">
 			<template #label>Moderation</template>
 			<FormSwitch v-model="suspended" class="_formBlock" @update:modelValue="toggleSuspend">{{ $ts.stopActivityDelivery }}</FormSwitch>
-			<FormSwitch v-model="isBlocked" class="_formBlock" @update:modelValue="toggleBlock">{{ $ts.blockThisInstance }}</FormSwitch>
+			<FormSwitch v-if="$i" :disabled="!$i.isAdmin" v-model="isBlocked" class="_formBlock" @update:modelValue="toggleBlock">{{ $ts.blockThisInstance }}</FormSwitch>
 			<MkButton @click="refreshMetadata">Refresh metadata</MkButton>
 		</FormSection>
 
@@ -54,7 +54,7 @@
 				<template #value><MkTime v-if="instance.latestRequestReceivedAt" :time="instance.latestRequestReceivedAt"/><span v-else>N/A</span></template>
 			</MkKeyValue>
 		</FormSection>
-	
+
 		<FormSection>
 			<MkKeyValue oneline style="margin: 1em 0;">
 				<template #key>Open Registrations</template>
@@ -121,7 +121,7 @@ import * as os from '@/os';
 import number from '@/filters/number';
 import bytes from '@/filters/bytes';
 import * as symbols from '@/symbols';
-import { iAmModerator } from '@/account';
+import { iAmModerator, $i } from '@/account';
 
 const props = defineProps<{
 	host: string;
