@@ -27,6 +27,9 @@
 				<MkInput v-model="type" :debounce="true" type="search" style="margin: 0; flex: 1;">
 					<template #label>MIME type</template>
 				</MkInput>
+				<MkInput v-model="searchUser" :debounce="true" type="search" style="margin: 0; flex: 1;">
+					<template #label>UserId</template>
+				</MkInput>
 			</div>
 			<MkPagination v-slot="{items}" :pagination="pagination" class="urempief">
 				<button v-for="file in items" :key="file.id" class="file _panel _button _gap" @click="show(file, $event)">
@@ -71,6 +74,7 @@ let q = $ref(null);
 let origin = $ref('local');
 let type = $ref(null);
 let searchHost = $ref('');
+let searchUser = $ref('');
 const pagination = {
 	endpoint: 'admin/drive/files' as const,
 	limit: 10,
@@ -78,6 +82,7 @@ const pagination = {
 		type: (type && type !== '') ? type : null,
 		origin: origin,
 		hostname: (searchHost && searchHost !== '') ? searchHost : null,
+		userId: (searchUser && searchUser !== '') ? searchUser : null,
 	})),
 };
 

@@ -1,6 +1,6 @@
 <template>
 <div class="_formRoot">
-	<FormSwitch v-model="allowFollow" class="_formBlock" @update:modelValue="save()">{{ $ts.allowFollow }}</FormSwitch>
+	<FormSwitch v-model="allowFollow" class="_formBlock" @update:modelValue="save()">{{ $ts.allowFollow }}<template #caption>{{ $ts.allowFollowDescription }}</template></FormSwitch>
 	<FormSwitch v-if="allowFollow" v-model="isLocked" class="_formBlock" @update:modelValue="save()">{{ $ts.makeFollowManuallyApprove }}<template #caption>{{ $ts.lockedAccountInfo }}</template></FormSwitch>
 	<FormSwitch v-if="!allowFollow || isLocked" v-model="autoAcceptFollowed" class="_formBlock" @update:modelValue="save()">{{ $ts.autoAcceptFollowed }}</FormSwitch>
 

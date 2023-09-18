@@ -11,7 +11,7 @@ import { computed } from 'vue';
 import XNotifications from '@/components/notifications.vue';
 import * as os from '@/os';
 import * as symbols from '@/symbols';
-import { notificationTypes } from 'misskey-js';
+import { notificationTypes } from '@/const';
 import { i18n } from '@/i18n';
 
 let tab = $ref('all');

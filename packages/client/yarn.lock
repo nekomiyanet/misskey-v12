@@ -3842,12 +3842,12 @@ merge@^2.1.0:
   resolved "https://registry.yarnpkg.com/merge/-/merge-2.1.1.tgz#59ef4bf7e0b3e879186436e8481c06a6c162ca98"
   integrity sha512-jz+Cfrg9GWOZbQAnDQ4hlVnQky+341Yk5ru8bZSe6sIDTCIg8n9i/u7hSQGSVOF3C7lH6mGtqjkiT9G4wFLL0w==
 
-mfm-js@0.22.0:
-  version "0.22.0"
-  resolved "https://registry.yarnpkg.com/mfm-js/-/mfm-js-0.22.0.tgz#f619e6358e865dde948b72c1688615b616f5571f"
-  integrity sha512-81Asd97Sjs66mRiCZ8qpFQvkHt6kDaxdRCUy3OAW8vJJuBADiVs10iHc9SFpqa8g+DJmFG0NduBRYT0/2LtxQQ==
+mfm-js@0.23.3:
+  version "0.23.3"
+  resolved "https://registry.yarnpkg.com/mfm-js/-/mfm-js-0.23.3.tgz#b487b809164cf26220b2c25456e1f77db7311379"
+  integrity sha512-o8scYmbey6rMUmWAlT3k3ntt6khaCLdxlmHhAWV5wTTMj2OK1atQvZfRUq0SIVm1Jig08qlZg/ps71xUqrScNA==
   dependencies:
-    twemoji-parser "14.0.x"
+    twemoji-parser "14.0.0"
 
 micromatch@^4.0.0, micromatch@^4.0.2:
   version "4.0.2"
@@ -5622,7 +5622,7 @@ twemoji-parser@13.1.0:
   resolved "https://registry.yarnpkg.com/twemoji-parser/-/twemoji-parser-13.1.0.tgz#65e7e449c59258791b22ac0b37077349127e3ea4"
   integrity sha512-AQOzLJpYlpWMy8n+0ATyKKZzWlZBJN+G0C+5lhX7Ftc2PeEVdUU/7ns2Pn2vVje26AIZ/OHwFoUbdv6YYD/wGg==
 
-twemoji-parser@14.0.0, twemoji-parser@14.0.x:
+twemoji-parser@14.0.0:
   version "14.0.0"
   resolved "https://registry.yarnpkg.com/twemoji-parser/-/twemoji-parser-14.0.0.tgz#13dabcb6d3a261d9efbf58a1666b182033bf2b62"
   integrity sha512-9DUOTGLOWs0pFWnh1p6NF+C3CkQ96PWmEFwhOVmT3WbecRC+68AIqpsnJXygfkFcp4aXbOp8Dwbhh/HQgvoRxA==

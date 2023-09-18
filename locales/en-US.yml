@@ -835,6 +835,7 @@ enableCTL: "Enable Cat Timeline"
 enableLTL: "Enable Local Timeline"
 enableGTL: "Enable Global Timeline"
 enableMTL: "Enable Mode Timeline"
+enableMediaTL: "Enable Media Timeline"
 keepCw: "Keep content warnings"
 pubSub: "Pub/Sub Accounts"
 lastCommunication: "Last communication"
@@ -929,6 +930,9 @@ allowedInstancesDescription: "Hosts of servers to be whitelisted for federation,
   separated by a new line (only applies in private mode)."
 sendModNotification: "Send Moderation Notification"
 allowFollow: "Allow Follow"
+allowFollowDescription: "If disabled, All follows or follow requests will be rejected."
+movedUserCaution: "User has moved to a new account"
+moderationlogs: "Moderation logs"
 
 _emailUnavailable:
   used: "This email address is already being used"
@@ -1056,6 +1060,8 @@ _mfm:
   sparkleDescription: "Gives content a sparkling particle effect."
   rotate: "Rotate"
   rotateDescription: "Turns content by a specified angle."
+  plain: "Plain"
+  plainDescription: "Deactivates the effects of all MFM contained within this MFM effect."
 _instanceTicker:
   none: "Never show"
   remote: "Show for remote users"
@@ -1410,6 +1416,7 @@ _timelines:
   global: "Global"
   cat: "Cat"
   mod: "Mod"
+  media: "Media"
 _pages:
   newPage: "Create a new Page"
   editPage: "Edit this Page"

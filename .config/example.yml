@@ -123,6 +123,12 @@ id: 'aid'
 # Hide Server Logical stats
 #hideServerInfo: true
 
+# Whether Disable Antenna
+#disableAntenna: true
+
+# Whether Disable Search
+#disableSearch: true
+
 # Whether disable HSTS
 #disableHsts: true
 

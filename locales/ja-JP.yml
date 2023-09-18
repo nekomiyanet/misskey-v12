@@ -835,6 +835,7 @@ enableCTL: "ねこタイムラインを有効化"
 enableLTL: "ローカルタイムラインを有効化"
 enableGTL: "グローバルタイムラインを有効化"
 enableMTL: "モデタイムラインを有効化"
+enableMediaTL: "メディアタイムラインを有効化"
 keepCw: "CWを維持する"
 pubSub: "Pub/Subのアカウント"
 lastCommunication: "直近の通信"
@@ -927,6 +928,9 @@ allowedInstances: "許可されたインスタンス"
 allowedInstancesDescription: "許可したいインスタンスのホストを改行で区切って設定します。非公開モードだけで有効です。"
 sendModNotification: "管理上のお知らせを送信する"
 allowFollow: "フォローを許可する"
+allowFollowDescription: "オフにすると全てのフォローもしくはフォローリクエストのActivityは拒否されます。"
+movedUserCaution: "このユーザーは新しいアカウントに引っ越しました"
+moderationlogs: "モデレーションログ"
 
 _emailUnavailable:
   used: "既に使用されています"
@@ -1066,6 +1070,8 @@ _mfm:
   sparkleDescription: "キラキラしたパーティクルのエフェクトを追加します。"
   rotate: "回転"
   rotateDescription: "指定した角度で回転させます。"
+  plain: "プレーン"
+  plainDescription: "内側の構文を全て無効にします。"
 
 _instanceTicker:
   none: "表示しない"
@@ -1449,6 +1455,7 @@ _timelines:
   global: "グローバル"
   cat: "ねこ"
   mod: "モデ"
+  media: "メディア"
 
 _pages:
   newPage: "ページの作成"

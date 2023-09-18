@@ -49,21 +49,31 @@ export default async (ctx: Router.RouterContext) => {
 	//#region Check ff visibility
 	const profile = await UserProfiles.findOneOrFail(user.id);
 
-	if (profile.ffVisibility === 'private') {
-		ctx.status = 403;
-		ctx.set('Cache-Control', 'public, max-age=30');
-		return;
-	} else if (profile.ffVisibility === 'followers') {
-		ctx.status = 403;
-		ctx.set('Cache-Control', 'public, max-age=30');
-		return;
-	}
+	//if (profile.ffVisibility === 'private') {
+	//	ctx.status = 403;
+	//	ctx.set('Cache-Control', 'public, max-age=30');
+	//	return;
+	//} else if (profile.ffVisibility === 'followers') {
+	//	ctx.status = 403;
+	//	ctx.set('Cache-Control', 'public, max-age=30');
+	//	return;
+	//}
+	const followersCount = profile == null ? 0 :
+		(profile.ffVisibility === 'public') ? user.followersCount :
+		0;
+
 	//#endregion
 
 	const limit = 10;
 	const partOf = `${config.url}/users/${userId}/followers`;
 
 	if (page) {
+		if (profile.ffVisibility !== 'public') {
+			ctx.status = 403;
+			ctx.set('Cache-Control', 'public, max-age=30');
+			return;
+		}
+
 		const query = {
 			followeeId: user.id,
 		} as any;
@@ -90,7 +100,7 @@ export default async (ctx: Router.RouterContext) => {
 				page: 'true',
 				cursor,
 			})}`,
-			user.followersCount, renderedFollowers, partOf,
+			followersCount, renderedFollowers, partOf,
 			undefined,
 			inStock ? `${partOf}?${url.query({
 				page: 'true',
@@ -102,11 +112,11 @@ export default async (ctx: Router.RouterContext) => {
 		setResponseType(ctx);
 	} else {
 		// index page
-		const rendered = renderOrderedCollection(partOf, user.followersCount, `${partOf}?page=true`);
+		const rendered = renderOrderedCollection(partOf, followersCount, (profile.ffVisibility === 'public') ? `${partOf}?page=true` : undefined);
 		ctx.body = renderActivity(rendered);
 		setResponseType(ctx);
 	}
-	
+
 	const meta = await fetchMeta();
 	if (meta.secureMode || meta.privateMode) {
 		ctx.set('Cache-Control', 'private, max-age=0, must-revalidate');

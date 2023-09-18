@@ -8,6 +8,47 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20230831163450 (2023/08/31)
+## Improvements
+- Refreshボタンをメニューに追加 @atsu1125
+- feat: support <plain> syntax for mfm @syuilo
+- Bump mfm-js to 0.23.3 @atsu1125
+- MFM Cheat Sheetをメニューから辿り着けるように @atsu1125
+- 広告一覧を表示できるように @atsu1125
+- enhance(federation): use ActivityPub defined property in favour of proprietary property @Johann150
+
+## Bugfixes
+- 通知のタイプをmisskey-jsからconstに変更 @atsu1125
+- recognize null in _misskey_content for notes @Johann150
+- fix: correctly render note text @Johann150
+- fix _misskey_content of quote renotes @Johann150
+- fix(client): 「インスタンスからのお知らせを受け取る」の設定を変更できない問題を修正 @syuilo
+
+## 12.108.1-nekomiya-20230814185036 (2023/08/14)
+## Improvements
+- 登録日時・ノート数・フォロー数・フォロワー数を他のインスタンスと同期できるように @atsu1125
+- 引越ししたユーザーの引越し先を表示するように @atsu1125
+- モデレータがユーザーのドライブ容量を確認できるように @atsu1125
+- ダイレクト投稿の送信先を公開範囲アイコンのホバーで確認できるように @atsu1125
+- フォローの時にタイムラインを自動でリロードしないように @atsu1125
+- アバターとバナーを消せるように @atsu1125
+- ノート検索とアンテナを無効化できるように @atsu1125
+- メディアタイムラインを追加 @atsu1125
+- モデレーションログを管理画面に追加 @atsu1125
+- モデレーションログをユーザー単位・種類で絞れるように @atsu1125
+- ドライブのファイルをユーザー単位で絞れるように @atsu1125
+- エラー画像などを変更 @morotesovtannu
+
+## Bugfixes
+- 凍結・削除されたユーザーをできるだけ隠すように @atsu1125
+- ユーザーリストタイムラインでミュート・ブロックが効くように @atsu1125
+- 公開投稿が連合タイムラインに出ないことがあるのを修正 @atsu1125
+- 空のアンテナは作成できず・更新もできないように @atsu1125
+- お知らせのURLを空にできないのを修正 @atsu1125
+- お知らせと広告が10件以上管理画面で読めないのを修正 @atsu1125
+- ねこみみの先端を丸める @atsu1125
+- ワードミュートがサブノートに効くように @atsu1125
+
 ## 12.108.1-nekomiya-20230620154528 (2023/06/20)
 ## Improvements
 - 時限ミュートの期間をミュート管理画面から確認できるように @atsu1125

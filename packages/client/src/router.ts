@@ -26,6 +26,7 @@ const defaultRoutes = [
 	{ path: '/announcements', component: page('announcements') },
 	{ path: '/about', component: page('about') },
 	{ path: '/about-misskey', component: page('about-misskey') },
+	{ path: '/ads', component: page('ads') },
 	{ path: '/featured', component: page('featured') },
 	{ path: '/cat-featured', component: ($i && $i.isCat) ? page('cat-featured') : page('not-found') },
 	{ path: '/theme-editor', component: page('theme-editor') },

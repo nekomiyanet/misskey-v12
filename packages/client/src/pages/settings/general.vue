@@ -60,6 +60,7 @@
 		<FormSwitch v-model="enableLTL" class="_formBlock">{{ $ts.enableLTL }}</FormSwitch>
 		<FormSwitch v-model="enableGTL" class="_formBlock">{{ $ts.enableGTL }}</FormSwitch>
 		<FormSwitch v-if="$i.isCat" v-model="enableCTL" class="_formBlock">{{ $ts.enableCTL }}</FormSwitch>
+		<FormSwitch v-model="enableMediaTL" class="_formBlock">{{ $ts.enableMediaTL }}</FormSwitch>
 		<FormSwitch v-if="$i.isModerator || $i.isAdmin" v-model="enableMTL" class="_formBlock">{{ $ts.enableMTL }}</FormSwitch>
 
 		<FormRadios v-model="fontSize" class="_formBlock">
@@ -190,6 +191,7 @@ export default defineComponent({
 		enableLTL: defaultStore.makeGetterSetter('enableLTL'),
 		enableGTL: defaultStore.makeGetterSetter('enableGTL'),
 		enableMTL: defaultStore.makeGetterSetter('enableMTL'),
+		enableMediaTL: defaultStore.makeGetterSetter('enableMediaTL'),
 		enableMfm: defaultStore.makeGetterSetter('enableMfm'),
 		instanceTickerPosition: defaultStore.makeGetterSetter('instanceTickerPosition'),
 		instanceTickerStyle: defaultStore.makeGetterSetter('instanceTickerStyle'),

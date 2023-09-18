@@ -28,6 +28,7 @@ export const paramDef = {
 		type: { type: 'string', nullable: true, pattern: /^[a-zA-Z0-9\/\-*]+$/.toString().slice(1, -1) },
 		origin: { type: 'string', enum: ['combined', 'local', 'remote'], default: "local" },
 		hostname: { type: 'string', nullable: true, default: null },
+		userId: { type: 'string', nullable: true, default: null },
 	},
 	required: [],
 } as const;
@@ -52,6 +53,10 @@ export default define(meta, paramDef, async (ps, me) => {
 		} else {
 			query.andWhere('file.type = :type', { type: ps.type });
 		}
+	}
+
+	if (ps.userId) {
+		query.andWhere('file.userId = :userId', { userId: ps.userId });
 	}
 
 	const files = await query.take(ps.limit).getMany();

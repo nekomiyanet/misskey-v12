@@ -50,6 +50,23 @@
 				<FormButton v-if="user.host == null && iAmModerator" class="_formBlock" @click="sendModNotification"><i class="fas fa-bell"></i> {{ $ts.sendModNotification }}</FormButton>
 			</FormSection>
 
+			<FormSection v-if="iAmModerator">
+				<template #label>{{ $ts.usageAmount }}</template>
+				<div class="_formBlock uawsfosz">
+					<div class="meter"><div :style="meterStyle"></div></div>
+				</div>
+				<FormSplit>
+					<MkKeyValue class="_formBlock">
+						<template #key>{{ $ts.capacity }}</template>
+						<template #value>{{ bytes(capacity, 1) }}</template>
+					</MkKeyValue>
+					<MkKeyValue class="_formBlock">
+						<template #key>{{ $ts.inUse }}</template>
+						<template #value>{{ bytes(usage, 1) }}</template>
+					</MkKeyValue>
+				</FormSplit>
+			</FormSection>
+
 			<FormSection>
 				<template #label>ActivityPub</template>
 
@@ -98,6 +115,7 @@ import bytes from '@/filters/bytes';
 import * as symbols from '@/symbols';
 import { url } from '@/config';
 import { userPage, acct } from '@/filters/user';
+import * as tinycolor from 'tinycolor2';
 
 export default defineComponent({
 	components: {
@@ -144,13 +162,25 @@ export default defineComponent({
 			disabled: false,
 			hidden: false,
 			suspended: false,
+			usage: null,
+			capacity: null,
 		};
 	},
 
 	computed: {
 		iAmModerator(): boolean {
 			return this.$i && (this.$i.isAdmin || this.$i.isModerator);
-		}
+		},
+		meterStyle(): any {
+			return {
+				width: `${this.usage / this.capacity * 100}%`,
+				background: tinycolor({
+					h: 180 - (this.usage / this.capacity * 180),
+					s: 0.7,
+					l: 0.5
+				})
+			};
+		},
 	},
 
 	watch: {
@@ -192,6 +222,8 @@ export default defineComponent({
 					this.disabled = this.info.isDisabled;
 					this.hidden = this.info.isHidden;
 					this.suspended = this.info.isSuspended;
+					this.capacity = this.info.capacity;
+					this.usage = this.info.usage;
 				});
 			} else {
 				return () => os.api('users/show', {
@@ -360,11 +392,29 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+
+@use "sass:math";
+
 .aeakzknw {
 	> .avatar {
 		display: block;
 		width: 64px;
 		height: 64px;
+	}
+}
+
+.uawsfosz {
+
+	> .meter {
+		$size: 12px;
+		background: rgba(0, 0, 0, 0.1);
+		border-radius: math.div($size, 2);
+		overflow: hidden;
+
+		> div {
+			height: $size;
+			border-radius: math.div($size, 2);
+		}
 	}
 }
 </style>

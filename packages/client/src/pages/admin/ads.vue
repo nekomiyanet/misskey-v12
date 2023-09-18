@@ -43,6 +43,9 @@
 				<MkButton class="button" inline danger @click="remove(ad)"><i class="fas fa-trash-alt"></i> {{ $ts.remove }}</MkButton>
 			</div>
 		</div>
+		<MkButton class="button" @click="more()">
+			<i class="fas fa-rotate-right"></i>{{ $ts.more }}
+		</MkButton>
 	</div>
 </MkSpacer>
 </template>
@@ -177,6 +180,23 @@ export default defineComponent({
 					};
 				});
 			});
+		},
+
+		more() {
+	    // Define localTimeDiff and ads before using them
+	    const localTimeDiff = new Date().getTimezoneOffset() * 60 * 1000;
+	    const ads = this.ads;
+
+	    os.api('admin/ad/list', { untilId: ads.reduce((acc, ad) => ad.id != null ? ad : acc).id }).then(ads => {
+	        this.ads = this.ads.concat(ads.map(r => {
+	            const date = new Date(r.expiresAt);
+	            date.setMilliseconds(date.getMilliseconds() - localTimeDiff);
+	            return {
+	                ...r,
+	                expiresAt: date.toISOString().slice(0, 16),
+	            };
+	        }));
+	    });
 		}
 
 	}

@@ -1,5 +1,6 @@
 import define from '../../define.js';
-import { Users, UserProfiles } from '@/models/index.js';
+import { Users, UserProfiles, DriveFiles } from '@/models/index.js';
+import { fetchMeta } from '@/misc/fetch-meta.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -36,6 +37,12 @@ export default define(meta, paramDef, async (ps, me) => {
 		throw new Error('cannot show info of admin');
 	}
 
+	const instance = await fetchMeta(true);
+
+	// Calculate drive usage
+	const usage = await DriveFiles.calcDriveUsageOf(ps.userId);
+	const capacity = await Users.isLocalUser(user) ? (1024 * 1024 * instance.localDriveCapacityMb) : (1024 * 1024 * (instance.remoteDriveCapacityMb));
+
 	const maskedKeys = ['accessToken', 'accessTokenSecret', 'refreshToken'];
 	Object.keys(profile.integrations).forEach(integration => {
 		maskedKeys.forEach(key => profile.integrations[integration][key] = '<MASKED>');
@@ -53,6 +60,8 @@ export default define(meta, paramDef, async (ps, me) => {
 			isForceSensitive: user.isForceSensitive,
 			isDisabled: user.isDisabled,
 			isHidden: user.isHidden,
+			capacity: capacity,
+			usage: usage,
 		};
 	}
 
@@ -78,5 +87,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		isForceSensitive: user.isForceSensitive,
 		isDisabled: user.isDisabled,
 		isHidden: user.isHidden,
+		capacity: capacity,
+		usage: usage,
 	};
 });

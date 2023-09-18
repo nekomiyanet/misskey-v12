@@ -139,6 +139,47 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 
 	const bday = person['vcard:bday']?.match(/^\d{4}-\d{2}-\d{2}/);
 
+	const registerDate = person['published']?.match(/^\d{4}-\d{2}-\d{2}/);
+
+	let followersCount: number | undefined;
+
+	if (typeof person.followers === "string") {
+		try {
+			let data = await fetch(person.followers, { headers: { "Accept": "application/json" } });
+			let json_data = JSON.parse(await data.text());
+
+			followersCount = json_data.totalItems;
+		} catch {
+			followersCount = undefined;
+		}
+	}
+
+	let followingCount: number | undefined;
+
+	if (typeof person.following === "string") {
+		try {
+			let data = await fetch(person.following, { headers: { "Accept": "application/json" } });
+			let json_data = JSON.parse(await data.text());
+
+			followingCount = json_data.totalItems;
+		} catch (e) {
+			followingCount = undefined;
+		}
+	}
+
+	let notesCount: number | undefined;
+
+	if (typeof person.outbox === "string") {
+		try {
+			let data = await fetch(person.outbox, { headers: { "Accept": "application/json" } });
+			let json_data = JSON.parse(await data.text());
+
+			notesCount = json_data.totalItems;
+		} catch (e) {
+			notesCount = undefined;
+		}
+	}
+
 	// Create user
 	let user: IRemoteUser;
 	try {
@@ -166,6 +207,8 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 				isCat: (person as any).isCat === true,
 				isFox: (person as any).isFox === true,
 				showTimelineReplies: false,
+				movedToUri: person.movedTo,
+				alsoKnownAs: person.alsoKnownAs,
 			})) as IRemoteUser;
 
 			await transactionalEntityManager.save(new UserProfile({
@@ -252,6 +295,42 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 	});
 	//#endregion
 
+	if (registerDate) {
+		await Users.update({ id: user!.id }, {
+			createdAt: person['published'] || user!.createdAt,
+		});
+	}
+
+	if (followersCount !== undefined) {
+		await Users.update({ id: user!.id }, {
+			referenceFollowersCount: followersCount || user!.referenceFollowersCount,
+		});
+	} else if (person.followers && typeof person.followers !== "string" && isCollectionOrOrderedCollection(person.followers)) {
+		await Users.update({ id: user!.id }, {
+			referenceFollowersCount: person.followers.totalItems || user!.referenceFollowersCount,
+		});
+	}
+
+	if (followingCount !== undefined) {
+		await Users.update({ id: user!.id }, {
+			referenceFollowingCount: followingCount || user!.referenceFollowingCount,
+		});
+	}	else if (person.following && typeof person.following !== "string" && isCollectionOrOrderedCollection(person.following)) {
+		await Users.update({ id: user!.id }, {
+			referenceFollowingCount: person.following.totalItems || user!.referenceFollowingCount,
+		});
+	}
+
+	if (notesCount !== undefined) {
+		await Users.update({ id: user!.id }, {
+			notesCount: notesCount || user!.notesCount,
+		});
+	}	else if (person.outbox && typeof person.outbox !== "string" && isCollectionOrOrderedCollection(person.outbox)) {
+		await Users.update({ id: user!.id }, {
+			notesCount: person.outbox.totalItems || user!.notesCount,
+		});
+	}
+
 	await updateFeatured(user!.id, resolver).catch(err => logger.error(err));
 
 	return user!;
@@ -312,6 +391,59 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 
 	const bday = person['vcard:bday']?.match(/^\d{4}-\d{2}-\d{2}/);
 
+	const registerDate = person['published']?.match(/^\d{4}-\d{2}-\d{2}/);
+
+	const [
+		pureFollowingCount,
+		pureFollowersCount,
+	] = await Promise.all([
+		Followings.createQueryBuilder('following')
+			.where('following.followerId = :userId', { userId: exist.id })
+			.getCount(),
+		Followings.createQueryBuilder('following')
+			.where('following.followeeId = :userId', { userId: exist.id })
+			.getCount(),
+	]);
+
+	let followersCount: number | undefined;
+
+	if (typeof person.followers === "string") {
+		try {
+			let data = await fetch(person.followers, { headers: { "Accept": "application/json" } });
+			let json_data = JSON.parse(await data.text());
+
+			followersCount = json_data.totalItems;
+		} catch {
+			followersCount = undefined;
+		}
+	}
+
+	let followingCount: number | undefined;
+
+	if (typeof person.following === "string") {
+		try {
+			let data = await fetch(person.following, { headers: { "Accept": "application/json" } });
+			let json_data = JSON.parse(await data.text());
+
+			followingCount = json_data.totalItems;
+		} catch (e) {
+			followingCount = undefined;
+		}
+	}
+
+	let notesCount: number | undefined;
+
+	if (typeof person.outbox === "string") {
+		try {
+			let data = await fetch(person.outbox, { headers: { "Accept": "application/json" } });
+			let json_data = JSON.parse(await data.text());
+
+			notesCount = json_data.totalItems;
+		} catch (e) {
+			notesCount = undefined;
+		}
+	}
+
 	const updates = {
 		lastFetchedAt: new Date(),
 		inbox: person.inbox,
@@ -326,6 +458,8 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 		isFox: (person as any).isFox === true,
 		isLocked: !!person.manuallyApprovesFollowers,
 		isExplorable: !!person.discoverable,
+		movedToUri: person.movedTo,
+		alsoKnownAs: person.alsoKnownAs,
 	} as Partial<User>;
 
 	if (avatar) {
@@ -353,6 +487,46 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 		birthday: bday ? bday[0] : null,
 		location: person['vcard:Address'] || null,
 	});
+
+	if (registerDate) {
+		await Users.update({ id: exist.id }, {
+			createdAt: person['published'] || exist.createdAt,
+		});
+	}
+
+	if (followersCount !== undefined) {
+		await Users.update({ id: exist.id }, {
+			referenceFollowersCount: followersCount || exist.referenceFollowersCount,
+			followersCount: pureFollowersCount,
+		});
+	} else if (person.followers && typeof person.followers !== "string" && isCollectionOrOrderedCollection(person.followers)) {
+		await Users.update({ id: exist.id }, {
+			referenceFollowersCount: person.followers.totalItems || exist.referenceFollowersCount,
+			followersCount: pureFollowersCount,
+		});
+	}
+
+	if (followingCount !== undefined) {
+		await Users.update({ id: exist.id }, {
+			referenceFollowingCount: followingCount || exist.referenceFollowingCount,
+			followingCount: pureFollowingCount,
+		});
+	}	else if (person.following && typeof person.following !== "string" && isCollectionOrOrderedCollection(person.following)) {
+		await Users.update({ id: exist.id }, {
+			referenceFollowingCount: person.following.totalItems || exist.referenceFollowingCount,
+			followingCount: pureFollowingCount,
+		});
+	}
+
+	if (notesCount !== undefined) {
+		await Users.update({ id: exist.id }, {
+			notesCount: notesCount || exist.notesCount,
+		});
+	}	else if (person.outbox && typeof person.outbox !== "string" && isCollectionOrOrderedCollection(person.outbox)) {
+		await Users.update({ id: exist.id }, {
+			notesCount: person.outbox.totalItems || exist.notesCount,
+		});
+	}
 
 	// ハッシュタグ更新
 	updateUsertags(exist, tags);

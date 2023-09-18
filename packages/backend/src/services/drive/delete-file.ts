@@ -8,15 +8,22 @@ import { v4 as uuid } from 'uuid';
 import config from '@/config/index.js';
 
 export async function deleteFile(file: DriveFile, isExpired = false) {
-	const emojis = await Emojis.find({
-		host: null,
-		publicUrl: file.webpublicUrl,
-	});
-
-	const hasUsedforEmojis = emojis.length > 0;
-
-	if (hasUsedforEmojis) {
-		return; // emojiのpublicUrlがfileに含まれている場合は処理をスキップ
+	if (file.webpublicUrl != null) {
+		let emojis = await Emojis.findOne({
+			host: null,
+			publicUrl: file.webpublicUrl,
+		});
+		if (emojis != null) {
+			return; // emojiのpublicUrlがfileに含まれている場合は処理をスキップ
+		}
+	} else if (file.url != null) {
+		let emojis = await Emojis.findOne({
+			host: null,
+			publicUrl: file.url,
+		});
+		if (emojis != null) {
+			return; // emojiのpublicUrlがfileに含まれている場合は処理をスキップ
+		}
 	}
 
 	if (file.storedInternal) {
@@ -45,17 +52,23 @@ export async function deleteFile(file: DriveFile, isExpired = false) {
 }
 
 export async function deleteFileSync(file: DriveFile, isExpired = false) {
-	const emojis = await Emojis.find({
-		host: null,
-		publicUrl: file.webpublicUrl,
-	});
-
-	const hasUsedforEmojis = emojis.length > 0;
-
-	if (hasUsedforEmojis) {
-		return; // emojiのpublicUrlがfileに含まれている場合は処理をスキップ
+	if (file.webpublicUrl != null) {
+		let emojis = await Emojis.findOne({
+			host: null,
+			publicUrl: file.webpublicUrl,
+		});
+		if (emojis != null) {
+			return; // emojiのpublicUrlがfileに含まれている場合は処理をスキップ
+		}
+	} else if (file.url != null) {
+		let emojis = await Emojis.findOne({
+			host: null,
+			publicUrl: file.url,
+		});
+		if (emojis != null) {
+			return; // emojiのpublicUrlがfileに含まれている場合は処理をスキップ
+		}
 	}
-
 
 	if (file.storedInternal) {
 		InternalStorage.del(file.accessKey!);

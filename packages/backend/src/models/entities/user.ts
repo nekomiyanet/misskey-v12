@@ -70,6 +70,31 @@ export class User {
 
 	@Column('integer', {
 		default: 0,
+		comment: 'The count of followers.',
+	})
+	public referenceFollowersCount: number;
+
+	@Column('integer', {
+		default: 0,
+		comment: 'The count of following.',
+	})
+	public referenceFollowingCount: number;
+
+	@Column('varchar', {
+		length: 512,
+		nullable: true,
+		comment: 'The URI of the new account of the User',
+	})
+	public movedToUri: string | null;
+
+	@Column('simple-array', {
+		nullable: true,
+		comment: 'URIs the user is known as too',
+	})
+	public alsoKnownAs: string[] | null;
+
+	@Column('integer', {
+		default: 0,
 		comment: 'The count of notes.',
 	})
 	public notesCount: number;

@@ -7,7 +7,7 @@
 		<div v-if="queue > 0" class="new"><button class="_buttonPrimary" @click="top()">{{ $ts.newNoteRecived }}</button></div>
 
 		<div>
-			<div v-if="((src === 'local' || src === 'social') && !isLocalTimelineAvailable) || (src === 'cat' && !isCatTimelineAvailable) || (src === 'mod' && !isModTimelineAvailable) || (src === 'limited' && !isLimitedTimelineAvailable) || (src === 'global' && !isGlobalTimelineAvailable)" class="iwaalbte">
+			<div v-if="((src === 'local' || src === 'social') && !isLocalTimelineAvailable) || (src === 'cat' && !isCatTimelineAvailable) || (src === 'mod' && !isModTimelineAvailable) || (src === 'limited' && !isLimitedTimelineAvailable) || (src === 'global' && !isGlobalTimelineAvailable) || (src === 'media' && !isMediaTimelineAvailable)" class="iwaalbte">
 				<p>
 					<i class="fas fa-minus-circle"></i>
 					{{ $ts.disabledTimelineTitle }}
@@ -52,6 +52,7 @@ const isGlobalTimelineAvailable = (!instance.disableGlobalTimeline || ($i != nul
 const isModTimelineAvailable = $i != null && ($i.isModerator || $i.isAdmin) && defaultStore.state.enableMTL;
 const isCatTimelineAvailable = $i != null && $i.isCat && defaultStore.state.enableCTL;
 const isLimitedTimelineAvailable = $i != null && defaultStore.state.enableLimitedTL;
+const isMediaTimelineAvailable = (!instance.disableLocalTimeline || ($i != null && ($i.isModerator || $i.isAdmin))) && defaultStore.state.enableMediaTL;
 const keymap = {
 	't': focus,
 };
@@ -104,7 +105,7 @@ async function chooseChannel(ev: MouseEvent): Promise<void> {
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
 }
 
-function saveSrc(newSrc: 'home' | 'local' | 'social' | 'global' | 'limited' | 'cat' | 'mod'): void {
+function saveSrc(newSrc: 'home' | 'local' | 'social' | 'global' | 'limited' | 'cat' | 'mod' | 'media'): void {
 	defaultStore.set('tl', {
 		...defaultStore.state.tl,
 		src: newSrc,
@@ -127,7 +128,7 @@ function focus(): void {
 defineExpose({
 	[symbols.PAGE_INFO]: computed(() => ({
 		title: i18n.ts.timeline,
-		icon: src === 'local' ? 'fas fa-comments' : src === 'social' ? 'fas fa-share-alt' : src === 'global' ? 'fas fa-globe' : src === 'cat' ? 'fas fa-paw' : src === 'mod' ? 'fas fa-bookmark' : src === 'limited' ? 'fas fa-unlock' : 'fas fa-home',
+		icon: src === 'local' ? 'fas fa-comments' : src === 'social' ? 'fas fa-share-alt' : src === 'global' ? 'fas fa-globe' : src === 'cat' ? 'fas fa-paw' : src === 'mod' ? 'fas fa-bookmark' : src === 'limited' ? 'fas fa-unlock' : src === 'media' ? 'fas fa-camera' : 'fas fa-home',
 		bg: 'var(--bg)',
 		actions: [{
 			icon: 'fas fa-list-ul',
@@ -160,6 +161,12 @@ defineExpose({
 			icon: 'fas fa-paw',
 			iconOnly: true,
 			onClick: () => { saveSrc('cat'); },
+		}] : []), ...(isMediaTimelineAvailable ? [{
+			active: src === 'media',
+			title: i18n.ts._timelines.media,
+			icon: 'fas fa-camera',
+			iconOnly: true,
+			onClick: () => { saveSrc('media'); },
 		}] : []), ...(isLocalTimelineAvailable ? [{
 			active: src === 'local',
 			title: i18n.ts._timelines.local,

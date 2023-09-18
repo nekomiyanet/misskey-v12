@@ -37,6 +37,9 @@ import * as ep___admin_getIndexStats from './endpoints/admin/get-index-stats.js'
 import * as ep___admin_getTableStats from './endpoints/admin/get-table-stats.js';
 import * as ep___admin_hideUser from './endpoints/admin/hide-user.js';
 import * as ep___admin_invite from './endpoints/admin/invite.js';
+import * as ep___admin_invite_create from './endpoints/admin/invite/create.js';
+import * as ep___admin_invite_list from './endpoints/admin/invite/list.js';
+import * as ep___admin_invite_delete from './endpoints/admin/invite/delete.js';
 import * as ep___admin_moderators_add from './endpoints/admin/moderators/add.js';
 import * as ep___admin_moderators_remove from './endpoints/admin/moderators/remove.js';
 import * as ep___admin_promo_create from './endpoints/admin/promo/create.js';
@@ -242,6 +245,7 @@ import * as ep___notes_globalTimeline from './endpoints/notes/global-timeline.js
 import * as ep___notes_hybridTimeline from './endpoints/notes/hybrid-timeline.js';
 import * as ep___notes_localTimeline from './endpoints/notes/local-timeline.js';
 import * as ep___notes_catTimeline from './endpoints/notes/cat-timeline.js';
+import * as ep___notes_mediaTimeline from './endpoints/notes/media-timeline.js';
 import * as ep___notes_modTimeline from './endpoints/notes/mod-timeline.js';
 import * as ep___notes_limitedTimeline from './endpoints/notes/limited-timeline.js';
 import * as ep___notes_mentions from './endpoints/notes/mentions.js';
@@ -361,6 +365,9 @@ const eps = [
 	['admin/get-table-stats', ep___admin_getTableStats],
 	['admin/hide-user', ep___admin_hideUser],
 	['admin/invite', ep___admin_invite],
+	['admin/invite/create', ep___admin_invite_create],
+	['admin/invite/list', ep___admin_invite_list],
+	['admin/invite/delete', ep___admin_invite_delete],
 	['admin/moderators/add', ep___admin_moderators_add],
 	['admin/moderators/remove', ep___admin_moderators_remove],
 	['admin/promo/create', ep___admin_promo_create],
@@ -566,6 +573,7 @@ const eps = [
 	['notes/hybrid-timeline', ep___notes_hybridTimeline],
 	['notes/local-timeline', ep___notes_localTimeline],
 	['notes/cat-timeline', ep___notes_catTimeline],
+	['notes/media-timeline', ep___notes_mediaTimeline],
 	['notes/mod-timeline', ep___notes_modTimeline],
 	['notes/limited-timeline', ep___notes_limitedTimeline],
 	['notes/mentions', ep___notes_mentions],

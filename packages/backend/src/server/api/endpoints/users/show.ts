@@ -76,20 +76,23 @@ export default define(meta, paramDef, async (ps, me) => {
 
 		const users = await Users.find(isAdminOrModerator ? {
 			id: In(ps.userIds),
+			isDeleted: false,
 		} : {
 			id: In(ps.userIds),
 			isSuspended: false,
+			isDeleted: false,
 		});
 
 		// リクエストされた通りに並べ替え
 		const _users: User[] = [];
 		for (const id of ps.userIds) {
-			_users.push(users.find(x => x.id === id)!);
+			const user = users.find((u) => u.id === id);
+			if (user) _users.push(user);
 		}
 
-		return await Promise.all(_users.map(u => Users.pack(u, me, {
+		return await Users.packMany(_users, me, {
 			detail: true,
-		})));
+		});
 	} else {
 		// Lookup user
 		if (typeof ps.host === 'string' && typeof ps.username === 'string') {
@@ -105,7 +108,7 @@ export default define(meta, paramDef, async (ps, me) => {
 			user = await Users.findOne(q);
 		}
 
-		if (user == null || (!isAdminOrModerator && user.isSuspended)) {
+		if (user == null || (!isAdminOrModerator && user.isSuspended) || user.isDeleted) {
 			throw new ApiError(meta.errors.noSuchUser);
 		}
 

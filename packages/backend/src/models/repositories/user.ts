@@ -291,6 +291,8 @@ export class UserRepository extends Repository<User> {
 			...(opts.detail ? {
 				url: sanitizeUrl(profile!.url),
 				uri: sanitizeUrl(user.uri),
+				movedToUri: sanitizeUrl(user.movedToUri) || null,
+				alsoKnownAs: user.alsoKnownAs || null,
 				createdAt: user.createdAt.toISOString(),
 				updatedAt: user.updatedAt ? user.updatedAt.toISOString() : null,
 				lastFetchedAt: user.lastFetchedAt ? user.lastFetchedAt.toISOString() : null,
@@ -312,6 +314,8 @@ export class UserRepository extends Repository<User> {
 				fields: profile!.fields,
 				followersCount: followersCount || 0,
 				followingCount: followingCount || 0,
+				referenceFollowersCount: user.referenceFollowersCount || 0,
+				referenceFollowingCount: user.referenceFollowingCount || 0,
 				notesCount: notesCount || 0,
 				pinnedNoteIds: pins.map(pin => pin.noteId),
 				pinnedNotes: Notes.packMany(pins.map(pin => pin.note!), me, {

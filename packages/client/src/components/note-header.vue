@@ -10,12 +10,7 @@
 			<MkTime v-if="enableAbsoluteTime" :time="note.createdAt" mode="absolute"/>
 			<MkTime v-else-if="!enableAbsoluteTime" :time="note.createdAt" mode="relative"/>
 		</MkA>
-		<span v-if="note.visibility !== 'public'" class="visibility">
-			<i v-if="note.visibility === 'home'" class="fas fa-home"></i>
-			<i v-else-if="note.visibility === 'followers'" class="fas fa-unlock"></i>
-			<i v-else-if="note.visibility === 'specified'" class="fas fa-envelope"></i>
-		</span>
-		<span v-if="note.localOnly" class="localOnly"><i class="fas fa-biohazard"></i></span>
+		<MkVisibility :note="note"/>
 	</div>
 </header>
 </template>
@@ -23,6 +18,7 @@
 <script lang="ts" setup>
 import { } from 'vue';
 import * as misskey from 'misskey-js';
+import MkVisibility from '@/components/visibility.vue';
 import { notePage } from '@/filters/note';
 import { userPage } from '@/filters/user';
 import { defaultStore } from '@/store';
@@ -78,14 +74,6 @@ defineProps<{
 		flex-shrink: 0;
 		margin-left: auto;
 		font-size: 0.9em;
-
-		> .visibility {
-			margin-left: 8px;
-		}
-
-		> .localOnly {
-			margin-left: 8px;
-		}
 	}
 }
 </style>
