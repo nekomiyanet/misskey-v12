@@ -27,7 +27,7 @@ export default async function(user: User) {
 		title: `${author.name} (@${user.username}@${config.host})`,
 		updated: notes[0].createdAt,
 		generator: 'Misskey',
-		description: `${user.notesCount} Notes, ${profile.ffVisibility === 'public' ? user.followingCount : '?'} Following, ${profile.ffVisibility === 'public' ? user.followersCount : '?'} Followers${profile.description ? ` · ${profile.description}` : ''}`,
+		description: `${profile.notesCountVisibility === 'public' ? user.notesCount : '0' } Notes, ${profile.ffVisibility === 'public' ? user.followingCount : '0'} Following, ${profile.ffVisibility === 'public' ? user.followersCount : '0'} Followers${profile.description ? ` · ${profile.description}` : ''}`,
 		link: author.link,
 		image: user.avatarUrl ? user.avatarUrl : undefined,
 		feedLinks: {
