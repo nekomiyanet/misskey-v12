@@ -933,6 +933,7 @@ allowFollow: "Allow Follow"
 allowFollowDescription: "If disabled, All follows or follow requests will be rejected."
 movedUserCaution: "User has moved to a new account"
 moderationlogs: "Moderation logs"
+deleted: "Deleted"
 
 _emailUnavailable:
   used: "This email address is already being used"

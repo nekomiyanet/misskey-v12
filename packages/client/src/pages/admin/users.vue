@@ -25,6 +25,7 @@
 				<option value="cat">{{ $ts.cat }}</option>
 				<option value="bot">{{ $ts.bot }}</option>
 				<option value="fox">{{ $ts.fox }}</option>
+				<option value="deleted">{{ $ts.deleted }}</option>
 			</MkSelect>
 			<MkSelect v-model="origin" style="flex: 1;">
 				<template #label>{{ $ts.instance }}</template>
