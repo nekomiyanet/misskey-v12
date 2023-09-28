@@ -56,7 +56,14 @@ export default defineComponent({
 	methods: {
 		remove(invite) {
 			this.invites = this.invites.filter(x => x != invite);
-			os.api('admin/invite/delete', invite);
+			os.api('admin/invite/delete', invite).then(x => {
+				this.refresh();
+			}).catch(e => {
+				os.alert({
+					type: 'error',
+					text: e
+				});
+			});
 		},
 
 		refresh() {
