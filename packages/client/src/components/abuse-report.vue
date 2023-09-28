@@ -65,7 +65,7 @@ export default defineComponent({
 		resolve() {
 			os.confirm({
 				type: 'warning',
-				text: this.$t('removeAreYouSure', { x: this.report.comment }),
+				text: this.$t('resolveAreYouSure', { x: this.report.comment }),
 			}).then(({ canceled }) => {
 				if (canceled) return;
 				os.apiWithDialog('admin/resolve-abuse-user-report', {
