@@ -31,10 +31,10 @@ async function mention(userId: User['id'], follower: User, customBody: string) {
 	sendEmail(userProfile.email, `New Mention`, `${follower.name} (@${Acct.toString(follower)}) <br> ${customBody}`, `${follower.name} (@${Acct.toString(follower)}) ${customBody}`);
 }
 
-async function quote(userId: User['id'], follower: User, customBody: string) {
+async function quote(userId: User['id'], follower: User, customBody: string, url: string) {
 	const userProfile = await UserProfiles.findOneOrFail({ userId: userId });
 	if (!userProfile.email || !userProfile.emailNotificationTypes.includes('quote')) return;
-	sendEmail(userProfile.email, `New Quote`, `${follower.name} (@${Acct.toString(follower)}) <br> ${customBody}`, `${follower.name} (@${Acct.toString(follower)}) ${customBody}`);
+	sendEmail(userProfile.email, `New Quote`, `${follower.name} (@${Acct.toString(follower)}) <br> ${customBody} <br> ${url}`, `${follower.name} (@${Acct.toString(follower)}) ${customBody} ${url}`);
 }
 
 async function groupInvited(userId: User['id'], customBody: string) {

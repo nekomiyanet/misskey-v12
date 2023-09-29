@@ -5,6 +5,7 @@ import { genId } from '@/misc/gen-id.js';
 import { User } from '@/models/entities/user.js';
 import { Notification } from '@/models/entities/notification.js';
 import { sendEmailNotification } from './send-email-notification.js';
+import config from '@/config/index.js';
 
 export async function createNotification(
 	notifieeId: User['id'],
@@ -70,7 +71,8 @@ export async function createNotification(
 		}
 		if (type === 'quote') {
 			const note = await Notes.findOneOrFail(data.noteId);
-			sendEmailNotification.quote(notifieeId, await Users.findOneOrFail(data.notifierId!), note.text);
+			const renoteUrl = `${config.url}/notes/${note.renoteId}`;
+			sendEmailNotification.quote(notifieeId, await Users.findOneOrFail(data.notifierId!), note.text, renoteUrl);
 		}
 		if (type === 'groupInvited') {
 			const invite = await UserGroupInvitations.findOneOrFail(data.userGroupInvitationId);
