@@ -1,6 +1,6 @@
 import { publishMainStream } from '@/services/stream.js';
 import pushSw from './push-notification.js';
-import { Notifications, Mutings, UserProfiles, Users, Blockings } from '@/models/index.js';
+import { Notifications, Mutings, UserProfiles, Users, Blockings, Notes, UserGroups, UserGroupInvitations } from '@/models/index.js';
 import { genId } from '@/misc/gen-id.js';
 import { User } from '@/models/entities/user.js';
 import { Notification } from '@/models/entities/notification.js';
@@ -60,6 +60,24 @@ export async function createNotification(
 		publishMainStream(notifieeId, 'unreadNotification', packed);
 
 		pushSw(notifieeId, 'notification', packed);
+		if (type === 'reply') {
+			const note = await Notes.findOneOrFail(data.noteId);
+			sendEmailNotification.reply(notifieeId, await Users.findOneOrFail(data.notifierId!), note.text);
+		}
+		if (type === 'mention') {
+			const note = await Notes.findOneOrFail(data.noteId);
+			sendEmailNotification.mention(notifieeId, await Users.findOneOrFail(data.notifierId!), note.text);
+		}
+		if (type === 'quote') {
+			const note = await Notes.findOneOrFail(data.noteId);
+			sendEmailNotification.quote(notifieeId, await Users.findOneOrFail(data.notifierId!), note.text);
+		}
+		if (type === 'groupInvited') {
+			const invite = await UserGroupInvitations.findOneOrFail(data.userGroupInvitationId);
+			const group = await UserGroups.findOneOrFail(invite.userGroupId);
+			sendEmailNotification.groupInvited(notifieeId, group.name);
+		}
+		if (type === 'app') sendEmailNotification.app(notifieeId, data.customHeader, data.customBody);
 		if (type === 'follow') sendEmailNotification.follow(notifieeId, await Users.findOneOrFail(data.notifierId!));
 		if (type === 'receiveFollowRequest') sendEmailNotification.receiveFollowRequest(notifieeId, await Users.findOneOrFail(data.notifierId!));
 	}, 2000);
