@@ -302,7 +302,7 @@ export function emailDeliver(to: string | null, subject: string | null, html: st
 	};
 
 	return emailDeliverQueue.add(data, {
-		attempts: 3,
+		attempts: 7,
 		timeout: 1 * 60 * 1000,	// 1min
 		backoff: {
 			type: 'apBackoff',
