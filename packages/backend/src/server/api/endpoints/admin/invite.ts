@@ -2,7 +2,6 @@ import rndstr from 'rndstr';
 import define from '../../define.js';
 import { RegistrationTickets } from '@/models/index.js';
 import { genId } from '@/misc/gen-id.js';
-import { insertModerationLog } from '@/services/insert-moderation-log.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -42,10 +41,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		id: genId(),
 		createdAt: new Date(),
 		code,
-	});
-
-	insertModerationLog(me, 'invite', {
-		code: code,
 	});
 
 	return {
