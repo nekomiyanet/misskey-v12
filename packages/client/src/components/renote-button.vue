@@ -38,7 +38,7 @@ export default defineComponent({
 	setup(props) {
 		const buttonRef = ref<HTMLElement>();
 
-		const canRenote = computed(() => ['public', 'home'].includes(props.note.visibility) || props.note.userId === $i.id);
+		const canRenote = computed(() => ['public', 'home'].includes(props.note.visibility) || (props.note.visibility === 'followers' && props.note.userId === $i?.id));
 
 		useTooltip(buttonRef, async (showing) => {
 			const renotes = await os.api('notes/renotes', {

@@ -18,7 +18,7 @@ const props = defineProps<{
 	note: misskey.entities.Note;
 }>();
 
-const canRenote = computed(() => ['public', 'home'].includes(props.note.visibility) || props.note.userId === $i?.id);
+const canRenote = computed(() => ['public', 'home'].includes(props.note.visibility) || (props.note.visibility === 'followers' && props.note.userId === $i?.id));
 
 function quote(): void {
 	pleaseLogin();
