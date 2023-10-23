@@ -4,6 +4,7 @@ import { doPostSuspend } from '@/services/suspend-user.js';
 import { publishUserEvent } from '@/services/stream.js';
 import { createDeleteAccountJob } from '@/queue/index.js';
 import { insertModerationLog } from '@/services/insert-moderation-log.js';
+import * as Acct from '@/misc/acct.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -60,6 +61,6 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	insertModerationLog(me, 'delete-account', {
 		targetId: user.id,
-		targetUsername: user.username,
+		targetUsername: Acct.toString(user),
 	});
 });
