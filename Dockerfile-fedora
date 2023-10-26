@@ -24,8 +24,7 @@ RUN ARCH= && \
 
 ENV PATH="${PATH}:/opt/node/bin"
 
-RUN npm install -g npm@latest && \
-	npm install -g yarn
+RUN npm install -g yarn
 
 COPY package.json yarn.lock ./
 RUN yarn install --network-timeout 100000
