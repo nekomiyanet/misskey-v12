@@ -4,6 +4,7 @@
 
 const fs = require('fs');
 const webpack = require('webpack');
+const rndstr_1 = require('rndstr');
 const { VueLoaderPlugin } = require('vue-loader');
 
 class WebpackOnBuildPlugin {
@@ -20,6 +21,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const locales = require('../../locales');
 const meta = require('../../package.json');
+
+const version = isProduction ? meta.version : meta.version + '-' + (0, rndstr_1.default)({ length: 8, chars: '0-9a-z' });
 
 const postcss = {
 	loader: 'postcss-loader',
@@ -151,7 +154,7 @@ module.exports = {
 	plugins: [
 		new webpack.ProgressPlugin({}),
 		new webpack.DefinePlugin({
-			_VERSION_: JSON.stringify(meta.version),
+			_VERSION_: JSON.stringify(version),
 			_SOFTWARE_: JSON.stringify(meta.name),
 			_LANGS_: JSON.stringify(Object.entries(locales).map(([k, v]) => [k, v._lang_])),
 			_ENV_: JSON.stringify(process.env.NODE_ENV),
