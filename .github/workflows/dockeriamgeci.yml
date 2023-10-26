@@ -12,10 +12,22 @@ jobs:
       run: docker build . --file Dockerfile --tag my-image-name
     - run: docker image ls my-image-name
     - run: docker history my-image-name
+
+  build-debian:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
     - name: Build the Docker image for debian
       run: docker build . --file Dockerfile-debian --tag my-image-name-debian
     - run: docker image ls my-image-name-debian
     - run: docker history my-image-name-debian
+
+  build-fedora:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
     - name: Build the Docker image for fedora
       run: docker build . --file Dockerfile-fedora --tag my-image-name-fedora
     - run: docker image ls my-image-name-fedora
