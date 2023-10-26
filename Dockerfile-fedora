@@ -26,10 +26,9 @@ ENV PATH="${PATH}:/opt/node/bin"
 
 RUN npm install -g yarn
 
-COPY package.json yarn.lock ./
-RUN yarn install --network-timeout 100000
 COPY . ./
 RUN git submodule update --init
+RUN yarn install --network-timeout 100000
 RUN yarn build
 RUN rm -rf .git
 
