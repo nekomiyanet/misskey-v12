@@ -55,13 +55,14 @@ export default defineComponent({
 
 	methods: {
 		remove(invite) {
-			os.confirm({
-				type: 'warning',
-				text: this.$t('removeAreYouSure', { x: invite.code }),
-			}).then(({ canceled }) => {
-				if (canceled) return;
-				this.invites = this.invites.filter(x => x != invite);
-				os.api('admin/invite/delete', invite);
+			this.invites = this.invites.filter(x => x != invite);
+			os.api('admin/invite/delete', invite).then(x => {
+				this.refresh();
+			}).catch(e => {
+				os.alert({
+					type: 'error',
+					text: e
+				});
 			});
 		},
 

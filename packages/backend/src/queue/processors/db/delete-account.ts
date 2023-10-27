@@ -1,12 +1,13 @@
 import Bull from 'bull';
 import { queueLogger } from '../../logger.js';
-import { AccessTokens, DriveFiles, Notes, UserProfiles, Users, UserNotePinings, MessagingMessages, Followings, Mutings, Blockings, RenoteMutings, Notifications, FollowRequests, Antennas } from '@/models/index.js';
+import { AccessTokens, DriveFiles, Notes, UserProfiles, Users, UserNotePinings, MessagingMessages, Followings, Mutings, Blockings, RenoteMutings, Notifications, FollowRequests, Antennas, NoteReactions, Clips } from '@/models/index.js';
 import { DbUserDeleteJobData } from '@/queue/types.js';
 import { Note } from '@/models/entities/note.js';
 import { DriveFile } from '@/models/entities/drive-file.js';
 import { MoreThan } from 'typeorm';
 import { deleteFileSync } from '@/services/drive/delete-file.js';
 import { sendEmail } from '@/services/send-email.js';
+import { emailDeliver } from '@/queue/index.js';
 
 const logger = queueLogger.createSubLogger('delete-account');
 
@@ -20,6 +21,10 @@ export async function deleteAccount(job: Bull.Job<DbUserDeleteJobData>): Promise
 
 	{ // Delete notes
 		let cursor: Note['id'] | null = null;
+
+		const notesCount = await Notes.createQueryBuilder('note')
+    .where('note.userId = :userId', { userId: job.data.user.id })
+    .getCount();
 
 		while (true) {
 			const notes = await Notes.find({
@@ -43,6 +48,14 @@ export async function deleteAccount(job: Bull.Job<DbUserDeleteJobData>): Promise
 				await Notes.delete(note.id);
 				await new Promise(resolve => setTimeout(resolve, 500)); // 0.5秒待機
 			}
+
+			let currentNotesCount = await Notes.createQueryBuilder('note')
+			.where('note.userId = :userId', { userId: job.data.user.id })
+			.getCount();
+
+			let deleteprogress = currentNotesCount === 0 ? 99 : Math.floor(100 - (currentNotesCount / notesCount) * 100);
+
+			job.progress(deleteprogress);
 		}
 
 		logger.succ(`All of notes deleted`);
@@ -80,7 +93,7 @@ export async function deleteAccount(job: Bull.Job<DbUserDeleteJobData>): Promise
 	{ // Send email notification
 		const profile = await UserProfiles.findOneOrFail(user.id);
 		if (profile.email && profile.emailVerified) {
-			sendEmail(profile.email, 'Account deleted',
+			emailDeliver(profile.email, 'Account deleted',
 				`Your account has been deleted.`,
 				`Your account has been deleted.`);
 		}
@@ -163,6 +176,12 @@ export async function deleteAccount(job: Bull.Job<DbUserDeleteJobData>): Promise
 				followeeId: job.data.user.id,
 			});
 			await Antennas.delete({
+				userId: job.data.user.id,
+			});
+			await NoteReactions.delete({
+				userId: job.data.user.id,
+			});
+			await Clips.delete({
 				userId: job.data.user.id,
 			});
 		} else {

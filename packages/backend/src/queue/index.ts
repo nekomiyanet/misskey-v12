@@ -8,12 +8,13 @@ import processInbox from './processors/inbox.js';
 import processDb from './processors/db/index.js';
 import processObjectStorage from './processors/object-storage/index.js';
 import processSystemQueue from './processors/system/index.js';
+import processEmailDeliver from './processors/email-deliver.js';
 import { endedPollNotification } from './processors/ended-poll-notification.js';
 import { createDeleteNote } from './processors/delete-note.js';
 import { queueLogger } from './logger.js';
 import { DriveFile } from '@/models/entities/drive-file.js';
 import { getJobInfo } from './get-job-info.js';
-import { systemQueue, dbQueue, deliverQueue, inboxQueue, objectStorageQueue, endedPollNotificationQueue, createDeleteNoteQueue } from './queues.js';
+import { systemQueue, dbQueue, deliverQueue, inboxQueue, objectStorageQueue, endedPollNotificationQueue, createDeleteNoteQueue, emailDeliverQueue } from './queues.js';
 import { ThinUser } from './types.js';
 import { IActivity } from '@/remote/activitypub/type.js';
 
@@ -30,6 +31,7 @@ const deliverLogger = queueLogger.createSubLogger('deliver');
 const inboxLogger = queueLogger.createSubLogger('inbox');
 const dbLogger = queueLogger.createSubLogger('db');
 const objectStorageLogger = queueLogger.createSubLogger('objectStorage');
+const emailDeliverLogger = queueLogger.createSubLogger('emailDeliver');
 
 systemQueue
 	.on('waiting', (jobId) => systemLogger.debug(`waiting id=${jobId}`))
@@ -71,6 +73,14 @@ objectStorageQueue
 	.on('error', (job: any, err: Error) => objectStorageLogger.error(`error ${err}`, { job, e: renderError(err) }))
 	.on('stalled', (job) => objectStorageLogger.warn(`stalled id=${job.id}`));
 
+emailDeliverQueue
+	.on('waiting', (jobId) => emailDeliverLogger.debug(`waiting id=${jobId}`))
+	.on('active', (job) => emailDeliverLogger.debug(`active ${getJobInfo(job, true)} to=${job.data.to}`))
+	.on('completed', (job, result) => emailDeliverLogger.debug(`completed(${result}) ${getJobInfo(job, true)} to=${job.data.to}`))
+	.on('failed', (job, err) => emailDeliverLogger.warn(`failed(${err}) ${getJobInfo(job)} to=${job.data.to}`))
+	.on('error', (job: any, err: Error) => emailDeliverLogger.error(`error ${err}`, { job, e: renderError(err) }))
+	.on('stalled', (job) => emailDeliverLogger.warn(`stalled ${getJobInfo(job)} to=${job.data.to}`));
+
 export function deliver(user: ThinUser, content: unknown, to: string | null) {
 	if (content == null) return null;
 	if (to == null) return null;
@@ -84,7 +94,7 @@ export function deliver(user: ThinUser, content: unknown, to: string | null) {
 	};
 
 	return deliverQueue.add(data, {
-		attempts: config.deliverJobMaxAttempts || 12,
+		attempts: config.deliverJobMaxAttempts || 17,
 		timeout: 1 * 60 * 1000,	// 1min
 		backoff: {
 			type: 'apBackoff',
@@ -110,7 +120,7 @@ export function createDeliverRelaysJob(user: ThinUser, content: unknown, to: str
 	};
 
 	return deliverQueue.add(data, {
-		attempts: retryable ? config.deliverJobMaxAttempts || 12 : 1,
+		attempts: retryable ? config.deliverJobMaxAttempts || 17 : 1,
 		timeout: 1 * 60 * 1000,	// 1min
 		backoff: {
 			type: 'apBackoff',
@@ -127,7 +137,7 @@ export function inbox(activity: IActivity, signature: httpSignature.IParsedSigna
 	};
 
 	return inboxQueue.add(data, {
-		attempts: config.inboxJobMaxAttempts || 8,
+		attempts: config.inboxJobMaxAttempts || 10,
 		timeout: 5 * 60 * 1000,	// 5min
 		backoff: {
 			type: 'apBackoff',
@@ -257,6 +267,7 @@ export function createDeleteAccountJob(user: ThinUser, opts: { soft?: boolean; }
 		user: user,
 		soft: opts.soft,
 	}, {
+		attempts: 3,
 		removeOnComplete: true,
 		removeOnFail: true,
 	});
@@ -278,11 +289,36 @@ export function createCleanRemoteFilesJob() {
 	});
 }
 
+export function emailDeliver(to: string | null, subject: string | null, html: string | null, text: string | null) {
+	if (to == null) return null;
+	if (subject == null) return null;
+	if (html == null) return null;
+	if (text == null) return null;
+
+	const data = {
+		to,
+		subject,
+		html,
+		to,
+	};
+
+	return emailDeliverQueue.add(data, {
+		attempts: 7,
+		timeout: 1 * 60 * 1000,	// 1min
+		backoff: {
+			type: 'apBackoff',
+		},
+		removeOnComplete: true,
+		removeOnFail: true,
+	});
+}
+
 export default function() {
 	if (envOption.onlyServer) return;
 
 	deliverQueue.process(config.deliverJobConcurrency || 128, processDeliver);
 	inboxQueue.process(config.inboxJobConcurrency || 16, processInbox);
+	emailDeliverQueue.process(processEmailDeliver);
 	endedPollNotificationQueue.process(endedPollNotification);
 	createDeleteNoteQueue.process(createDeleteNote);
 	processDb(dbQueue);

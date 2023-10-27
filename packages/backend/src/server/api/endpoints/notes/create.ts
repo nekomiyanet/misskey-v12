@@ -89,6 +89,12 @@ export const meta = {
 			code: 'BLOCKED_WORDS',
 			id: '70a8a1f7-f26b-4d94-a9d5-aa629ac87cda',
 		},
+
+		cannotRenoteDueToVisibility: {
+			message: 'You can not Renote due to target visibility.',
+			code: 'CANNOT_RENOTE_DUE_TO_VISIBILITY',
+			id: 'be9529e9-fe72-4de0-ae43-0b363c4938af',
+		},
 	},
 } as const;
 
@@ -181,6 +187,15 @@ export default define(meta, paramDef, async (ps, user) => {
 			if (block) {
 				throw new ApiError(meta.errors.youHaveBeenBlocked);
 			}
+		}
+
+		// Renote visibility Check
+		if (renote.visibility === 'followers' && renote.userId !== user.id) {
+			// 他人のfollowers noteはreject
+			throw new ApiError(meta.errors.cannotRenoteDueToVisibility);
+		} else if (renote.visibility === 'specified') {
+			// specified / direct noteはreject
+			throw new ApiError(meta.errors.cannotRenoteDueToVisibility);
 		}
 	}
 

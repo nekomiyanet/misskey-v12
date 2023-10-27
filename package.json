@@ -1,6 +1,6 @@
 {
 	"name": "misskey",
-	"version": "12.108.1-nekomiya-20230831163450",
+	"version": "12.108.1-nekomiya-20230930103310",
 	"codename": "indigo",
 	"repository": {
 		"type": "git",
@@ -18,6 +18,7 @@
 		"ormconfig": "node ./packages/backend/ormconfig.js",
 		"migrate": "cd packages/backend && npx typeorm migration:run",
 		"migrateandstart": "npm run migrate && npm run start",
+		"revert": "cd packages/backend && npx typeorm migration:revert",
 		"gulp": "gulp build",
 		"watch": "npm run dev",
 		"dev": "node ./scripts/dev.js",
