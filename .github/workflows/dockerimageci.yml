@@ -32,3 +32,13 @@ jobs:
       run: docker build . --file Dockerfile-fedora --tag my-image-name-fedora
     - run: docker image ls my-image-name-fedora
     - run: docker history my-image-name-fedora
+
+  build-ubuntu:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image for ubuntu
+      run: docker build . --file Dockerfile-ubuntu --tag my-image-name-ubuntu
+    - run: docker image ls my-image-name-ubuntu
+    - run: docker history my-image-name-ubuntu
