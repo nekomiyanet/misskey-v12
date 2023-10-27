@@ -80,6 +80,11 @@ export function getNoteMenu(props: {
 		os.success();
 	}
 
+	function copyRemote(): void {
+		copyToClipboard(appearNote.url ?? appearNote.uri);
+		os.success();
+	}
+
 	function togglePin(pin: boolean): void {
 		os.apiWithDialog(pin ? 'i/pin' : 'i/unpin', {
 			noteId: appearNote.id
@@ -177,6 +182,10 @@ export function getNoteMenu(props: {
 			icon: 'fas fa-link',
 			text: i18n.ts.copyLink,
 			action: copyLink
+		}, {
+			icon: 'fas fa-link',
+			text: i18n.ts.copyRemote,
+			action: copyRemote
 		}, (appearNote.url || appearNote.uri) ? {
 			icon: 'fas fa-external-link-square-alt',
 			text: i18n.ts.showOnRemote,
