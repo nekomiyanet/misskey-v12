@@ -182,17 +182,17 @@ export function getNoteMenu(props: {
 			icon: 'fas fa-link',
 			text: i18n.ts.copyLink,
 			action: copyLink
-		}, (appearNote.url || appearNote.uri) ? {
+		}, ...((appearNote.url || appearNote.uri) ? [{
 			icon: 'fas fa-link',
 			text: i18n.ts.copyRemote,
 			action: copyRemote
-		} : undefined, (appearNote.url || appearNote.uri) ? {
+		}, {
 			icon: 'fas fa-external-link-square-alt',
 			text: i18n.ts.showOnRemote,
 			action: () => {
 				window.open(appearNote.url || appearNote.uri, '_blank');
 			}
-		} : undefined, {
+		}] : []), {
 			icon: 'fas fa-share-alt',
 			text: i18n.ts.share,
 			action: share
@@ -294,17 +294,17 @@ export function getNoteMenu(props: {
 			icon: 'fas fa-link',
 			text: i18n.ts.copyLink,
 			action: copyLink
-		}, (appearNote.url || appearNote.uri) ? {
+		}, ...((appearNote.url || appearNote.uri) ? [{
 			icon: 'fas fa-link',
 			text: i18n.ts.copyRemote,
 			action: copyRemote
-		} : undefined, (appearNote.url || appearNote.uri) ? {
+		}, {
 			icon: 'fas fa-external-link-square-alt',
 			text: i18n.ts.showOnRemote,
 			action: () => {
 				window.open(appearNote.url || appearNote.uri, '_blank');
 			}
-		} : undefined,]
+		}] : [])]
 		.filter(x => x !== undefined);
 	}
 
