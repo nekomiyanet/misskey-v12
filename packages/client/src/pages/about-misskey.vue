@@ -23,10 +23,10 @@
 						{{ i18n.ts._aboutMisskey.source }}
 						<template #suffix>GitHub</template>
 					</FormLink>
-					<FormLink to="https://crowdin.com/project/misskey" external>
+					<FormLink to="https://github.com/nekomiyanet/misskey-v12/tree/staging/locales" external>
 						<template #icon><i class="fas fa-language"></i></template>
 						{{ i18n.ts._aboutMisskey.translation }}
-						<template #suffix>Crowdin</template>
+						<template #suffix>Github</template>
 					</FormLink>
 					<FormLink to="https://www.patreon.com/syuilo" external>
 						<template #icon><i class="fas fa-hand-holding-medical"></i></template>
@@ -44,11 +44,12 @@
 					<FormLink to="https://github.com/acid-chicken" external>@acid-chicken</FormLink>
 					<FormLink to="https://github.com/tamaina" external>@tamaina</FormLink>
 					<FormLink to="https://github.com/rinsuki" external>@rinsuki</FormLink>
-					<FormLink to="https://github.com/Xeltica" external>@Xeltica</FormLink>
+					<FormLink to="https://github.com/EbiseLutica" external>@EbiseLutica</FormLink>
 					<FormLink to="https://github.com/u1-liquid" external>@u1-liquid</FormLink>
 					<FormLink to="https://github.com/marihachi" external>@marihachi</FormLink>
+					<FormLink to="https://github.com/banili123" external>@banili123</FormLink>
 				</div>
-				<template #caption><MkLink url="https://github.com/misskey-dev/misskey/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink></template>
+				<template #caption><MkLink url="https://github.com/nekomiyanet/misskey-v12/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink></template>
 			</FormSection>
 			<FormSection>
 				<template #label><Mfm text="$[jelly ❤]"/> {{ i18n.ts._aboutMisskey.patrons }}</template>
@@ -151,6 +152,28 @@ const patrons = [
 	'Weeble',
 	'蝉暮せせせ',
 	'ThatOneCalculator',
+	'pixeldesu',
+	'あめ玉',
+	'氷月氷華里',
+	'Ebise Lutica',
+	'巣黒るい@リスケモ男の娘VTuber!',
+	'ふぇいぽむ',
+	'依古田イコ',
+	'戸塚こだま',
+	'すー。',
+	'秋雨/Slime-hatena.jp',
+	'けそ',
+	'ずも',
+	'binvinyl',
+	'渡志郎',
+	'ぷーざ',
+	'越貝鯛丸',
+	'Nick / pprmint.',
+	'kino3277',
+	'美少女JKぐーちゃん',
+	'てば',
+	'たっくん',
+	'SHO SEKIGUCHI',
 ];
 
 let easterEggReady = false;
