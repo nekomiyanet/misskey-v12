@@ -16,5 +16,8 @@
       "matchUpdateTypes": ["patch", "pin", "digest"],
       "automerge": false
     }
+	],
+	"ignoreDeps": [
+		"misskey-js"
 	]
 }
