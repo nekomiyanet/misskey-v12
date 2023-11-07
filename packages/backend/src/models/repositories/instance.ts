@@ -2,12 +2,14 @@ import { EntityRepository, Repository } from 'typeorm';
 import { Instance } from '@/models/entities/instance.js';
 import { Packed } from '@/misc/schema.js';
 import { sanitizeUrl } from '@/misc/sanitize-url.js';
+import { fetchMeta } from '@/misc/fetch-meta.js';
 
 @EntityRepository(Instance)
 export class InstanceRepository extends Repository<Instance> {
 	public async pack(
 		instance: Instance,
 	): Promise<Packed<'FederationInstance'>> {
+		const meta = await fetchMeta();
 		return {
 			id: instance.id,
 			caughtAt: instance.caughtAt.toISOString(),
@@ -20,6 +22,7 @@ export class InstanceRepository extends Repository<Instance> {
 			lastCommunicatedAt: instance.lastCommunicatedAt.toISOString(),
 			isNotResponding: instance.isNotResponding,
 			isSuspended: instance.isSuspended,
+			isBlocked: meta.blockedHosts.includes(instance.host),
 			softwareName: instance.softwareName,
 			softwareVersion: instance.softwareVersion,
 			openRegistrations: instance.openRegistrations,
