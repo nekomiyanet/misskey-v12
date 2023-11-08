@@ -28,7 +28,7 @@
 		<FormSection v-if="iAmModerator">
 			<template #label>Moderation</template>
 			<FormSwitch v-model="suspended" class="_formBlock" @update:modelValue="toggleSuspend">{{ $ts.stopActivityDelivery }}</FormSwitch>
-			<FormSwitch v-if="$i" :disabled="!$i.isAdmin" v-model="isBlocked" class="_formBlock" @update:modelValue="toggleBlock">{{ $ts.blockThisInstance }}</FormSwitch>
+			<FormSwitch v-if="$i" :disabled="!$i.isAdmin || (isBlocked && !isExactlyBlocked)" v-model="isBlocked" class="_formBlock" @update:modelValue="toggleBlock">{{ $ts.blockThisInstance }}</FormSwitch>
 			<FormSwitch v-model="selfsilenced" :disabled="true" class="_formBlock">{{ $ts.selfSilencing }}</FormSwitch>
 			<FormSwitch v-model="silenced" :disabled="true" class="_formBlock">{{ $ts.instanceSilencing }}</FormSwitch>
 			<MkButton @click="refreshMetadata">Refresh metadata</MkButton>
@@ -153,7 +153,10 @@ async function fetch() {
 
 async function toggleBlock(ev) {
 	if (meta == null) return;
-	if (!isBlocked && !isExactlyBlocked) return;
+	if (!isBlocked && !isExactlyBlocked) {
+		isBlocked = true;
+		return;
+	}
 	await os.api('admin/update-meta', {
 		blockedHosts: isBlocked ? meta.blockedHosts.concat([instance.host]) : meta.blockedHosts.filter(x => x !== instance.host)
 	});
