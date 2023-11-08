@@ -21,7 +21,7 @@ export default async function checkFetch(req: IncomingMessage): Promise<number> 
 		const keyId = new URL(signature.keyId);
 		const host = toPuny(keyId.hostname);
 
-		if (meta.blockedHosts.includes(host)) {
+		if (meta.blockedHosts.some(x => host.endsWith(x))) {
 			return 403;
 		}
 

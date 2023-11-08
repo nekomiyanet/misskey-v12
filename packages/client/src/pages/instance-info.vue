@@ -131,6 +131,7 @@ let meta = $ref<misskey.entities.DetailedInstanceMetadata | null>(null);
 let instance = $ref<misskey.entities.Instance | null>(null);
 let suspended = $ref(false);
 let isBlocked = $ref(false);
+let isExactlyBlocked = $ref(false);
 let chartSrc = $ref('instance-requests');
 let chartSpan = $ref('hour');
 
@@ -140,14 +141,17 @@ async function fetch() {
 		host: props.host,
 	});
 	suspended = instance.isSuspended;
-	isBlocked = meta.blockedHosts.includes(instance.host);
+	isBlocked = instance.isBlocked;
+	isExactlyBlocked = meta.blockedHosts.includes(instance.host);
 }
 
 async function toggleBlock(ev) {
 	if (meta == null) return;
+	if (!isBlocked && !isExactlyBlocked) return;
 	await os.api('admin/update-meta', {
 		blockedHosts: isBlocked ? meta.blockedHosts.concat([instance.host]) : meta.blockedHosts.filter(x => x !== instance.host)
 	});
+	fetch();
 }
 
 async function toggleSuspend(v) {
