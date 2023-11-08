@@ -29,6 +29,8 @@
 			<template #label>Moderation</template>
 			<FormSwitch v-model="suspended" class="_formBlock" @update:modelValue="toggleSuspend">{{ $ts.stopActivityDelivery }}</FormSwitch>
 			<FormSwitch v-if="$i" :disabled="!$i.isAdmin" v-model="isBlocked" class="_formBlock" @update:modelValue="toggleBlock">{{ $ts.blockThisInstance }}</FormSwitch>
+			<FormSwitch v-model="selfsilenced" :disabled="true" class="_formBlock">{{ $ts.selfSilencing }}</FormSwitch>
+			<FormSwitch v-model="silenced" :disabled="true" class="_formBlock">{{ $ts.instanceSilencing }}</FormSwitch>
 			<MkButton @click="refreshMetadata">Refresh metadata</MkButton>
 		</FormSection>
 
@@ -132,6 +134,8 @@ let instance = $ref<misskey.entities.Instance | null>(null);
 let suspended = $ref(false);
 let isBlocked = $ref(false);
 let isExactlyBlocked = $ref(false);
+let silenced = $ref(false);
+let selfsilenced = $ref(false);
 let chartSrc = $ref('instance-requests');
 let chartSpan = $ref('hour');
 
@@ -143,6 +147,8 @@ async function fetch() {
 	suspended = instance.isSuspended;
 	isBlocked = instance.isBlocked;
 	isExactlyBlocked = meta.blockedHosts.includes(instance.host);
+	silenced = instance.isSilenced;
+	selfsilenced = instance.isSelfSilenced;
 }
 
 async function toggleBlock(ev) {

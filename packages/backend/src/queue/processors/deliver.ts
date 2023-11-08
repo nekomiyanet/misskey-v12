@@ -29,7 +29,7 @@ export default async (job: Bull.Job<DeliverJobData>) => {
 		return 'skip (blocked)';
 	}
 
-	if (meta.selfSilencedHosts.some(x => x.endsWith(toPuny(host)))) {
+	if (meta.selfSilencedHosts.some(x => toPuny(host).endsWith(x))) {
 		job.data.content = publicToHome(job.data.content, job.data.user);
 	}
 

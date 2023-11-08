@@ -159,7 +159,7 @@ export default async (user: { id: User['id']; username: User['username']; host: 
 
 	// インスタンスサイレンス
 	const meta = await fetchMeta();
-	if (meta.silencedHosts.some(x => x.endsWith(user.host)) && data.visibility === 'public' && data.channel == null) {
+	if (meta.silencedHosts.some(x => user.host.endsWith(x)) && data.visibility === 'public' && data.channel == null) {
 		data.visibility = 'home';
 	}
 

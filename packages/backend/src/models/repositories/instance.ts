@@ -23,6 +23,8 @@ export class InstanceRepository extends Repository<Instance> {
 			isNotResponding: instance.isNotResponding,
 			isSuspended: instance.isSuspended,
 			isBlocked: meta.blockedHosts.some(x => instance.host.endsWith(x)),
+			isSelfSilenced: meta.selfSilencedHosts.some(x => instance.host.endsWith(x)),
+			isSilenced: meta.silencedHosts.some(x => instance.host.endsWith(x)),
 			softwareName: instance.softwareName,
 			softwareVersion: instance.softwareVersion,
 			openRegistrations: instance.openRegistrations,

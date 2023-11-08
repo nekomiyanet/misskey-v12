@@ -156,7 +156,7 @@ export default async function(_follower: { id: User['id'] }, _followee: { id: Us
 	// フォロワーがサイレンスされている or
 	// フォロワーインスタンスがサイレンスされている or
 	// 上記のいずれかに当てはまる場合はすぐフォローせずにフォローリクエストを発行しておく
-	if (!followeeProfile.allowFollow || followee.isLocked || (followeeProfile.carefulBot && follower.isBot) || (Users.isLocalUser(follower) && Users.isRemoteUser(followee)) || follower.isSilenced || follower.isLocalSilenced || meta.silencedHosts.some(x => x.endsWith(follower.host))) {
+	if (!followeeProfile.allowFollow || followee.isLocked || (followeeProfile.carefulBot && follower.isBot) || (Users.isLocalUser(follower) && Users.isRemoteUser(followee)) || follower.isSilenced || follower.isLocalSilenced || meta.silencedHosts.some(x => follower.host.endsWith(x))) {
 		let autoAccept = false;
 
 		// 鍵アカウントであっても、既にフォローされていた場合はスルー
