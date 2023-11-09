@@ -29,8 +29,8 @@
 			<template #label>Moderation</template>
 			<FormSwitch v-model="suspended" class="_formBlock" @update:modelValue="toggleSuspend">{{ $ts.stopActivityDelivery }}</FormSwitch>
 			<FormSwitch v-if="$i" :disabled="!$i.isAdmin || (isBlocked && !isExactlyBlocked)" v-model="isBlocked" class="_formBlock" @update:modelValue="toggleBlock">{{ $ts.blockThisInstance }}</FormSwitch>
-			<FormSwitch v-model="selfsilenced" :disabled="true" class="_formBlock">{{ $ts.selfSilencing }}</FormSwitch>
-			<FormSwitch v-model="silenced" :disabled="true" class="_formBlock">{{ $ts.instanceSilencing }}</FormSwitch>
+			<FormSwitch v-if="$i" :disabled="!$i.isAdmin || (selfsilenced && !isExactlySelfSilenced)" v-model="selfsilenced" class="_formBlock" @update:modelValue="toggleSelfSilence">{{ $ts.selfSilencing }}</FormSwitch>
+			<FormSwitch v-if="$i" :disabled="!$i.isAdmin || (silenced && !isExactlySilenced)" v-model="silenced" class="_formBlock" @update:modelValue="toggleSilence">{{ $ts.instanceSilencing }}</FormSwitch>
 			<MkButton @click="refreshMetadata">Refresh metadata</MkButton>
 		</FormSection>
 
@@ -135,7 +135,9 @@ let suspended = $ref(false);
 let isBlocked = $ref(false);
 let isExactlyBlocked = $ref(false);
 let silenced = $ref(false);
+let isExactlySilenced = $ref(false);
 let selfsilenced = $ref(false);
+let isExactlySelfSilenced = $ref(false);
 let chartSrc = $ref('instance-requests');
 let chartSpan = $ref('hour');
 
@@ -148,7 +150,9 @@ async function fetch() {
 	isBlocked = instance.isBlocked;
 	isExactlyBlocked = meta.blockedHosts.includes(instance.host);
 	silenced = instance.isSilenced;
+	isExactlySilenced = meta.silencedHosts.includes(instance.host);
 	selfsilenced = instance.isSelfSilenced;
+	isExactlySelfSilenced = meta.selfSilencedHosts.includes(instance.host);
 }
 
 async function toggleBlock(ev) {
@@ -159,6 +163,30 @@ async function toggleBlock(ev) {
 	}
 	await os.api('admin/update-meta', {
 		blockedHosts: isBlocked ? meta.blockedHosts.concat([instance.host]) : meta.blockedHosts.filter(x => x !== instance.host)
+	});
+	fetch();
+}
+
+async function toggleSilence(ev) {
+	if (meta == null) return;
+	if (!silenced && !isExactlySilenced) {
+		silenced = true;
+		return;
+	}
+	await os.api('admin/update-meta', {
+		silencedHosts: silenced ? meta.silencedHosts.concat([instance.host]) : meta.silencedHosts.filter(x => x !== instance.host)
+	});
+	fetch();
+}
+
+async function toggleSelfSilence(ev) {
+	if (meta == null) return;
+	if (!selfsilenced && !isExactlySelfSilenced) {
+		selfsilenced = true;
+		return;
+	}
+	await os.api('admin/update-meta', {
+		selfSilencedHosts: selfsilenced ? meta.selfSilencedHosts.concat([instance.host]) : meta.selfSilencedHosts.filter(x => x !== instance.host)
 	});
 	fetch();
 }
