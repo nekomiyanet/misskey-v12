@@ -43,13 +43,14 @@ export default define(meta, paramDef, async (ps) => {
 
 	if (emoji == null) throw new ApiError(meta.errors.noSuchEmoji);
 
-	let existemojis = await Emojis.findOne({
-		host: IsNull(),
-		name: ps.name,
-	});
-
-	if (existemojis != null) {
-		throw new ApiError(meta.errors.duplicateName);
+	if (emoji.name != ps.name) {
+		let existemojis = await Emojis.findOne({
+			host: IsNull(),
+			name: ps.name,
+		});
+		if (existemojis != null) {
+			throw new ApiError(meta.errors.duplicateName);
+		}
 	}
 
 	await Emojis.update(emoji.id, {
