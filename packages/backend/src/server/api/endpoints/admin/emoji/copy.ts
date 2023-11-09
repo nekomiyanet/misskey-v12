@@ -6,6 +6,7 @@ import { ApiError } from '../../../error.js';
 import { DriveFile } from '@/models/entities/drive-file.js';
 import { uploadFromUrl } from '@/services/drive/upload-from-url.js';
 import { publishBroadcastStream } from '@/services/stream.js';
+import { IsNull } from 'typeorm';
 
 export const meta = {
 	tags: ['admin'],
@@ -56,7 +57,7 @@ export default define(meta, paramDef, async (ps, me) => {
 	}
 
 	let existemojis = await Emojis.findOne({
-		host: null,
+		host: IsNull(),
 		name: emoji.name,
 	});
 

@@ -2,6 +2,7 @@ import define from '../../../define.js';
 import { Emojis } from '@/models/index.js';
 import { getConnection } from 'typeorm';
 import { ApiError } from '../../../error.js';
+import { IsNull } from 'typeorm';
 
 export const meta = {
 	tags: ['admin'],
@@ -43,7 +44,7 @@ export default define(meta, paramDef, async (ps) => {
 	if (emoji == null) throw new ApiError(meta.errors.noSuchEmoji);
 
 	let existemojis = await Emojis.findOne({
-		host: null,
+		host: IsNull(),
 		name: ps.name,
 	});
 
