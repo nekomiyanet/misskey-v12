@@ -8,7 +8,7 @@ import { Packed } from '@/misc/schema.js';
 import { isUserRelated } from '@/misc/is-user-related.js'
 
 export default class extends Channel {
-	public readonly chName = 'catTimeline';
+	public readonly chName = 'modTimeline';
 	public static shouldShare = true;
 	public static requireCredential = false;
 
