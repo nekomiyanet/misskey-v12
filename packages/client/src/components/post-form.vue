@@ -253,6 +253,14 @@ if (props.reply && props.reply.text != null) {
 	}
 }
 
+if ($i && $i.isSilenced && visibility === 'public') {
+	visibility = 'home';
+}
+
+if ($i && $i.isLocalSilenced && !localOnly && visibility !== 'specified') {
+	localOnly = true;
+}
+
 if (props.channel) {
 	visibility = 'public';
 	localOnly = true; // TODO: チャンネルが連合するようになった折には消す
@@ -385,6 +393,8 @@ function setVisibility() {
 
 	os.popup(import('./visibility-picker.vue'), {
 		currentVisibility: visibility,
+		isSilenced: $i?.isSilenced,
+		isLocalSilenced: $i?.isLocalSilenced,
 		currentLocalOnly: localOnly,
 		src: visibilityButton,
 	}, {
@@ -393,11 +403,23 @@ function setVisibility() {
 			if (defaultStore.state.rememberNoteVisibility) {
 				defaultStore.set('visibility', visibility);
 			}
+			if ($i && $i.isSilenced && visibility === 'public') {
+				visibility = 'home';
+			}
+			if ($i && $i.isLocalSilenced && !localOnly && visibility !== 'specified') {
+				localOnly = true;
+			}
 		},
 		changeLocalOnly: v => {
 			localOnly = v;
 			if (defaultStore.state.rememberNoteVisibility) {
 				defaultStore.set('localOnly', localOnly);
+			}
+			if ($i && $i.isSilenced && visibility === 'public') {
+				visibility = 'home';
+			}
+			if ($i && $i.isLocalSilenced && !localOnly && visibility !== 'specified') {
+				localOnly = true;
 			}
 		}
 	}, 'closed');
@@ -745,7 +767,7 @@ onMounted(() => {
 					margin-left: 0 !important;
 				}
 			}
-			
+
 			> .local-only {
 				margin: 0 0 0 12px;
 				opacity: 0.7;
