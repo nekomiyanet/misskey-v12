@@ -1,21 +1,21 @@
 <template>
 <MkModal ref="modal" :z-priority="'high'" :src="src" @click="modal.close()" @closed="emit('closed')">
 	<div class="gqyayizv _popup">
-		<button key="public" :disabled="isSilenced" class="_button" :class="{ active: v === 'public' }" data-index="1" @click="choose('public')">
+		<button key="public" :disabled="isSilenced || (isLocalSilenced && !localOnly)" class="_button" :class="{ active: v === 'public' }" data-index="1" @click="choose('public')">
 			<div><i class="fas fa-globe"></i></div>
 			<div>
 				<span>{{ $ts._visibility.public }}</span>
 				<span>{{ $ts._visibility.publicDescription }}</span>
 			</div>
 		</button>
-		<button key="home" class="_button" :class="{ active: v === 'home' }" data-index="2" @click="choose('home')">
+		<button key="home" :disabled="(isLocalSilenced && !localOnly)" class="_button" :class="{ active: v === 'home' }" data-index="2" @click="choose('home')">
 			<div><i class="fas fa-home"></i></div>
 			<div>
 				<span>{{ $ts._visibility.home }}</span>
 				<span>{{ $ts._visibility.homeDescription }}</span>
 			</div>
 		</button>
-		<button key="followers" class="_button" :class="{ active: v === 'followers' }" data-index="3" @click="choose('followers')">
+		<button key="followers" :disabled="(isLocalSilenced && !localOnly)" class="_button" :class="{ active: v === 'followers' }" data-index="3" @click="choose('followers')">
 			<div><i class="fas fa-unlock"></i></div>
 			<div>
 				<span>{{ $ts._visibility.followers }}</span>
