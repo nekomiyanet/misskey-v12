@@ -50,3 +50,24 @@ export async function lookupUserByEmail() {
 		throw err;
 	}
 }
+
+export async function lookupFile() {
+	const { canceled, result } = await os.inputText({
+		title: i18n.ts.fileIdOrUrl,
+	});
+	if (canceled) return;
+
+	try {
+		const file = await os.api('admin/drive/show-file', result.startsWith('http://') || result.startsWith('https://') ? { url: result.trim() } : { fileId: result.trim() });
+		os.popup(import('../pages/admin/file-dialog.vue'), {
+			fileId: file.id
+		}, {}, 'closed');
+	} catch (err) {
+		if (err.code === 'NO_SUCH_FILE') {
+			os.alert({
+				type: 'error',
+				text: i18n.ts.notFound
+			});
+		}
+	}
+}
