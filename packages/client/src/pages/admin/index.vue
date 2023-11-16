@@ -36,7 +36,7 @@ import { scroll } from '@/scripts/scroll';
 import { instance } from '@/instance';
 import * as symbols from '@/symbols';
 import * as os from '@/os';
-import { lookupUser } from '@/scripts/lookup-user';
+import { lookupUser, lookupUserByEmail } from '@/scripts/lookup-user';
 
 export default defineComponent({
 	components: {
@@ -303,7 +303,13 @@ export default defineComponent({
 				icon: 'fas fa-user',
 				action: () => {
 					lookupUser();
-				}
+				},
+			}, {
+				text: `${i18n.ts.user} (${i18n.ts.email})`,
+				icon: 'fas fa-user',
+				action: () => {
+					lookupUserByEmail();
+				},
 			}], ev.currentTarget ?? ev.target);
 		};
 
