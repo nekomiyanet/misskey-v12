@@ -1,0 +1,57 @@
+name: Build Zip
+on: [release]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    - name: MKDIR && CHDIR
+      run: mkdir output;cd output
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Set NODE_ENV
+      run: export NODE_ENV=production
+    - run: git submodule update --init
+    - name: Install dependencies
+      run: yarn install
+    - run: git diff --exit-code yarn.lock
+    - run: git diff --exit-code packages/backend/yarn.lock
+    - run: git diff --exit-code packages/client/yarn.lock
+    - name: Build
+      run: yarn build
+    - name: Check webpack process
+      run: ls built/meta.json
+    - name: CHDIR
+      run: cd ../
+    - name: Zip
+      run: zip -r release.zip output
+    - name: Upload release attachment
+      uses: actions/github-script@v4
+      with:
+        script: |
+          const fs = require('fs');
+          const tag = context.ref.replace("refs/tags/", "");
+          // Get release for this tag
+          const release = await github.repos.getReleaseByTag({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            tag
+          });
+          // Upload the release asset
+          await github.repos.uploadReleaseAsset({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            release_id: release.data.id,
+            name: "release.zip",
+            data: await fs.readFileSync("release.zip")
+          });
