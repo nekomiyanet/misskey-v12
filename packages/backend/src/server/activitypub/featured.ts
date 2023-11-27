@@ -5,7 +5,7 @@ import renderOrderedCollection from '@/remote/activitypub/renderer/ordered-colle
 import { setResponseType } from '../activitypub.js';
 import renderNote from '@/remote/activitypub/renderer/note.js';
 import { Users, Notes, UserNotePinings } from '@/models/index.js';
-import checkFetch from '@/remote/activitypub/check-fetch.js';
+import { checkFetch } from '@/remote/activitypub/check-fetch.js';
 import { fetchMeta } from '@/misc/fetch-meta.js';
 
 export default async (ctx: Router.RouterContext) => {

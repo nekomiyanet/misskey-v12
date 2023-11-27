@@ -15,7 +15,7 @@ import { Users, Notes, UserProfiles } from '@/models/index.js';
 import { makePaginationQuery } from '../api/common/make-pagination-query.js';
 import { Brackets } from 'typeorm';
 import { Note } from '@/models/entities/note.js';
-import checkFetch from '@/remote/activitypub/check-fetch.js';
+import { checkFetch } from '@/remote/activitypub/check-fetch.js';
 import { fetchMeta } from '@/misc/fetch-meta.js';
 
 export default async (ctx: Router.RouterContext) => {

@@ -11,7 +11,7 @@ import { setResponseType } from '../activitypub.js';
 import { Users, Followings, UserProfiles } from '@/models/index.js';
 import { LessThan, FindConditions } from 'typeorm';
 import { Following } from '@/models/entities/following.js';
-import checkFetch from '@/remote/activitypub/check-fetch.js';
+import { checkFetch } from '@/remote/activitypub/check-fetch.js';
 import { fetchMeta } from '@/misc/fetch-meta.js';
 
 export default async (ctx: Router.RouterContext) => {
