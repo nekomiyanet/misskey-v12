@@ -12,9 +12,11 @@ jobs:
       matrix:
         node-version: [16.x]
 
+    defaults:
+      run:
+        working-directory: main/builddir
+
     steps:
-    - name: MKDIR && CHDIR
-      run: mkdir output;cd output
     - uses: actions/checkout@v2
       with:
         submodules: true
@@ -24,7 +26,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Set NODE_ENV
       run: export NODE_ENV=production
-    - run: git submodule update --init
+    - name: Update Submodule
+      run: git submodule update --init
     - name: Install dependencies
       run: yarn install
     - run: git diff --exit-code yarn.lock
@@ -34,10 +37,8 @@ jobs:
       run: yarn build
     - name: Check webpack process
       run: ls built/meta.json
-    - name: CHDIR
-      run: cd ../
     - name: Zip
-      run: zip -r release.zip output
+      run: cd ../;zip -r release.zip builddir
     - name: Upload release attachment
       uses: actions/github-script@v4
       with:
@@ -56,5 +57,5 @@ jobs:
             repo: context.repo.repo,
             release_id: release.data.id,
             name: "release.zip",
-            data: await fs.readFileSync("release.zip")
+            data: await fs.readFileSync("../release.zip")
           });
