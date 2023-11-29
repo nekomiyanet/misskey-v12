@@ -9,35 +9,35 @@ You should also include the user name that made the change.
 -->
 
 ## 12.108.1-nekomiya-20231129111355 (2023/11/29)
-## Improvements
+### Improvements
 - クライアントで正しく自分のインスタンスのドメイン名が表示されるように @atsu1125
 - `Application`もBotとして扱うように @atsu1125
 - クイックアクションから管理者がメールアドレスでユーザーを検索できるように @atsu1125
 - クイックアクションにドライブファイル検索を追加 @atsu1125
 - 古い情報を更新・主なコントリビューターを追加 @morotesovtannu
 
-## Bugfixes
+### Bugfixes
 - サイレンスされているときに無効な公開範囲をクライアントで選ばないように @atsu1125
 - ストリーミングのチャンネル名を修正 @atsu1125
 - 通知音の再生時に端末のメディア再生を停止しないように @atsu1125
 - リモートユーザーのHTTP署名のチェックを適切に行っていないのを修正 @atsu1125
 
 ## 12.108.1-nekomiya-20231109203930 (2023/11/09)
-## Bugfixes
+### Bugfixes
 - ドメインブロック、インスタンスサイレンス、セルフサイレンスがサブドメインに反映されないのを修正 @atsu1125
 - ドメインブロックのスイッチが意図通りに動かないのを修正 @atsu1125
 - メールドメインブロックがサブドメインに反映されないのを修正 @atsu1125
 - 絵文字追加の重複チェックを修正 @atsu1125
 
 ## 12.108.1-nekomiya-20231030171338 (2023/10/30)
-## Improvements
+### Improvements
 - ブロックしているユーザーからのリノートは受信しないように @atsu1125
 - マイグレーションを簡単にロールバックできるように @atsu1125
 - NodejsとDockerのAlpineのOSをバージョンアップ @atsu1125
 - `NODE_ENV=Development`ならクライアントバージョンの末端をランダムに @atsu1125
 - リモートリンクをコピーするボタンを追加 @morotesovtannu
 
-## Bugfixes
+### Bugfixes
 - メール送信前に検証されているメアドかチェック @atsu1125
 - 連合なしのアンケートが配送されないように @atsu1125
 - ノート作成時のローカルのみチェックを追加 @atsu1125
@@ -53,7 +53,7 @@ You should also include the user name that made the change.
 - リノートをリノートできてしまわないように修正 @atsu1125
 
 ## 12.108.1-nekomiya-20230930103310 (2023/09/30)
-## Improvements
+### Improvements
 - 招待コードを管理画面で一覧表示・削除できるように @atsu1125
 - 投稿に言語情報を添付してみる @atsu1125
 - 配送を再試行可能なステータスコードの変更 @atsu1125
@@ -63,7 +63,7 @@ You should also include the user name that made the change.
 - メール配送は一部を除いてキューにする @atsu1125
 - 招待コードの発行はモデレーションログしない @atsu1125
 
-## Bugfixes
+### Bugfixes
 - Emojiとして使われているドライブのファイルは削除されないようにするためのコードの修正 @atsu1125
 - 凍結されているユーザーが含まれるリクエストに対して異なるユーザーを返すのを修正 @atsu1125
 - インスタンス情報のモデレーションスイッチの状態表示を改善 @atsu1125
@@ -73,7 +73,7 @@ You should also include the user name that made the change.
 - プラグインの権限一覧が見れなくなっているのを修正 @atsu1125
 
 ## 12.108.1-nekomiya-20230831163450 (2023/08/31)
-## Improvements
+### Improvements
 - Refreshボタンをメニューに追加 @atsu1125
 - feat: support <plain> syntax for mfm @syuilo
 - Bump mfm-js to 0.23.3 @atsu1125
@@ -81,7 +81,7 @@ You should also include the user name that made the change.
 - 広告一覧を表示できるように @atsu1125
 - enhance(federation): use ActivityPub defined property in favour of proprietary property @Johann150
 
-## Bugfixes
+### Bugfixes
 - 通知のタイプをmisskey-jsからconstに変更 @atsu1125
 - recognize null in _misskey_content for notes @Johann150
 - fix: correctly render note text @Johann150
@@ -89,7 +89,7 @@ You should also include the user name that made the change.
 - fix(client): 「インスタンスからのお知らせを受け取る」の設定を変更できない問題を修正 @syuilo
 
 ## 12.108.1-nekomiya-20230814185036 (2023/08/14)
-## Improvements
+### Improvements
 - 登録日時・ノート数・フォロー数・フォロワー数を他のインスタンスと同期できるように @atsu1125
 - 引越ししたユーザーの引越し先を表示するように @atsu1125
 - モデレータがユーザーのドライブ容量を確認できるように @atsu1125
@@ -103,7 +103,7 @@ You should also include the user name that made the change.
 - ドライブのファイルをユーザー単位で絞れるように @atsu1125
 - エラー画像などを変更 @morotesovtannu
 
-## Bugfixes
+### Bugfixes
 - 凍結・削除されたユーザーをできるだけ隠すように @atsu1125
 - ユーザーリストタイムラインでミュート・ブロックが効くように @atsu1125
 - 公開投稿が連合タイムラインに出ないことがあるのを修正 @atsu1125
@@ -114,7 +114,7 @@ You should also include the user name that made the change.
 - ワードミュートがサブノートに効くように @atsu1125
 
 ## 12.108.1-nekomiya-20230620154528 (2023/06/20)
-## Improvements
+### Improvements
 - 時限ミュートの期間をミュート管理画面から確認できるように @atsu1125
 - ミュート・ブロックを一括解除できるように @atsu1125
 - 運営からのお知らせを匿名でユーザーに送信できるように @atsu1125
@@ -123,14 +123,14 @@ You should also include the user name that made the change.
 - ユーザー削除を安全に正確に負荷なく行うように @atsu1125
 - フォローを許可しない設定が可能に @atsu1125
 
-## Bugfixes
+### Bugfixes
 - リノートミュートとブロックするとブロックされるに関わるフィルタをストリーミングで効くように @atsu1125
 - フォロー承認制を解除した際に一気に承認されてしまわないように @atsu1125
 - 絵文字として登録されているドライブファイルは消してしまわないように @atsu1125
 
 ## 12.108.1-nekomiya-20230615194416 (2023/06/15)
 
-## Improvements
+### Improvements
 - 配送を停止・ブロックしたインスタンスのユーザー・絵文字を一括削除できるように @atsu1125
 - リレーに対して古い投稿作成アクティビティは送らないように @atsu1125
 - 配送の停止・再開を配送状況と受信状況から判断して自動的に行うように @atsu1125
@@ -140,7 +140,7 @@ You should also include the user name that made the change.
 - セキュアモードと非公開モード @atsu1125
 - サーバーの物理的な情報を隠せるように @atsu1125
 
-## Bugfixes
+### Bugfixes
 - リノートのアニメーションはAPIコール前に行うように @atsu1125
 - 連合先インスタンスの配送情報を全て正しく確認できるように @atsu1125
 - お知らせ・広告の設定画面の日付表記が上手くいかんので一度隠す @atsu1125
@@ -148,12 +148,12 @@ You should also include the user name that made the change.
 
 ## 12.108.1-nekomiya-20230607090740 (2023/06/07)
 
-## Bugfixes
+### Bugfixes
 - MiAuthでコールバックURLのチェックを修正、認証できるように @atsu1125
 
 ## 12.108.1-nekomiya-20230602202145 (2023/06/02)
 
-## Improvements
+### Improvements
 - Misskey v10 / Misskey v13の効果音など一部追加 @atsu1125
 - リノートでアニメーションが出るように @atsu1125
 - 連続リノートできないように、一度リノートされてたら全て取り消すようにする、とりあえず @atsu1125
@@ -161,7 +161,7 @@ You should also include the user name that made the change.
 
 ## 12.108.1-nekomiya-20230601200000 (2023/06/01)
 
-## Improvements
+### Improvements
 - インスタンスティッカーを４種類のフォークのデザインから選択可能に @atsu1125
 - インスタンスティッカーにバージョンとソフトウェア名を表示するか任意で選択可能に @atsu1125
 - アンテナをローカルのみで取得するオプションを追加 @atsu1125
@@ -175,41 +175,41 @@ You should also include the user name that made the change.
 
 ## 12.108.1-nekomiya-20230528195800 (2023/05/28)
 
-## Improvements
+### Improvements
 - インスタンスティッカーにソフトウェア名を表示するように Show software name on instance ticker @atsu1125
 - リアクションをオリジナルノートのインスタンス以外にはブロードキャストしないオプション Feat: not broadcast like activities @atsu1125
 - トレンドはローカル投稿のみを対象にする @atsu1125
 
-## Bugfixes
+### Bugfixes
 - fix: show created/expired date on announcements/ads @atsu1125
 - fix: delete following when blocking creates @atsu1125
 - Fix: ブロックしているユーザーからの通知を無視 @atsu1125
 
 ## 12.108.1-nekomiya-20230519181040 (2023/05/19)
 
-## Improvements
+### Improvements
 - Show created/expired date on annoucements/ads admin view @atsu1125
 
 ## 12.108.1-nekomiya-20230519113940 (2023/05/19)
 
-## Improvements
+### Improvements
 - Change: Show expired ads on admin @atsu1125
 - Feat: not forwarding block activities @atsu1125
 - Feat: Take back all my renotes @atsu1125
 - Revert "Remove(client): Misskey更新時にダイアログを表示しないように" @atsu1125
 
-## Bugfixes
+### Bugfixes
 -  Do not accept follow request from suspended/deleted account @atsu1125
 
 ## 12.108.1-nekomiya-20230401172330 (2023/04/01)
 
-## Improvements
+### Improvements
 - フォント変更等 @morotesovtannu
 - add I love Nekomiya_net(about-misskey) @morotesovtannu
 
 ## 12.108.1-nekomiya-20230326034000 (2023/03/26)
 
-## Improvements
+### Improvements
 - ブロックしているアカウントのノートも隠すようにする（ユーザーページ以外） @atsu1125
 - ブロックしているユーザーからの通知は行えないようにする @atsu1125
 - アカウント削除・ファイル全削除・モデレータ変更・パスワード再発行・お知らせ・招待コードのモデレーション操作をログ @atsu1125
@@ -217,17 +217,17 @@ You should also include the user name that made the change.
 - リレー解除の時にもダイアログするように @atsu1125
 - 通報を解決する際にもダイアログするように @atsu1125
 
-## Bugfixes
+### Bugfixes
 - お知らせ・広告を登録する際に増殖しないようにした @atsu1125
 
 ## 12.108.1-nekomiya-20230324002400 (2023/03/24)
 
-## Improvements
+### Improvements
 - Adminはモデレータのログインを無効化できるように @atsu1125
 - モデレーション：フォロワー以外からのプロフィールを非表示にできるように @atsu1125
 - 投稿禁止ワードを設定できるように @atsu1125
 
-## Bugfixes
+### Bugfixes
 - SuspendでUnfollowAllはしないようにする @atsu1125
 - アカウントがサイレンス・無効化されている場合などにおすすめしないように @atsu1125
 - アカウントが無効化されている場合のエラーメッセージを改善 @atsu1125
@@ -235,23 +235,23 @@ You should also include the user name that made the change.
 
 ## 12.108.1-fix.9.7 (2023/03/12)
 
-## Improvements
+### Improvements
 - セルフインスタンスサイレンス機能 @atsu1125
 - インスタンスサイレンス機能 @atsu1125
 
-## Bugfixes
+### Bugfixes
 - Botアカウントである旨の警告を削除 @atsu1125
 - 更新されたというポップアップを削除 @atsu1125
 - インスタンスのアイコンが出ないのを修正 @atsu1125
 
 ## 12.108.1-fix.9.6 (2023/03/08)
 
-## Bugfixes
+### Bugfixes
 - 未ログイン状態でノートが見れないのを修正 @atsu1125
 
 ## 12.108.1-fix.9.5 (2023/03/02)
 
-## Improvements
+### Improvements
 - 人気のねこ @atsu1125
 - 話題のねこ @atsu1125
 - 時間は相対的だけではなく絶対的なものでもある @atsu1125
@@ -262,31 +262,31 @@ You should also include the user name that made the change.
 - テーマカラーをnodeinfoから配信 @Johann150 @atsu1125
 - Botアカウントでログインしている際にささやかに警告 @atsu1125
 
-## Bugfixes
+### Bugfixes
 - 無効化されたタイムラインを修正２ @atsu1125
 
 ## 12.108.1-fix.9.4 (2023/03/01)
 
-## Improvements
+### Improvements
 - 招待制なことをわかりやすく @atsu1125
 - メールアドレスが必要なことをわかりやすく @atsu1125
 - 動きのない標準的なMarkup language For Misskeyを無効化できるように @atsu1125
 
-## Bugfixes
+### Bugfixes
 - 無効化されたタイムラインを修正 @atsu1125
 - リノートを取得できないのを修正 @atsu1125
 
 ## 12.108.1-fix.9.3 (2023/02/28)
 
-## Improvements
+### Improvements
 - ユーザーがタイムラインを無効化できるように @atsu1125
 
-## Bugfixes
+### Bugfixes
 - 限定ホームタイムラインのクエリを修正 @atsu1125
 
 ## 12.108.1-fix.9 (2023/02/28)
 
-## Improvements
+### Improvements
 - メールドメインブロック機能を追加 @atsu1125
 - 管理者がユーザーのメールアドレスを確認可能 @atsu1125
 - モデレータがユーザーのメールアドレス登録状態を確認可能 @atsu1125
@@ -301,18 +301,18 @@ You should also include the user name that made the change.
 - デフォルトでピコピコ鳴らさないように @atsu1125
 - デフォルトの適用テーマを変更 @atsu1125
 
-## Bugfixes
+### Bugfixes
 - Fix validation for security @atsu1125
 
 ## 12.108.1-fix.8 (2023/02/25)
 
-## Improvements
+### Improvements
 - 設定ファイルでオブジェクトストレージの設定を行うように @atsu1125
 - 設定ファイルでメールの設定を行うように @atsu1125
 - モデレータがページを削除できるように @atsu1125
 - Twemoji 14.0に対応するように @atsu1125 @mei23 @syuilo
 
-## Bugfixes
+### Bugfixes
 - お知らせの登録日時の表示を適切なデザインに @atsu1125
 - Follow Security Advisory @mei23
 - Node v16.19.1 @atsu1125
@@ -320,7 +320,7 @@ You should also include the user name that made the change.
 
 ## 12.108.1-fix.7 (2023/02/24)
 
-## Improvements
+### Improvements
 - 非ログインのビジターメニューからお知らせを確認しやすいように @atsu1125
 - フォロー、フォロワーのページでフォローされていることを表示 @nenohi @atsu1125
 - ねこみやすきーのテーマを追加 @atsu1125
@@ -328,7 +328,7 @@ You should also include the user name that made the change.
 - チャンネルオーナーとモデレータがチャンネルを削除できるように @atsu1125
 - 管理画面(/admin/overview)にオンラインユーザー数を表示 @atsu1125
 
-## Bugfixes
+### Bugfixes
 - ローカル専用の公開範囲へのサイレンスはリモートアカウントに設定できないように @atsu1125
 - ログイン無効化はリモートアカウントに設定できないように @atsu1125
 - タイムトラベルはできない @atsu1125
@@ -338,7 +338,7 @@ You should also include the user name that made the change.
 
 ## 12.108.1-fix.6 (2023/02/23)
 
-## Improvements
+### Improvements
 - アカウントをローカル専用の公開範囲にサイレンスできるように @atsu1125
 - アカウントを凍結せずにログインのみを無効化できるように @atsu1125
 - アカウントのメディアを強制的に閲覧注意に設定できるように @atsu1125
@@ -347,12 +347,12 @@ You should also include the user name that made the change.
 - 凍結ボタンはユーザーメニューには表示しないように @atsu1125
 - お知らせの登録日時を表示するように @atsu1125
 
-## Bugfixes
+### Bugfixes
 - 通報の外部キーを修正 @atsu1125
 
 ## 12.108.1-fix.5 (2023/01/29)
 
-## Improvements
+### Improvements
 - 解決済みの通報を見られるように @Johann150
 
 ## 12.108.1-fix.4 (2023/01/24)
