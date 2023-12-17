@@ -89,7 +89,7 @@ function fetchAccount(token): Promise<Account> {
 						signout();
 					});
 				} else {
-					signout();
+					//signout();
 				}
 			} else {
 				res.token = token;
