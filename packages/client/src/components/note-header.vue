@@ -9,6 +9,20 @@
 		<MkA class="created-at" :to="notePage(note)">
 			<MkTime v-if="enableAbsoluteTime" :time="note.createdAt" mode="absolute"/>
 			<MkTime v-else-if="!enableAbsoluteTime" :time="note.createdAt" mode="relative"/>
+			{{ }}
+			<i v-if="note.updatedAt" class="fas fa-pencil-alt"></i>
+			<MkTime
+							v-if="note.updatedAt && enableAbsoluteTime"
+							:time="note.updatedAt"
+							mode="absolute"
+							></MkTime
+			>
+			<MkTime
+							v-if="note.updatedAt && !enableAbsoluteTime"
+							:time="note.updatedAt"
+							mode="relative"
+							></MkTime
+			>
 		</MkA>
 		<MkVisibility :note="note"/>
 	</div>
