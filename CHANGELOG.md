@@ -8,6 +8,10 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20231227211900 (2023/12/27)
+### Bugfixes
+- AdminのAPI権限の修正 @atsu1125
+
 ## 12.108.1-nekomiya-20231224105802 (2023/12/24)
 ### Improvements
 - 自分のインスタンスのノート探索速度を向上 @atsu1125
