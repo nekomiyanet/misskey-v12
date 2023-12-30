@@ -26,7 +26,7 @@
 		"@types/bcryptjs": "2.4.2",
 		"@types/bull": "3.15.8",
 		"@types/cbor": "6.0.0",
-		"@types/escape-regexp": "0.0.1",
+		"@types/escape-regexp": "0.0.3",
 		"@types/is-url": "1.2.30",
 		"@types/js-yaml": "4.0.5",
 		"@types/jsdom": "16.2.14",
