@@ -7,6 +7,7 @@ import { DriveFile } from '@/models/entities/drive-file.js';
 import { uploadFromUrl } from '@/services/drive/upload-from-url.js';
 import { publishBroadcastStream } from '@/services/stream.js';
 import { IsNull } from 'typeorm';
+import { insertModerationLog } from '@/services/insert-moderation-log.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -89,6 +90,11 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	publishBroadcastStream('emojiAdded', {
 		emoji: await Emojis.pack(copied.id),
+	});
+
+	insertModerationLog(me, 'copyEmoji', {
+		emojiId: emoji.id,
+		name: emoji.name,
 	});
 
 	return {

@@ -73,6 +73,7 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	insertModerationLog(me, 'addEmoji', {
 		emojiId: emoji.id,
+		name: emoji.name,
 	});
 
 	return {
