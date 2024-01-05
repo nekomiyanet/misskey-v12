@@ -10,8 +10,10 @@ export async function addNoteToAntenna(antenna: Antenna, note: Note, noteUser: {
 	// 通知しない設定になっているか、自分自身の投稿なら既読にする
 	const read = !antenna.notify || (antenna.userId === noteUser.id);
 
+	const newAntennaNoteId = genId();
+
 	AntennaNotes.insert({
-		id: genId(),
+		id: newAntennaNoteId,
 		antennaId: antenna.id,
 		noteId: note.id,
 		read: read,
@@ -40,6 +42,12 @@ export async function addNoteToAntenna(antenna: Antenna, note: Note, noteUser: {
 		}
 
 		if (isMutedUserRelated(_note, new Set<string>(mutings.map(x => x.muteeId)))) {
+			const updates = {
+				read: true,
+			};
+			await AntennaNotes.update({
+				id: newAntennaNoteId,
+			}, updates);
 			return;
 		}
 
@@ -48,6 +56,12 @@ export async function addNoteToAntenna(antenna: Antenna, note: Note, noteUser: {
 				userId: antenna.userId,
 			});
 			if (antennaUserProfile.mutedInstances.includes(note.userHost)) {
+				const updates = {
+					read: true,
+				};
+				await AntennaNotes.update({
+					id: newAntennaNoteId,
+				}, updates);
 				return;
 			}
 		}
