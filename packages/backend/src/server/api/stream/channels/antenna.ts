@@ -4,6 +4,7 @@ import { isMutedUserRelated } from '@/misc/is-muted-user-related.js';
 import { isBlockerUserRelated } from '@/misc/is-blocker-user-related.js';
 import { isBlockeeUserRelated } from '@/misc/is-blockee-user-related.js';
 import { isUserRelated } from '@/misc/is-user-related.js'
+import { isInstanceMuted } from '@/misc/is-instance-muted.js';
 import { StreamMessages } from '../types.js';
 
 export default class extends Channel {
@@ -35,6 +36,8 @@ export default class extends Channel {
 			// 流れてきたNoteがブロックしているユーザーが関わるものだったら無視する
 			if (isBlockeeUserRelated(note, this.blocking)) return;
 			if (note.renote && !note.text && isUserRelated(note, this.renoteMuting)) return;
+			// Ignore notes from instances the user has muted
+			if (isInstanceMuted(note, new Set<string>(this.userProfile?.mutedInstances ?? []))) return;
 
 			this.connection.cacheNote(note);
 

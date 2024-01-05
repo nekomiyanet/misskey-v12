@@ -1,6 +1,6 @@
 import { Antenna } from '@/models/entities/antenna.js';
 import { Note } from '@/models/entities/note.js';
-import { AntennaNotes, Mutings, Notes } from '@/models/index.js';
+import { AntennaNotes, Mutings, Notes, UserProfiles } from '@/models/index.js';
 import { genId } from '@/misc/gen-id.js';
 import { isMutedUserRelated } from '@/misc/is-muted-user-related.js';
 import { publishAntennaStream, publishMainStream } from '@/services/stream.js';
@@ -41,6 +41,15 @@ export async function addNoteToAntenna(antenna: Antenna, note: Note, noteUser: {
 
 		if (isMutedUserRelated(_note, new Set<string>(mutings.map(x => x.muteeId)))) {
 			return;
+		}
+
+		if (note.userHost != null) {
+			const antennaUserProfile = await UserProfiles.findOne({
+				userId: antenna.userId,
+			});
+			if (antennaUserProfile.mutedInstances.includes(note.userHost)) {
+				return;
+			}
 		}
 
 		// 2秒経っても既読にならなかったら通知

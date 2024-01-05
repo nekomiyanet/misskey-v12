@@ -7,6 +7,7 @@ import { Brackets } from 'typeorm';
 import { safeForSql } from '@/misc/safe-for-sql.js';
 import { normalizeForSearch } from '@/misc/normalize-for-search.js';
 import { generateBlockedUserQuery, generateBlockingUserQuery } from '../../common/generate-block-query.js';
+import { generateMutedInstanceQuery } from '../../common/generate-muted-instance-query.js';
 
 export const meta = {
 	tags: ['notes', 'hashtags'],
@@ -63,6 +64,7 @@ export default define(meta, paramDef, async (ps, me) => {
 	if (me && !me.isAdmin && !me.isModerator) {
 		generateBlockedUserQuery(query, me);
 	}
+	if (me) generateMutedInstanceQuery(query, me);
 
 	try {
 		if (ps.tag) {
