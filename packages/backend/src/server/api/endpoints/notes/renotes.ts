@@ -6,6 +6,7 @@ import { generateMutedUserQuery } from '../../common/generate-muted-user-query.j
 import { makePaginationQuery } from '../../common/make-pagination-query.js';
 import { Notes } from '@/models/index.js';
 import { generateBlockedUserQuery, generateBlockingUserQuery } from '../../common/generate-block-query.js';
+import { generateMutedInstanceQuery } from '../../common/generate-muted-instance-query.js';
 
 export const meta = {
 	tags: ['notes'],
@@ -76,6 +77,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	if (user && !user.isAdmin && !user.isModerator) {
 		generateBlockedUserQuery(query, user);
 	}
+	generateMutedInstanceQuery(query, user);
 
 	const renotes = await query.take(ps.limit).getMany();
 

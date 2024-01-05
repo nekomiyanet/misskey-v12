@@ -7,6 +7,7 @@ import { makePaginationQuery } from '../../common/make-pagination-query.js';
 import { Brackets } from 'typeorm';
 import { generateBlockedUserQuery, generateBlockingUserQuery } from '../../common/generate-block-query.js';
 import { generateMutedNoteThreadQuery } from '../../common/generate-muted-note-thread-query.js';
+import { generateMutedInstanceQuery } from '../../common/generate-muted-instance-query.js';
 
 export const meta = {
 	tags: ['notes'],
@@ -66,6 +67,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	if (user && !user.isAdmin && !user.isModerator) {
 		generateBlockedUserQuery(query, user);
 	}
+	generateMutedInstanceQuery(query, user);
 
 	if (ps.visibility) {
 		query.andWhere('note.visibility = :visibility', { visibility: ps.visibility });
