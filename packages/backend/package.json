@@ -27,7 +27,7 @@
 		"@types/bull": "3.15.8",
 		"@types/cbor": "6.0.0",
 		"@types/escape-regexp": "0.0.1",
-		"@types/is-url": "1.2.30",
+		"@types/is-url": "1.2.32",
 		"@types/js-yaml": "4.0.5",
 		"@types/jsdom": "16.2.14",
 		"@types/jsonld": "1.5.6",
