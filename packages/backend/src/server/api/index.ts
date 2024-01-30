@@ -73,6 +73,8 @@ router.use(github.routes());
 router.use(twitter.routes());
 
 router.get('/v1/instance/peers', async ctx => {
+	if (config.disableFederation) ctx.throw(404);
+	
 	const instances = await Instances.find({
 		select: ['host'],
 	});

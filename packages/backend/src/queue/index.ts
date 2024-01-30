@@ -82,6 +82,7 @@ emailDeliverQueue
 	.on('stalled', (job) => emailDeliverLogger.warn(`stalled ${getJobInfo(job)} to=${job.data.to}`));
 
 export function deliver(user: ThinUser, content: unknown, to: string | null) {
+	if (config.disableFederation) return;
 	if (content == null) return null;
 	if (to == null) return null;
 
@@ -105,6 +106,7 @@ export function deliver(user: ThinUser, content: unknown, to: string | null) {
 }
 
 export function createDeliverRelaysJob(user: ThinUser, content: unknown, to: string | null, retryable: boolean | null) {
+	if (config.disableFederation) return;
 	if (content == null) return null;
 	if (to == null) return null;
 	if (retryable == null) {

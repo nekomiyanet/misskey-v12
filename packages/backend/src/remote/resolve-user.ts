@@ -37,6 +37,9 @@ export async function resolveUser(username: string, host: string | null, option?
 		});
 	}
 
+	// disableFederationならリモート解決しない
+	if (config.disableFederation) return null;
+
 	const user = await Users.findOne({ usernameLower, host }, option) as IRemoteUser | null;
 
 	const acctLower = `${usernameLower}@${host}`;

@@ -120,6 +120,9 @@ id: 'aid'
 #   ┌─────────────────────┐
 #───┘ Other configuration └─────────────────────────────────────
 
+# Whether disable Federation
+#disableFederation: true
+
 # Hide Server Logical stats
 #hideServerInfo: true
 

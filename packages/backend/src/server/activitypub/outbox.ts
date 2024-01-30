@@ -19,6 +19,7 @@ import { checkFetch } from '@/remote/activitypub/check-fetch.js';
 import { fetchMeta } from '@/misc/fetch-meta.js';
 
 export default async (ctx: Router.RouterContext) => {
+	if (config.disableFederation) ctx.throw(404);
 	const verify = await checkFetch(ctx.req);
 	if (verify != 200) {
 		ctx.status = verify;

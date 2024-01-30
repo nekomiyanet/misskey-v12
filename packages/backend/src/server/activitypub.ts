@@ -31,6 +31,8 @@ const router = new Router();
 //#region Routing
 
 function inbox(ctx: Router.RouterContext) {
+	if (config.disableFederation) ctx.throw(404);
+
 	if (ctx.req.headers.host !== config.host) {
 		ctx.status = 400;
 		return;
@@ -96,6 +98,8 @@ router.post('/users/:user/inbox', parseJsonBodyOrFail, inbox);
 router.get('/notes/:note', async (ctx, next) => {
 	if (!isActivityPubReq(ctx)) return await next();
 
+	if (config.disableFederation) ctx.throw(404);
+
 	const verify = await checkFetch(ctx.req);
 	if (verify != 200) {
 		ctx.status = verify;
@@ -135,6 +139,7 @@ router.get('/notes/:note', async (ctx, next) => {
 
 // note activity
 router.get('/notes/:note/activity', async ctx => {
+	if (config.disableFederation) ctx.throw(404);
 	const verify = await checkFetch(ctx.req);
 	if (verify != 200) {
 		ctx.status = verify;
@@ -176,6 +181,7 @@ router.get('/users/:user/collections/featured', Featured);
 
 // publickey
 router.get('/users/:user/publickey', async ctx => {
+	if (config.disableFederation) ctx.throw(404);
 	const instanceActor = await getInstanceActor();
 	if (ctx.params.user === instanceActor.id) {
 		ctx.body = renderActivity(renderKey(instanceActor, await getUserKeypair(instanceActor.id)));
@@ -238,6 +244,8 @@ async function userInfo(ctx: Router.RouterContext, user: User | undefined) {
 router.get('/users/:user', async (ctx, next) => {
 	if (!isActivityPubReq(ctx)) return await next();
 
+	if (config.disableFederation) ctx.throw(404);
+
 	const instanceActor = await getInstanceActor();
 	if (ctx.params.user === instanceActor.id) {
 		await userInfo(ctx, instanceActor);
@@ -263,6 +271,8 @@ router.get('/users/:user', async (ctx, next) => {
 
 router.get('/@:user', async (ctx, next) => {
 	if (!isActivityPubReq(ctx)) return await next();
+
+	if (config.disableFederation) ctx.throw(404);
 
 	if (ctx.params.user === 'instance.actor') {
 		const instanceActor = await getInstanceActor();
@@ -293,6 +303,7 @@ router.get('/actor', async (ctx, next) => {
 
 // emoji
 router.get('/emojis/:emoji', async ctx => {
+	if (config.disableFederation) ctx.throw(404);
 	const verify = await checkFetch(ctx.req);
 	if (verify != 200) {
 		ctx.status = verify;
@@ -321,6 +332,7 @@ router.get('/emojis/:emoji', async ctx => {
 
 // like
 router.get('/likes/:like', async ctx => {
+	if (config.disableFederation) ctx.throw(404);
 	const verify = await checkFetch(ctx.req);
 	if (verify != 200) {
 		ctx.status = verify;

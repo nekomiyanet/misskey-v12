@@ -83,6 +83,8 @@ const nodeinfo2 = async () => {
 };
 
 router.get(nodeinfo2_1path, async ctx => {
+	if (config.disableFederation) ctx.throw(404);
+
 	const base = await nodeinfo2();
 
 	ctx.body = { version: '2.1', ...base };
@@ -90,6 +92,8 @@ router.get(nodeinfo2_1path, async ctx => {
 });
 
 router.get(nodeinfo2_0path, async ctx => {
+	if (config.disableFederation) ctx.throw(404);
+	
 	const base = await nodeinfo2();
 
 	delete base.software.repository;

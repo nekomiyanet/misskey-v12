@@ -88,6 +88,7 @@ export type Source = {
 
 	signToActivityPubGet?: boolean;
 
+	disableFederation?: boolean;
 	hideServerInfo?: boolean;
 	disableAntenna?: boolean;
 	disableSearch?: boolean;
