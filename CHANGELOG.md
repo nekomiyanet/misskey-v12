@@ -8,6 +8,16 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20240131141658 (2024/01/31)
+### Improvements
+- 一切連合しない設定ができるように @atsu1125
+
+### Bugfixes
+- インスタンスミュートが一部（アンテナ・検索・通知などに）効かないのを修正 @atsu1125
+- `cc followers`を正しい公開範囲で解釈できるよう修正 @atsu1125
+- サーバーの物理的情報を正しく隠すことができるように @atsu1125
+- メール配信が管理者によって無効化されているなら配送を行わないように @atsu1125
+
 ## 12.108.1-nekomiya-20231227211900 (2023/12/27)
 ### Bugfixes
 - AdminのAPI権限の修正 @atsu1125
