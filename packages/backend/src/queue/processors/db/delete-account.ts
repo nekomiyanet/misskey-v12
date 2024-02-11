@@ -42,6 +42,9 @@ export async function deleteAccount(job: Bull.Job<DbUserDeleteJobData>): Promise
 				break;
 			}
 
+			let userStatus = await Users.findOne(job.data.user.id);
+			if (!userStatus.isDeleted) break;
+
 			cursor = notes[notes.length - 1].id;
 
 			for (const note of notes) {
@@ -58,6 +61,9 @@ export async function deleteAccount(job: Bull.Job<DbUserDeleteJobData>): Promise
 			job.progress(deleteprogress);
 		}
 
+		let userStatus = await Users.findOne(job.data.user.id);
+		if (!userStatus.isDeleted) return;
+		
 		logger.succ(`All of notes deleted`);
 	}
 
@@ -80,12 +86,18 @@ export async function deleteAccount(job: Bull.Job<DbUserDeleteJobData>): Promise
 				break;
 			}
 
+			let userStatus = await Users.findOne(job.data.user.id);
+			if (!userStatus.isDeleted) break;
+
 			cursor = files[files.length - 1].id;
 
 			for (const file of files) {
 				await deleteFileSync(file);
 			}
 		}
+
+		let userStatus = await Users.findOne(job.data.user.id);
+		if (!userStatus.isDeleted) return;
 
 		logger.succ(`All of files deleted`);
 	}
