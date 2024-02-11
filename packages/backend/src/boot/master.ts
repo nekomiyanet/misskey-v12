@@ -79,7 +79,9 @@ export async function masterMain() {
 		await spawnWorkers(config.clusterLimit);
 	}
 
-	bootLogger.succ(`Now listening on port ${config.port} on ${config.url}`, null, true);
+	if (!envOption.onlyQueue) {
+		bootLogger.succ(`Now listening on port ${config.port} on ${config.url}`, null, true);
+	}
 
 	if (!envOption.noDaemons && !envOption.onlyQueue) {
 		import('../daemons/server-stats.js').then(x => x.default());
@@ -101,6 +103,11 @@ function showEnvironment(): void {
 	}
 
 	logger.info(`You ${isRoot() ? '' : 'do not '}have root privileges`);
+	
+	if (envOption.onlyServer) logger.warn('onlyServer is set.');
+	if (envOption.onlyQueue) logger.warn('onlyQueue is set.');
+	if (envOption.noDaemons) logger.warn('noDaemons is set.');
+	if (envOption.disableClustering) logger.warn('disableClustering is set.');
 }
 
 function showNodejsVersion(): void {
