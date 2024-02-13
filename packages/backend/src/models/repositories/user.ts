@@ -9,6 +9,10 @@ import { populateEmojis } from '@/misc/populate-emojis.js';
 import { getAntennas } from '@/misc/antenna-cache.js';
 import { USER_ACTIVE_THRESHOLD, USER_ONLINE_THRESHOLD } from '@/const.js';
 import { sanitizeUrl } from '@/misc/sanitize-url.js';
+import { isActor, getApId } from '@/remote/activitypub/type.js';
+import { createPerson } from '@/remote/activitypub/models/person.js';
+import DbResolver from '@/remote/activitypub/db-resolver.js';
+import Resolver from '@/remote/activitypub/resolver.js';
 
 type IsUserDetailed<Detailed extends boolean> = Detailed extends true ? Packed<'UserDetailed'> : Packed<'UserLite'>;
 type IsMeAndIsUserDetailed<ExpectsMe extends boolean | null, Detailed extends boolean> =
@@ -142,6 +146,27 @@ export class UserRepository extends Repository<User> {
 		}) : null;
 
 		return unread != null;
+	}
+
+	public async userFromURI(uri: string): Promise<User | null> {
+		const dbResolver = new DbResolver();
+		let local = await dbResolver.getUserFromApId(uri);
+		if (local) {
+			return local;
+		}
+
+		// fetching Object once from remote
+		const resolver = new Resolver();
+		const object = (await resolver.resolve(uri)) as any;
+
+		// /@user If a URI other than the id is specified,
+		// the URI is determined here
+		if (uri !== object.id) {
+			local = await dbResolver.getUserFromApId(object.id);
+			if (local != null) return local;
+		}
+
+		return isActor(object) ? await createPerson(getApId(object)) : null;
 	}
 
 	public async getHasUnreadChannel(userId: User['id']): Promise<boolean> {
@@ -291,7 +316,7 @@ export class UserRepository extends Repository<User> {
 			...(opts.detail ? {
 				url: sanitizeUrl(profile!.url),
 				uri: sanitizeUrl(user.uri),
-				movedToUri: sanitizeUrl(user.movedToUri) || null,
+				movedToUri: user.movedToUri ? await this.userFromURI(user.movedToUri) : null,
 				alsoKnownAs: user.alsoKnownAs || null,
 				createdAt: user.createdAt.toISOString(),
 				updatedAt: user.updatedAt ? user.updatedAt.toISOString() : null,
