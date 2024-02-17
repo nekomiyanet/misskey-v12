@@ -1,5 +1,5 @@
 import { IRemoteUser } from '@/models/entities/user.js';
-import {IUndo, isFollow, isBlock, isLike, isAnnounce, getApType, isAccept, validActor} from '../../type.js';
+import {IUndo, isFollow, isBlock, isLike, isAnnounce, getApType, getApId, isAccept, validActor} from '../../type.js';
 import unfollow from './follow.js';
 import unblock from './block.js';
 import undoLike from './like.js';
