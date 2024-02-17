@@ -152,7 +152,7 @@ export class UserRepository extends Repository<User> {
 		const dbResolver = new DbResolver();
 		let local = await dbResolver.getUserFromApId(uri);
 		if (local) {
-			return local;
+			return sanitizeUrl(uri);
 		}
 
 		// fetching Object once from remote
@@ -163,10 +163,14 @@ export class UserRepository extends Repository<User> {
 		// the URI is determined here
 		if (uri !== object.id) {
 			local = await dbResolver.getUserFromApId(object.id);
-			if (local != null) return local;
+			if (local != null) return sanitizeUrl(uri);
 		}
 
-		return isActor(object) ? await createPerson(getApId(object)) : null;
+		if (isActor(object)) {
+			return sanitizeUrl(uri);
+		} else {
+			return null;
+		}
 	}
 
 	public async getHasUnreadChannel(userId: User['id']): Promise<boolean> {
