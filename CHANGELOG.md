@@ -8,6 +8,17 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20240218003727 (2024/02/18)
+### Improvements
+- オーディオファイルの再生時に波形を表示するように @atsu1125
+- より多くの署名アルゴリズムを受け付けるように @mei23 @naskya @atsu1125
+
+### Bugfixes
+- 引越し先の検証を正しく行うように @atsu1125
+- `MK_ONLY_QUEUE`が動くように @atsu1125
+- リモートのアカウント削除が取り消されたら取り消すように @atsu1125
+- ActivityPubの`Content-Type`の検証を正しく行うように @mei23 @naskya @atsu1125
+
 ## 12.108.1-nekomiya-20240131141658 (2024/01/31)
 ### Improvements
 - 一切連合しない設定ができるように @atsu1125
