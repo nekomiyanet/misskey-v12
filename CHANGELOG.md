@@ -8,6 +8,10 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20240218170540 (2024/02/18)
+### Bugfixes
+- ActivityPubの`Content-Type`の検証を正しく行うように @atsu1125
+
 ## 12.108.1-nekomiya-20240218003727 (2024/02/18)
 ### Improvements
 - オーディオファイルの再生時に波形を表示するように @atsu1125
