@@ -2,19 +2,19 @@
 <div class="compact" v-if="tickerCompactStyle">
 	<img v-if="instance.faviconUrl" class="icon" :src="instance.faviconUrl"/>
 </div>
-<div class="hpaizdrt" :style="bg" v-if="tickerOriginalStyle">
+<div v-tooltip="tooltip" class="hpaizdrt" :style="bg" v-if="tickerOriginalStyle">
 	<img v-if="instance.faviconUrl" class="icon" :src="instance.faviconUrl"/>
 	<span class="name">{{ instance.name }}</span>
 	<span v-if="instance.softwareVersion && showTickerSoftWareVersion" class="software">{{ instance.softwareVersion }}</span>
 	<span v-if="instance.softwareName && showTickerSoftWareName" class="software">{{ instance.softwareName }}</span>
 </div>
-<div class="mk-instance-ticker" :class="position" :style="tickerColor" v-if="tickerTaiyStyle">
+<div v-tooltip="tooltip" class="mk-instance-ticker" :class="position" :style="tickerColor" v-if="tickerTaiyStyle">
 	<img v-if="instance.faviconUrl" class="icon" :src="instance.faviconUrl"/>
 	<span class="name">{{ instance.name }}</span>
 	<span v-if="instance.softwareVersion && showTickerSoftWareVersion && ableToShowInstanceDetails" class="software">{{ instance.softwareVersion }}</span>
 	<span v-if="instance.softwareName && showTickerSoftWareName && ableToShowInstanceDetails" class="software">{{ instance.softwareName }}</span>
 </div>
-<div class="root" :style="bg" v-if="tickerCalckeyStyle">
+<div v-tooltip="tooltip" class="root" :style="bg" v-if="tickerCalckeyStyle">
 	<img v-if="instance.faviconUrl" class="icon" :src="instance.faviconUrl"/>
 	<div class="name">{{ instance.name }}</div>
 </div>
@@ -46,6 +46,10 @@ const instance = props.instance ?? {
 	softwareVersion: version,
 };
 
+const tooltip = instance.softwareName == null || instance.softwareVersion == null
+	? null
+	: instance.softwareName + ' ' + instance.softwareVersion;
+
 const position = computed(() => unref(props.forceType) ?? defaultStore.state.instanceTickerPosition);
 
 const hexToRgb = (hex: string): {
@@ -64,7 +68,23 @@ const getTickerFgColor = (hex: string): string => {
 	return yuv > 191 ? '#2f2f2fcc' : '#ffffff';
 };
 
-const tickerBgColor = instance.themeColor ?? '#777777';
+let softwareColor = '';
+switch (instance.softwareName) {
+	case 'mastodon':
+		if (instance.softwareVersion && parseInt(instance.softwareVersion) >= 4) {
+			softwareColor = '#563acc';
+		} else {
+			softwareColor = '#2b90d9';
+		}
+		break;
+	case 'pleroma':
+	  softwareColor = '#10181e';
+	  break;
+	default:
+	  softwareColor = '#777777';
+}
+
+const tickerBgColor = instance.themeColor || softwareColor || '#777777';
 const tickerFgColor = getTickerFgColor(tickerBgColor);
 
 const tickerColor = {
@@ -73,7 +93,7 @@ const tickerColor = {
 	'--ticker-bg-rgb': (({ r, g, b }): string => `${r}, ${g}, ${b}`)(hexToRgb(tickerBgColor)),
 };
 
-const themeColor = instance.themeColor ?? '#777777';
+const themeColor = instance.themeColor || softwareColor || '#777777';
 const bg = {
 	background: `linear-gradient(90deg, ${themeColor}, ${themeColor}11)`,
 };
