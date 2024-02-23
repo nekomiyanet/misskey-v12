@@ -136,7 +136,33 @@ export const paramDef = {
 			required: ['choices'],
 		},
 	},
-	required: [],
+	if: {
+		properties: {
+			renoteId: {
+				type: 'null',
+			},
+			fileIds: {
+				type: 'null',
+			},
+			mediaIds: {
+				type: 'null',
+			},
+			poll: {
+				type: 'null',
+			},
+		},
+	},
+	then: {
+		properties: {
+			text: {
+				type: 'string',
+				minLength: 1,
+				maxLength: MAX_NOTE_TEXT_LENGTH,
+				pattern: '[^\\s]+',
+			},
+		},
+		required: ['text'],
+	},
 } as const;
 
 // eslint-disable-next-line import/no-default-export
