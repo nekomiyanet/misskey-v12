@@ -48,6 +48,9 @@ export default define(meta, paramDef, async (ps, user) => {
 	});
 
 	for (const note of renotes) {
-		deleteNote(await Users.findOneOrFail(user.id), note);
+		// Only renotes should be deleted, not quotes
+		if (!note.text) {
+			deleteNote(await Users.findOneOrFail(user.id), note);
+		}
 	}
 });
