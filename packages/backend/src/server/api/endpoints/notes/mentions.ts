@@ -8,6 +8,7 @@ import { Brackets } from 'typeorm';
 import { generateBlockedUserQuery, generateBlockingUserQuery } from '../../common/generate-block-query.js';
 import { generateMutedNoteThreadQuery } from '../../common/generate-muted-note-thread-query.js';
 import { generateMutedInstanceQuery } from '../../common/generate-muted-instance-query.js';
+import { generateMutedNoteQuery } from '../../common/generate-muted-note-query.js';
 
 export const meta = {
 	tags: ['notes'],
@@ -62,6 +63,7 @@ export default define(meta, paramDef, async (ps, user) => {
 
 	generateVisibilityQuery(query, user);
 	generateMutedUserQuery(query, user);
+	generateMutedNoteQuery(query, user);
 	generateMutedNoteThreadQuery(query, user);
 	generateBlockingUserQuery(query, user);
 	if (user && !user.isAdmin && !user.isModerator) {

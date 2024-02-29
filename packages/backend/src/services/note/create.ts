@@ -689,6 +689,14 @@ async function notifyToWatchersOfReplyee(reply: Note, user: { id: User['id']; },
 
 async function createMentionedEvents(mentionedUsers: User[], note: Note, nm: NotificationManager) {
 	for (const u of mentionedUsers.filter(u => Users.isLocalUser(u))) {
+		const isWordMuted = await MutedNotes.findOne({
+			userId: u.id,
+			noteId: note.id,
+		});
+		if (isWordMuted) {
+			continue;
+		}
+
 		const threadMuted = await NoteThreadMutings.findOne({
 			userId: u.id,
 			threadId: note.threadId || note.id,
