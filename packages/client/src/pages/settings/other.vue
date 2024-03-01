@@ -8,6 +8,8 @@
 	<FormSwitch v-model="reportError" class="_formBlock">{{ $ts.sendErrorReports }}<template #caption>{{ $ts.sendErrorReportsDescription }}</template></FormSwitch>
 	-->
 
+	<FormLink to="/my/follow-requests/sent" class="_formBlock">{{ $ts.sentFollowRequests }}</FormLink>
+
 	<FormLink to="/settings/account-info" class="_formBlock">{{ $ts.accountInfo }}</FormLink>
 
 	<FormLink to="/settings/delete-account" class="_formBlock"><template #icon><i class="fas fa-exclamation-triangle"></i></template>{{ $ts.closeAccount }}</FormLink>

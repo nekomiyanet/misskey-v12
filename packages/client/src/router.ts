@@ -60,6 +60,7 @@ const defaultRoutes = [
 	{ path: '/my/drive', name: 'drive', component: page('drive') },
 	{ path: '/my/drive/folder/:folder', component: page('drive') },
 	{ path: '/my/follow-requests', component: page('follow-requests') },
+	{ path: '/my/follow-requests/sent', component: page('follow-requests-sent') },
 	{ path: '/my/lists', component: page('my-lists/index') },
 	{ path: '/my/lists/:list', component: page('my-lists/list') },
 	{ path: '/my/groups', component: page('my-groups/index') },
