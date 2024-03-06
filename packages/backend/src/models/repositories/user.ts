@@ -320,7 +320,7 @@ export class UserRepository extends Repository<User> {
 			...(opts.detail ? {
 				url: sanitizeUrl(profile!.url),
 				uri: sanitizeUrl(user.uri),
-				movedToUri: user.movedToUri ? await this.userFromURI(user.movedToUri).catch(() => user.movedToUri) : null,
+				movedToUri: user.movedToUri ? await this.userFromURI(user.movedToUri).catch(() => null) : null,
 				alsoKnownAs: user.alsoKnownAs || null,
 				createdAt: user.createdAt.toISOString(),
 				updatedAt: user.updatedAt ? user.updatedAt.toISOString() : null,
