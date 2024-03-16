@@ -58,6 +58,16 @@ export default define(meta, paramDef, async (ps, me) => {
 });
 
 async function unFollowAll(follower: User) {
+	// When suspending a remote account, the account obviously doesn't
+	// actually become suspended on its origin server, i.e. unlike a
+	// locally suspended account it continues to have access to its home
+	// feed and other content. To prevent it from being able to continue
+	// to access toots it would receive because it follows local accounts,
+	// we have to force it to unfollow them. Unfortunately, there is no
+	// counterpart to this operation, i.e. you can't then force a remote
+	// account to re-follow you, so this part is not reversible.
+	if (follower.host == null) return;
+
 	const followings = await Followings.find({
 		followerId: follower.id,
 	});
