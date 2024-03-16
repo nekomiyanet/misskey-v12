@@ -4,7 +4,7 @@ import { createPerson } from '@/remote/activitypub/models/person.js';
 import { createNote } from '@/remote/activitypub/models/note.js';
 import Resolver from '@/remote/activitypub/resolver.js';
 import { ApiError } from '../../error.js';
-import { extractDbHost } from '@/misc/convert-host.js';
+import { extractDbHost, isSelfOrigin } from '@/misc/convert-host.js';
 import { Users, Notes } from '@/models/index.js';
 import { Note } from '@/models/entities/note.js';
 import { User } from '@/models/entities/user.js';
@@ -91,7 +91,7 @@ export default define(meta, paramDef, async (ps) => {
  */
 async function fetchAny(uri: string): Promise<SchemaType<typeof meta['res']> | null> {
 	// URIがこのサーバーを指しているなら、ローカルユーザーIDとしてDBからフェッチ
-	if (uri.startsWith(config.url + '/')) {
+	if (isSelfOrigin(uri)) {
 		const parts = uri.split('/');
 		const id = parts.pop();
 		const type = parts.pop();
