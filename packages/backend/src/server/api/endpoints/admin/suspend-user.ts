@@ -17,6 +17,7 @@ export const paramDef = {
 	type: 'object',
 	properties: {
 		userId: { type: 'string', format: 'misskey:id' },
+		isDelete: { type: 'boolean', default: false },
 	},
 	required: ['userId'],
 } as const;
@@ -51,7 +52,9 @@ export default define(meta, paramDef, async (ps, me) => {
 	}
 
 	(async () => {
-		await doPostSuspend(user).catch(e => {});
+		if (ps.isDelete) {
+			await doPostSuspend(user).catch(e => {});
+		}
 		await unFollowAll(user).catch(e => {});
 		await readAllNotify(user).catch(e => {});
 	})();

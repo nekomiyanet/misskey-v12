@@ -48,6 +48,7 @@
 				<FormButton v-if="user.host == null && iAmModerator" class="_formBlock" @click="resetPassword"><i class="fas fa-key"></i> {{ $ts.resetPassword }}</FormButton>
 				<FormButton v-if="iAmModerator" class="_formBlock" @click="deleteAllFiles"><i class="fas fa-trash-alt"></i> {{ $ts.deleteAllFiles }}</FormButton>
 				<FormButton v-if="$i.isAdmin" inline danger style="margin-right: 8px;" @click="deleteAccount"><i class="fas fa-trash-alt"></i> {{ $ts.deleteAccount }}</FormButton>
+				<FormButton v-if="user.host == null && user.isSuspended && iAmModerator" inline danger style="margin-right: 8px;" @click="deleteFederation"><i class="fas fa-trash-alt"></i> {{ $ts.deleteAccountFederation }}</FormButton>
 				<FormButton v-if="user.host == null && iAmModerator" class="_formBlock" @click="sendModNotification"><i class="fas fa-bell"></i> {{ $ts.sendModNotification }}</FormButton>
 			</FormSection>
 
@@ -412,6 +413,19 @@ export default defineComponent({
 					text: 'input not match',
 				});
 			}
+		},
+
+		async deleteFederation() {
+			const confirm = await os.confirm({
+				type: 'warning',
+				text: this.$ts.deleteAccountConfirm,
+			});
+			if (confirm.canceled) return;
+
+			await os.apiWithDialog('admin/suspend-user', {
+				userId: this.user.id,
+				isDelete: true,
+			});
 		},
 	}
 });
