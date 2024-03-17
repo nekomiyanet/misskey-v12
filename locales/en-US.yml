@@ -936,6 +936,8 @@ allowFollowDescription: "If disabled, All follows or follow requests will be rej
 movedUserCaution: "User has moved to a new account"
 moderationlogs: "Moderation logs"
 deleted: "Deleted"
+typeToConfirm: "Please enter {x} to confirm"
+deleteAccount: "Delete Account"
 
 _emailUnavailable:
   used: "This email address is already being used"

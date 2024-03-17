@@ -47,6 +47,7 @@
 				<FormSwitch v-model="suspended" class="_formBlock" @update:modelValue="toggleSuspend">{{ $ts.suspend }}</FormSwitch>
 				<FormButton v-if="user.host == null && iAmModerator" class="_formBlock" @click="resetPassword"><i class="fas fa-key"></i> {{ $ts.resetPassword }}</FormButton>
 				<FormButton v-if="iAmModerator" class="_formBlock" @click="deleteAllFiles"><i class="fas fa-trash-alt"></i> {{ $ts.deleteAllFiles }}</FormButton>
+				<FormButton v-if="$i.isAdmin" inline danger style="margin-right: 8px;" @click="deleteAccount"><i class="fas fa-trash-alt"></i> {{ $ts.deleteAccount }}</FormButton>
 				<FormButton v-if="user.host == null && iAmModerator" class="_formBlock" @click="sendModNotification"><i class="fas fa-bell"></i> {{ $ts.sendModNotification }}</FormButton>
 			</FormSection>
 
@@ -116,6 +117,7 @@ import * as symbols from '@/symbols';
 import { url } from '@/config';
 import { userPage, acct } from '@/filters/user';
 import * as tinycolor from 'tinycolor2';
+import { i18n } from '@/i18n';
 
 export default defineComponent({
 	components: {
@@ -386,6 +388,30 @@ export default defineComponent({
 				});
 			});
 			await this.refreshUser();
+		},
+
+		async deleteAccount() {
+			const confirm = await os.confirm({
+				type: 'warning',
+				text: this.$ts.deleteAccountConfirm,
+			});
+			if (confirm.canceled) return;
+
+			const typed = await os.inputText({
+				text: i18n.t('typeToConfirm', { x: this.user?.username }),
+			});
+			if (typed.canceled) return;
+
+			if (typed.result === this.user?.username) {
+				await os.apiWithDialog('admin/accounts/delete', {
+					userId: this.user.id,
+				});
+			} else {
+				os.alert({
+					type: 'error',
+					text: 'input not match',
+				});
+			}
 		},
 	}
 });
