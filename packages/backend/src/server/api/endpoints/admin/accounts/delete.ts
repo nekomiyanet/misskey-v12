@@ -17,6 +17,7 @@ export const paramDef = {
 	type: 'object',
 	properties: {
 		userId: { type: 'string', format: 'misskey:id' },
+		forceHard: { type: 'boolean', default: false },
 	},
 	required: ['userId'],
 } as const;
@@ -37,7 +38,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		throw new Error('cannot suspend moderator');
 	}
 
-	if (Users.isLocalUser(user)) {
+	if (Users.isLocalUser(user) || ps.forceHard) {
 		// 物理削除する前にDelete activityを送信する
 		await doPostSuspend(user).catch(e => {});
 
