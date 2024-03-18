@@ -2,7 +2,7 @@ import { resolveUser } from '@/remote/resolve-user.js';
 import define from '../../define.js';
 import { apiLogger } from '../../logger.js';
 import { ApiError } from '../../error.js';
-import { Users, Followings } from '@/models/index.js';
+import { Users } from '@/models/index.js';
 import { In } from 'typeorm';
 import { User } from '@/models/entities/user.js';
 
@@ -115,14 +115,6 @@ export default define(meta, paramDef, async (ps, me) => {
 		if (!isAdminOrModerator && user.isHidden) {
 			if (me == null) {
 				throw new ApiError(meta.errors.forbidden);
-			} else if (me.id !== user.id) {
-				const following = await Followings.findOne({
-					followeeId: user.id,
-					followerId: me.id,
-				});
-				if (following == null) {
-					throw new ApiError(meta.errors.forbidden);
-				}
 			}
 		}
 
