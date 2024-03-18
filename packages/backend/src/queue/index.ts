@@ -269,9 +269,9 @@ export function createDeleteAccountJob(user: ThinUser, opts: { soft?: boolean; }
 		user: user,
 		soft: opts.soft,
 	}, {
-		attempts: 3,
+		attempts: 6,
 		removeOnComplete: true,
-		removeOnFail: true,
+		removeOnFail: false,
 	});
 }
 
