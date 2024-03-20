@@ -334,7 +334,6 @@ router.get('/users/:user', async (ctx, next) => {
 	const user = await Users.findOne({
 		id: userId,
 		host: null,
-		isSuspended: false,
 	});
 
 	await userInfo(ctx, user);
@@ -360,7 +359,6 @@ router.get('/@:user', async (ctx, next) => {
 	const user = await Users.findOne({
 		usernameLower: ctx.params.user.toLowerCase(),
 		host: null,
-		isSuspended: false,
 	});
 
 	await userInfo(ctx, user);
