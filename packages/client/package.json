@@ -72,7 +72,7 @@
 		"parse5": "6.0.1",
 		"photoswipe": "git+https://github.com/dimsemenov/photoswipe#v5-beta",
 		"portscanner": "2.2.0",
-		"postcss": "8.4.8",
+		"postcss": "8.4.31",
 		"postcss-loader": "6.2.1",
 		"prismjs": "1.27.0",
 		"private-ip": "2.3.3",
