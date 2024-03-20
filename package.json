@@ -31,7 +31,7 @@
 		"cleanall": "npm run clean-all"
 	},
 	"dependencies": {
-		"@types/gulp": "4.0.9",
+		"@types/gulp": "4.0.17",
 		"@types/gulp-rename": "2.0.1",
 		"execa": "5.1.1",
 		"gulp": "4.0.2",
