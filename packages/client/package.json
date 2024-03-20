@@ -17,7 +17,7 @@
 		"@types/glob": "7.2.0",
 		"@types/gulp": "4.0.9",
 		"@types/gulp-rename": "2.0.1",
-		"@types/is-url": "1.2.30",
+		"@types/is-url": "1.2.32",
 		"@types/katex": "0.11.1",
 		"@types/matter-js": "0.17.7",
 		"@types/mocha": "9.1.0",
