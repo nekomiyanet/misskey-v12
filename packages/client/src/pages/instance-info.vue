@@ -31,6 +31,8 @@
 			<FormSwitch v-if="$i" :disabled="!$i.isAdmin || (isBlocked && !isExactlyBlocked)" v-model="isBlocked" class="_formBlock" @update:modelValue="toggleBlock">{{ $ts.blockThisInstance }}</FormSwitch>
 			<FormSwitch v-if="$i" :disabled="!$i.isAdmin || (selfsilenced && !isExactlySelfSilenced)" v-model="selfsilenced" class="_formBlock" @update:modelValue="toggleSelfSilence">{{ $ts.selfSilencing }}</FormSwitch>
 			<FormSwitch v-if="$i" :disabled="!$i.isAdmin || (silenced && !isExactlySilenced)" v-model="silenced" class="_formBlock" @update:modelValue="toggleSilence">{{ $ts.instanceSilencing }}</FormSwitch>
+			<MkButton v-if="(!suspended && !isBlocked) && $i && $i.isAdmin" inline danger @click="deleteFollowing"><i class="fas fa-minus"></i> Unfollow All Instance Users</MkButton>
+			<MkButton v-if="(suspended || isBlocked) && $i && $i.isAdmin" inline danger @click="deleteInstanceUsers"><i class="fas fa-trash-alt"></i> Delete All Instance Users</MkButton>
 			<MkButton @click="refreshMetadata">Refresh metadata</MkButton>
 		</FormSection>
 
@@ -124,6 +126,7 @@ import number from '@/filters/number';
 import bytes from '@/filters/bytes';
 import * as symbols from '@/symbols';
 import { iAmModerator, $i } from '@/account';
+import { i18n } from '@/i18n';
 
 const props = defineProps<{
 	host: string;
@@ -205,6 +208,56 @@ function refreshMetadata() {
 	os.alert({
 		text: 'Refresh requested',
 	});
+}
+
+async function deleteInstanceUsers() {
+	const { canceled } = await os.confirm({
+		type: "warning",
+		text: i18n.t("removeAreYouSure", { x: instance.host }),
+	});
+	if (canceled) return;
+	const typed = await os.inputText({
+		text: i18n.t('typeToConfirm', { x: instance?.host }),
+	});
+	if (typed.canceled) return;
+	if (typed.result === instance?.host) {
+		await os.api('admin/delete-instance-users', {
+			host: instance.host,
+		});
+		await os.alert({
+			text: 'Account Deletion is in progress',
+		});
+	} else {
+		os.alert({
+			type: 'error',
+			text: 'input not match',
+		});
+	}
+}
+
+async function deleteFollowing() {
+	const { canceled } = await os.confirm({
+		type: "warning",
+		text: i18n.t("unfollowConfirm", { name: instance.host }),
+	});
+	if (canceled) return;
+	const typed = await os.inputText({
+		text: i18n.t('typeToConfirm', { x: instance?.host }),
+	});
+	if (typed.canceled) return;
+	if (typed.result === instance?.host) {
+		await os.api('admin/federation/remove-all-following', {
+			host: instance.host,
+		});
+		await os.alert({
+			text: 'Unfollowing is in progress',
+		});
+	} else {
+		os.alert({
+			type: 'error',
+			text: 'input not match',
+		});
+	}
 }
 
 fetch();
