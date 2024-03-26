@@ -124,6 +124,16 @@ export function getUserMenu(user) {
 		});
 	}
 
+	async function toggleSuspend() {
+		if (!await getConfirmed(i18n.t(user.isSuspended ? 'unsuspendConfirm' : 'suspendConfirm'))) return;
+
+		os.apiWithDialog(user.isSuspended ? 'admin/unsuspend-user' : 'admin/suspend-user', {
+			userId: user.id
+		}).then(() => {
+			user.isSuspended = !user.isSuspended;
+		});
+	}
+
 	function reportAbuse() {
 		os.popup(import('@/components/abuse-report-window.vue'), {
 			user: user,
@@ -217,6 +227,10 @@ export function getUserMenu(user) {
 				icon: 'fas fa-microphone-slash',
 				text: user.isSilenced ? i18n.ts.unsilence : i18n.ts.silence,
 				action: toggleSilence
+			}, {
+				icon: 'fas fa-snowflake',
+				text: user.isSuspended ? i18n.ts.unsuspend : i18n.ts.suspend,
+				action: toggleSuspend
 			}]);
 		}
 	}
