@@ -94,9 +94,6 @@ export async function deleteAccount(job: Bull.Job<DbUserDeleteJobData>): Promise
 				break;
 			}
 
-			let userStatus = await Users.findOne(job.data.user.id);
-			if (!userStatus.isDeleted) break;
-
 			await Notes.delete(notes.map(note => note.id));
 
 			let currentNotesCount = await Notes.createQueryBuilder('note')
@@ -127,16 +124,10 @@ export async function deleteAccount(job: Bull.Job<DbUserDeleteJobData>): Promise
 				break;
 			}
 
-			let userStatus = await Users.findOne(job.data.user.id);
-			if (!userStatus.isDeleted) break;
-
 			for (const file of files) {
 				await deleteFileSync(file);
 			}
 		}
-
-		let userStatus = await Users.findOne(job.data.user.id);
-		if (!userStatus.isDeleted) return;
 
 		logger.succ(`All of files deleted`);
 	}
