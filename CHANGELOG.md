@@ -8,6 +8,10 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20240330234939 (2024/03/30)
+### Bugfixes
+- AP取得のチェックの修正
+
 ## 12.108.1-nekomiya-20240326105230 (2024/03/26)
 ### Improvements
 - インスタンスティッカーをマウスオーバーした時に詳細が出るように @atsu1125
