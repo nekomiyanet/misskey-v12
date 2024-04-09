@@ -266,6 +266,10 @@ export default define(meta, paramDef, async (ps, user) => {
 		throw new ApiError(meta.errors.contentRequired);
 	}
 
+	if (renote && !(ps.text || files.length || ps.poll) && (ps.cw || reply)) {
+		throw new ApiError(meta.errors.contentRequired);
+	}
+
 	let channel: Channel | undefined;
 	if (ps.channelId != null) {
 		channel = await Channels.findOne(ps.channelId);
