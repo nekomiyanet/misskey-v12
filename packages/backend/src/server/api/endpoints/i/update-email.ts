@@ -9,6 +9,7 @@ import { sendEmail } from '@/services/send-email.js';
 import { emailDeliver } from '@/queue/index.js';
 import { ApiError } from '../../error.js';
 import { validateEmailForAccount } from '@/services/validate-email-for-account.js';
+import { fetchMeta } from '@/misc/fetch-meta.js';
 
 export const meta = {
 	requireCredential: true,
@@ -32,6 +33,12 @@ export const meta = {
 			code: 'UNAVAILABLE',
 			id: 'a2defefb-f220-8849-0af6-17f816099323',
 		},
+
+		emailRequired: {
+			message: 'Email address is required.',
+			code: 'EMAIL_REQUIRED',
+			id: '324c7a88-59f2-492f-903f-89134f93e47e',
+		},
 	},
 } as const;
 
@@ -47,6 +54,7 @@ export const paramDef = {
 // eslint-disable-next-line import/no-default-export
 export default define(meta, paramDef, async (ps, user) => {
 	const profile = await UserProfiles.findOneOrFail(user.id);
+	const m = await fetchMeta();
 
 	// Compare password
 	const same = await bcrypt.compare(ps.password, profile.password!);
@@ -60,6 +68,8 @@ export default define(meta, paramDef, async (ps, user) => {
 		if (!available.available) {
 			throw new ApiError(meta.errors.unavailable);
 		}
+	} else if (m.emailRequiredForSignup) {
+		throw new ApiError(meta.errors.emailRequired);
 	}
 
 	await UserProfiles.update(user.id, {
