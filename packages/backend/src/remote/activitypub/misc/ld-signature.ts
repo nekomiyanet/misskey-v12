@@ -1,6 +1,6 @@
 import * as crypto from 'node:crypto';
 import jsonld from 'jsonld';
-import { CONTEXTS } from './contexts.js';
+import { CONTEXTS, WellKnownContext } from './contexts.js';
 import fetch from 'node-fetch';
 import { httpAgent, httpsAgent } from '@/misc/fetch.js';
 
@@ -81,6 +81,13 @@ export class LdSignature {
 		return await jsonld.normalize(data, {
 			documentLoader: customLoader,
 		});
+	}
+
+	public async compactToWellKnown(data: any): Promise<any> {
+		const options = { documentLoader: this.getLoader() };
+		const context = WellKnownContext as any;
+		delete data["signature"];
+		return await jsonld.compact(data, context, options);
 	}
 
 	private getLoader() {
