@@ -8,6 +8,16 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20240501155710 (2024/05/01)
+### Improvements
+- チャット受信時に画面を自動でスクロールしないように @atsu1125
+
+### Bugfixes
+- CWかリプライのみで引用できないように @atsu1125
+- メールアドレスの登録が必須な場合には更新時に空にしないように @kakkokari-gtyih @u1-liquid
+- AP LD Signatureで検証されたActivityをcompactするように @zotanmew @naskya @atsu1125
+- AP Link等は添付ファイル扱いしないように @mei23
+
 ## 12.108.1-nekomiya-20240330234939 (2024/03/30)
 ### Bugfixes
 - AP取得のチェックの修正
