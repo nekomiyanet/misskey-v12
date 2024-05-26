@@ -70,6 +70,7 @@ router.get(webFingerPath, async ctx => {
 		id,
 		host: null,
 		isSuspended: false,
+		isDeleted: false,
 	});
 
 	const generateQuery = (resource: string) =>
@@ -85,6 +86,7 @@ router.get(webFingerPath, async ctx => {
 			usernameLower: acct.username,
 			host: null,
 			isSuspended: false,
+			isDeleted: false,
 		} : 422;
 
 	if (typeof ctx.query.resource !== 'string') {

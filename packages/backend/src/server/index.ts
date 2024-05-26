@@ -74,6 +74,7 @@ router.get('/avatar/@:acct', async ctx => {
 		usernameLower: username.toLowerCase(),
 		host: host === config.host ? null : host,
 		isSuspended: false,
+		isDeleted: false,
 	}, {
 		relations: ['avatar'],
 	});
