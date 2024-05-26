@@ -74,6 +74,7 @@ export async function renderPerson(user: ILocalUser) {
 		discoverable: user.isSuspended ? false : !!user.isExplorable,
 		published: user.createdAt.toISOString(),
 		publicKey: renderKey(user, keypair, `#main-key`),
+		suspended: user.isSuspended,
 		isCat: user.isCat,
 		isFox: user.isFox,
 		attachment: user.isSuspended ? undefined : attachment.length ? attachment : undefined,
