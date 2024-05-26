@@ -112,7 +112,7 @@ export default define(meta, paramDef, async (ps, me) => {
 			throw new ApiError(meta.errors.noSuchUser);
 		}
 
-		if (user.isDeleted && user.isSuspended) {
+		if ((me == null && user.isDeleted) || (user.isDeleted && user.isSuspended)) {
 			throw new ApiError(meta.errors.noSuchUser);
 		}
 
