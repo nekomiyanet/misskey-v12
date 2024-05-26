@@ -9,6 +9,8 @@ import { deleteFileSync } from '@/services/drive/delete-file.js';
 import { sendEmail } from '@/services/send-email.js';
 import { emailDeliver } from '@/queue/index.js';
 import deleteFollowing from '@/services/following/delete.js';
+import cancelFollowRequest from '@/services/following/requests/cancel.js';
+import { rejectFollowRequest } from '@/services/following/reject.js';
 
 const logger = queueLogger.createSubLogger('delete-account');
 
@@ -46,6 +48,15 @@ export async function deleteAccount(job: Bull.Job<DbUserDeleteJobData>): Promise
 
 				await deleteFollowing(follower, followee, true);
 			}
+
+			const requests = await FollowRequests.find({
+				followerId: follower.id,
+			});
+
+			for (const request of requests) {
+				const followee = await Users.findOneOrFail(request.followeeId);
+				await rejectFollowRequest(followee, follower);
+			}
 		}
 	}
 
@@ -73,6 +84,15 @@ export async function deleteAccount(job: Bull.Job<DbUserDeleteJobData>): Promise
 				}
 
 				await deleteFollowing(follower, followee, true);
+			}
+
+			const requests = await FollowRequests.find({
+				followeeId: followee.id,
+			});
+
+			for (const request of requests) {
+				const follower = await Users.findOneOrFail(request.followerId);
+				await cancelFollowRequest(followee, follower);
 			}
 		}
 	}

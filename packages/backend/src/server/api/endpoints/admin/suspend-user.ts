@@ -1,11 +1,12 @@
 import define from '../../define.js';
 import deleteFollowing from '@/services/following/delete.js';
-import { Users, Followings, Notifications } from '@/models/index.js';
+import { Users, Followings, Notifications, FollowRequests } from '@/models/index.js';
 import { User } from '@/models/entities/user.js';
 import { insertModerationLog } from '@/services/insert-moderation-log.js';
 import { doPostSuspend } from '@/services/suspend-user.js';
 import { publishUserEvent } from '@/services/stream.js';
 import { Not, IsNull } from 'typeorm';
+import { rejectFollowRequest } from '@/services/following/reject.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -89,6 +90,15 @@ async function unFollowAll(follower: User) {
 		}
 
 		await deleteFollowing(follower, followee, true);
+	}
+
+	const requests = await FollowRequests.find({
+		followerId: follower.id,
+	});
+
+	for (const request of requests) {
+		const followee = await Users.findOneOrFail(request.followeeId);
+		await rejectFollowRequest(followee, follower);
 	}
 }
 
