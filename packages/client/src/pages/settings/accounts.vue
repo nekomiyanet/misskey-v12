@@ -26,7 +26,7 @@ import FormSuspense from '@/components/form/suspense.vue';
 import FormButton from '@/components/ui/button.vue';
 import * as os from '@/os';
 import * as symbols from '@/symbols';
-import { getAccounts, addAccount, login } from '@/account';
+import { getAccounts, addAccount, removeAccount, login } from '@/account';
 
 export default defineComponent({
 	components: {
@@ -75,6 +75,10 @@ export default defineComponent({
 				text: this.$ts.createAccount,
 				action: () => { this.createAccount(); },
 			}], ev.currentTarget ?? ev.target);
+		},
+
+		async removeAccount(account: any) {
+			await removeAccount(account.id);
 		},
 
 		addExistingAccount() {

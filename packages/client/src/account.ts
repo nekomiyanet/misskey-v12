@@ -72,6 +72,14 @@ export async function addAccount(id: Account['id'], token: Account['token']) {
 	}
 }
 
+export async function removeAccount(id: Account['id']) {
+	const accounts = await getAccounts();
+	accounts.splice(accounts.findIndex(x => x.id === id), 1);
+
+	if (accounts.length > 0) await set('accounts', accounts);
+	else await del('accounts');
+}
+
 function fetchAccount(token): Promise<Account> {
 	return new Promise((done, fail) => {
 		// Fetch user
