@@ -120,7 +120,7 @@ async function unFollow(follower: User, followee: User) {
 
 	// リモートにフォローをされていたらrejectFollow送信
 	if (Users.isLocalUser(followee) && Users.isRemoteUser(follower)) {
-		const content = renderActivity(renderReject(renderFollow(follower, followee), follower));
+		const content = renderActivity(renderReject(renderFollow(follower, followee), followee));
 		deliver(followee, content, follower.inbox);
 	}
 }
