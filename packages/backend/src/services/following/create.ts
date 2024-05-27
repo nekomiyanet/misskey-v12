@@ -141,6 +141,7 @@ export default async function(_follower: { id: User['id'] }, _followee: { id: Us
 
 	if (Users.isRemoteUser(follower) && ((follower.isSuspended) || (follower.isDeleted))) {
 		//　リモートフォローを受けてすでに凍結済みか削除済みなら、Rejectを送り返しておしまい。
+		//  ただし凍結済みの場合は前段でアクティビティが破棄されるので、このコードに到達してRejectが送られることはない。
 		const content = renderActivity(renderReject(renderFollow(follower, followee, requestId), followee));
 		deliver(followee , content, follower.inbox);
 		return;
