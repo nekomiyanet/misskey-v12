@@ -92,6 +92,8 @@ export type Source = {
 	hideServerInfo?: boolean;
 	disableAntenna?: boolean;
 	disableSearch?: boolean;
+	chartCommitIntervalSecond?: number;
+	disableChartsForRemoteUser?: boolean;
 };
 
 /**

@@ -186,3 +186,9 @@ id: 'aid'
 
 # Upload or download file size limits (bytes)
 #maxFileSize: 262144000
+
+# Time to commit Chart to DB
+#chartCommitIntervalSecond: 1200
+
+# Whether Disable Remote Users Chart
+#disableChartsForRemoteUser: true

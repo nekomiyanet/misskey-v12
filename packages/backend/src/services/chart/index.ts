@@ -1,4 +1,5 @@
 import { beforeShutdown } from '@/misc/before-shutdown.js';
+import config from '@/config/index.js';
 
 import FederationChart from './charts/federation.js';
 import NotesChart from './charts/notes.js';
@@ -42,10 +43,11 @@ const charts = [
 ];
 
 // 20分おきにメモリ情報をDBに書き込み
+const chartCommitInterval = config.chartCommitIntervalSecond * 1000 || 1000 * 60 * 20;
 setInterval(() => {
 	for (const chart of charts) {
 		chart.save();
 	}
-}, 1000 * 60 * 20);
+}, chartCommitInterval);
 
 beforeShutdown(() => Promise.all(charts.map(chart => chart.save())));

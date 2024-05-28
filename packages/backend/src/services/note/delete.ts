@@ -76,7 +76,9 @@ export default async function(user: User, note: Note, quiet = false) {
 
 		// 統計を更新
 		notesChart.update(note, false);
-		perUserNotesChart.update(user, note, false);
+		if (!config.disableChartsForRemoteUser || (user.host == null)) {
+			perUserNotesChart.update(user, note, false);
+		}
 
 		if (Users.isRemoteUser(user)) {
 			registerOrFetchInstanceDoc(user.host).then(i => {
