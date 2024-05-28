@@ -80,16 +80,19 @@ export async function createNotification(
 		pushSw(notifieeId, 'notification', packed);
 		if (type === 'reply') {
 			const note = await Notes.findOneOrFail(data.noteId);
-			sendEmailNotification.reply(notifieeId, await Users.findOneOrFail(data.notifierId!), note.text);
+			const noteUrl = `${config.url}/notes/${note.id}`;
+			sendEmailNotification.reply(notifieeId, await Users.findOneOrFail(data.notifierId!), note.text, noteUrl);
 		}
 		if (type === 'mention') {
 			const note = await Notes.findOneOrFail(data.noteId);
-			sendEmailNotification.mention(notifieeId, await Users.findOneOrFail(data.notifierId!), note.text);
+			const noteUrl = `${config.url}/notes/${note.id}`;
+			sendEmailNotification.mention(notifieeId, await Users.findOneOrFail(data.notifierId!), note.text, noteUrl);
 		}
 		if (type === 'quote') {
 			const note = await Notes.findOneOrFail(data.noteId);
+			const noteUrl = `${config.url}/notes/${note.id}`;
 			const renoteUrl = `${config.url}/notes/${note.renoteId}`;
-			sendEmailNotification.quote(notifieeId, await Users.findOneOrFail(data.notifierId!), note.text, renoteUrl);
+			sendEmailNotification.quote(notifieeId, await Users.findOneOrFail(data.notifierId!), note.text, noteUrl, renoteUrl);
 		}
 		if (type === 'groupInvited') {
 			const invite = await UserGroupInvitations.findOneOrFail(data.userGroupInvitationId);
