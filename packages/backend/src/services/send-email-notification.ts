@@ -38,9 +38,9 @@ async function reply(userId: User['id'], follower: User, customBody: string, url
 	if (!userProfile.email || !userProfile.emailVerified || !userProfile.emailNotificationTypes.includes('reply')) return;
 	if (userDetailed.isSuspended || userDetailed.isDisabled) return;
 	if (follower.name !== null) {
-		emailDeliver(userProfile.email, `New Reply`, `${follower.name} (@${Acct.toString(follower)}) <br> ${customBody} ${url}`, `${follower.name} (@${Acct.toString(follower)}) ${customBody} ${url}`);
+		emailDeliver(userProfile.email, `New Reply`, `${follower.name} (@${Acct.toString(follower)}) <br> ${customBody} <br> ${url}`, `${follower.name} (@${Acct.toString(follower)}) ${customBody} <br> ${url}`);
 	} else {
-		emailDeliver(userProfile.email, `New Reply`, `@${Acct.toString(follower)} <br> ${customBody} ${url}`, `@${Acct.toString(follower)} ${customBody} ${url}`);
+		emailDeliver(userProfile.email, `New Reply`, `@${Acct.toString(follower)} <br> ${customBody} <br> ${url}`, `@${Acct.toString(follower)} ${customBody} <br> ${url}`);
 	}
 }
 
@@ -50,9 +50,9 @@ async function mention(userId: User['id'], follower: User, customBody: string, u
 	if (!userProfile.email || !userProfile.emailVerified || !userProfile.emailNotificationTypes.includes('mention')) return;
 	if (userDetailed.isSuspended || userDetailed.isDisabled) return;
 	if (follower.name !== null) {
-		emailDeliver(userProfile.email, `New Mention`, `${follower.name} (@${Acct.toString(follower)}) <br> ${customBody} ${url}`, `${follower.name} (@${Acct.toString(follower)}) ${customBody} ${url}`);
+		emailDeliver(userProfile.email, `New Mention`, `${follower.name} (@${Acct.toString(follower)}) <br> ${customBody} <br> ${url}`, `${follower.name} (@${Acct.toString(follower)}) ${customBody} <br> ${url}`);
 	} else {
-		emailDeliver(userProfile.email, `New Mention`, `@${Acct.toString(follower)} <br> ${customBody} ${url}`, `@${Acct.toString(follower)} ${customBody} ${url}`);
+		emailDeliver(userProfile.email, `New Mention`, `@${Acct.toString(follower)} <br> ${customBody} <br> ${url}`, `@${Acct.toString(follower)} ${customBody} <br> ${url}`);
 	}
 }
 
@@ -62,9 +62,9 @@ async function quote(userId: User['id'], follower: User, customBody: string, url
 	if (!userProfile.email || !userProfile.emailVerified || !userProfile.emailNotificationTypes.includes('quote')) return;
 	if (userDetailed.isSuspended || userDetailed.isDisabled) return;
 	if (follower.name !== null) {
-		emailDeliver(userProfile.email, `New Quote`, `${follower.name} (@${Acct.toString(follower)}) <br> ${customBody} <br> RE: ${url2} ${url}`, `${follower.name} (@${Acct.toString(follower)}) ${customBody} RE: ${url2} ${url}`);
+		emailDeliver(userProfile.email, `New Quote`, `${follower.name} (@${Acct.toString(follower)}) <br> ${customBody} <br> RE: ${url2} <br> ${url}`, `${follower.name} (@${Acct.toString(follower)}) ${customBody} <br> RE: ${url2} <br> ${url}`);
 	} else {
-		emailDeliver(userProfile.email, `New Quote`, `@${Acct.toString(follower)} <br> ${customBody} <br> RE: ${url2} ${url}`, `@${Acct.toString(follower)} ${customBody} RE: ${url2} ${url}`);
+		emailDeliver(userProfile.email, `New Quote`, `@${Acct.toString(follower)} <br> ${customBody} <br> RE: ${url2} <br> ${url}`, `@${Acct.toString(follower)} ${customBody} <br> RE: ${url2} <br> ${url}`);
 	}
 }
 
