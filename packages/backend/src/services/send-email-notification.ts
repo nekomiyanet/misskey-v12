@@ -62,9 +62,9 @@ async function quote(userId: User['id'], follower: User, customBody: string, url
 	if (!userProfile.email || !userProfile.emailVerified || !userProfile.emailNotificationTypes.includes('quote')) return;
 	if (userDetailed.isSuspended || userDetailed.isDisabled) return;
 	if (follower.name !== null) {
-		emailDeliver(userProfile.email, `New Quote`, `${follower.name} (@${Acct.toString(follower)}) <br> ${customBody} <br> ${url2} ${url}`, `${follower.name} (@${Acct.toString(follower)}) ${customBody} ${url2} ${url}`);
+		emailDeliver(userProfile.email, `New Quote`, `${follower.name} (@${Acct.toString(follower)}) <br> ${customBody} <br> RE: ${url2} ${url}`, `${follower.name} (@${Acct.toString(follower)}) ${customBody} RE: ${url2} ${url}`);
 	} else {
-		emailDeliver(userProfile.email, `New Quote`, `@${Acct.toString(follower)} <br> ${customBody} <br> ${url2} ${url}`, `@${Acct.toString(follower)} ${customBody} ${url2} ${url}`);
+		emailDeliver(userProfile.email, `New Quote`, `@${Acct.toString(follower)} <br> ${customBody} <br> RE: ${url2} ${url}`, `@${Acct.toString(follower)} ${customBody} RE: ${url2} ${url}`);
 	}
 }
 
