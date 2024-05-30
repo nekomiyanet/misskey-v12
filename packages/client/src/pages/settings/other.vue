@@ -1,6 +1,6 @@
 <template>
 <div class="_formRoot">
-	<FormSwitch :value="$i.injectFeaturedNote" class="_formBlock" @update:modelValue="onChangeInjectFeaturedNote">
+	<FormSwitch v-model="$i.injectFeaturedNote" class="_formBlock" @update:modelValue="onChangeInjectFeaturedNote">
 		{{ $ts.showFeaturedNotesInTimeline }}
 	</FormSwitch>
 
@@ -33,7 +33,7 @@ export default defineComponent({
 	},
 
 	emits: ['info'],
-	
+
 	data() {
 		return {
 			[symbols.PAGE_INFO]: {
@@ -59,6 +59,8 @@ export default defineComponent({
 		onChangeInjectFeaturedNote(v) {
 			os.api('i/update', {
 				injectFeaturedNote: v
+			}).then((i) => {
+				$i!.injectFeaturedNote = i.injectFeaturedNote;
 			});
 		},
 	}
