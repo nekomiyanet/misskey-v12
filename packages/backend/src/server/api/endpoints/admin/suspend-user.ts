@@ -97,7 +97,10 @@ async function unFollowAll(follower: User) {
 	});
 
 	for (const request of requests) {
-		const followee = await Users.findOneOrFail(request.followeeId);
+		const followee = await Users.findOne(request.followeeId);
+		if (followee == null) {
+			throw `Cant find followee ${following.followeeId}`;
+		}
 		await rejectFollowRequest(followee, follower);
 	}
 }
