@@ -124,7 +124,9 @@ export async function createMessage(user: { id: User['id']; host: User['host']; 
 
 		const activity = renderActivity(renderCreate(await renderNote(note, false, true), note));
 
-		deliver(user, activity, recipientUser.inbox);
+		if (!user.isLocalSilenced) {
+			deliver(user, activity, recipientUser.inbox);
+		}
 	}
 	return messageObj;
 }

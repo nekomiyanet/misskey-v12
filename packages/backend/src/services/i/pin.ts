@@ -83,6 +83,8 @@ export async function deliverPinnedChange(userId: User['id'], noteId: Note['id']
 
 	if (!Users.isLocalUser(user)) return;
 
+	if (user.isLocalSilenced) return;
+
 	const target = `${config.url}/users/${user.id}/collections/featured`;
 	const item = `${config.url}/notes/${noteId}`;
 	const content = renderActivity(isAddition ? renderAdd(user, target, item) : renderRemove(user, target, item));

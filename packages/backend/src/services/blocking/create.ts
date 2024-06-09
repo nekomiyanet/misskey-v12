@@ -29,7 +29,9 @@ export default async function(blocker: User, blockee: User) {
 
 	if (Users.isLocalUser(blocker) && Users.isRemoteUser(blockee) && blocker.federateBlocks) {
 		const content = renderActivity(renderBlock(blocker, blockee));
-		deliver(blocker, content, blockee.inbox);
+		if (!blocker.isLocalSilenced) {
+			deliver(blocker, content, blockee.inbox);
+		}
 	}
 
 	if (Users.isLocalUser(blockee)) {

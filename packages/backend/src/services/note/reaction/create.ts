@@ -120,7 +120,7 @@ export default async (user: { id: User['id']; host: User['host']; }, note: Note,
 	});
 
 	//#region 配信
-	if (Users.isLocalUser(user) && !note.localOnly) {
+	if (Users.isLocalUser(user) && !note.localOnly && !user.isLocalSilenced) {
 		const content = renderActivity(await renderLike(record, note));
 		const dm = new DeliverManager(user, content);
 		if (note.userHost !== null) {

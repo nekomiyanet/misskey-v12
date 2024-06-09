@@ -335,6 +335,7 @@ router.get('/users/:user', async (ctx, next) => {
 		id: userId,
 		host: null,
 		isDeleted: false,
+		isLocalSilenced: false,
 	});
 
 	await userInfo(ctx, user);
@@ -361,6 +362,7 @@ router.get('/@:user', async (ctx, next) => {
 		usernameLower: ctx.params.user.toLowerCase(),
 		host: null,
 		isDeleted: false,
+		isLocalSilenced: false,
 	});
 
 	await userInfo(ctx, user);

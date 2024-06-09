@@ -161,7 +161,9 @@ export default define(meta, paramDef, async (ps, user) => {
 	if (note.userHost != null) {
 		const pollOwner = await Users.findOneOrFail(note.userId) as IRemoteUser;
 
-		deliver(user, renderActivity(await renderVote(user, vote, note, poll, pollOwner)), pollOwner.inbox);
+		if (!user.isLocalSilenced) {
+			deliver(user, renderActivity(await renderVote(user, vote, note, poll, pollOwner)), pollOwner.inbox);
+		}
 	}
 
 	// リモートフォロワーにUpdate配信
