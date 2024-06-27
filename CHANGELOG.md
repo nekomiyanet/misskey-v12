@@ -8,6 +8,17 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20240627153240 (2024/06/27)
+### Improvements
+- リモートユーザーのチャート無効化の強化 @atsu1125
+- ローカルサイレンスで完全にリモートにアクションできないようにする @atsu1125
+- 自分が送ったフォローリクエストの一覧を見れるようにする @laozhoubuluo @naskya @atsu1125
+
+### Bugfixes
+- タイムラインにおすすめのノートを表示するを操作できるように @atsu1125
+- リモートユーザーの凍結・削除時のフォローリクエスト削除コードを安全に @atsu1125
+- 波形オーディオプレイヤーのダウンロードボタンを修正 @puniko @atsu1125
+- データベーススキーマに合致するようにマイグレーション @syuilo @atsu1125
 
 ## 12.108.1-nekomiya-20240528153158 (2024/05/28)
 ### Improvements
