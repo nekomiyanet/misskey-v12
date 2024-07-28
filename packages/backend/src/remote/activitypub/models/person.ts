@@ -647,9 +647,10 @@ export async function updateFeatured(userId: User['id'], resolver) {
 		let td = 0;
 		for (const note of featuredNotes.filter(note => note != null)) {
 			td -= 1000;
+			const createdAt = new Date(Date.now() + td);
 			transactionalEntityManager.insert(UserNotePining, {
-				id: genId(new Date(Date.now() + td)),
-				createdAt: new Date(),
+				id: genId(createdAt),
+				createdAt,
 				userId: user.id,
 				noteId: note!.id,
 			});
