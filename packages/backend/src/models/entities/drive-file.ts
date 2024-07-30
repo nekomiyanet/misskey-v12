@@ -84,7 +84,7 @@ export class DriveFile {
 	public storedInternal: boolean;
 
 	@Column('varchar', {
-		length: 512,
+		length: 1024,
 		comment: 'The URL of the DriveFile.',
 	})
 	public url: string;
@@ -126,13 +126,13 @@ export class DriveFile {
 
 	@Index()
 	@Column('varchar', {
-		length: 512, nullable: true,
+		length: 1024, nullable: true,
 		comment: 'The URI of the DriveFile. it will be null when the DriveFile is local.',
 	})
 	public uri: string | null;
 
 	@Column('varchar', {
-		length: 512, nullable: true,
+		length: 1024, nullable: true,
 	})
 	public src: string | null;
 
