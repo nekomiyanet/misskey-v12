@@ -2,7 +2,11 @@ import define from '../../define.js';
 import { NoteReactions, UserProfiles } from '@/models/index.js';
 import { makePaginationQuery } from '../../common/make-pagination-query.js';
 import { generateVisibilityQuery } from '../../common/generate-visibility-query.js';
+import { generateMutedUserQuery } from '../../common/generate-muted-user-query.js';
+import { generateBlockedUserQuery } from '../../common/generate-block-query.js';
+import { generateMutedInstanceQuery } from '../../common/generate-muted-instance-query.js';
 import { ApiError } from '../../error.js';
+import { getUser } from '../../common/getters.js';
 
 export const meta = {
 	tags: ['users', 'reactions'],
@@ -43,6 +47,11 @@ export const paramDef = {
 
 // eslint-disable-next-line import/no-default-export
 export default define(meta, paramDef, async (ps, me) => {
+	// Lookup user
+	const user = await getUser(ps.userId).catch(e => {
+		if (e.id === '15348ddd-432d-49c2-8a5a-8069753becff') throw new ApiError(meta.errors.noSuchUser);
+		throw e;
+	});
 	const profile = await UserProfiles.findOneOrFail(ps.userId);
 
 	if (me == null || (me.id !== ps.userId && !profile.publicReactions)) {
@@ -55,6 +64,13 @@ export default define(meta, paramDef, async (ps, me) => {
 		.leftJoinAndSelect('reaction.note', 'note');
 
 	generateVisibilityQuery(query, me);
+	if (me) {
+		generateMutedUserQuery(query, me, user);
+		generateMutedInstanceQuery(query, me);
+		if (!me.isAdmin && !me.isModerator) {
+			generateBlockedUserQuery(query, me);
+		}
+	}
 
 	const reactions = await query
 		.take(ps.limit)
