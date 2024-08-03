@@ -8,8 +8,8 @@ import { IObject } from './type.js';
 import { isValidUrl } from '@/misc/is-valid-url.js';
 import { apLogger } from '@/remote/activitypub/logger.js';
 
-export default async (user: { id: User['id'] }, url: string, object: any) => {
-	const body = JSON.stringify(object);
+export default async (user: { id: User['id'] }, url: string, object: any, digest?: string) => {
+	const body = typeof object === 'string' ? object : JSON.stringify(object);
 
 	const keypair = await getUserKeypair(user.id);
 
@@ -20,6 +20,7 @@ export default async (user: { id: User['id'] }, url: string, object: any) => {
 		},
 		url,
 		body,
+		digest,
 		additionalHeaders: {
 			'User-Agent': config.userAgent,
 		},
@@ -49,7 +50,7 @@ export async function apGet(
 	}
 
 	let res: Response;
-	
+
 	if (user != null) {
 		const keypair = await getUserKeypair(user.id);
 		const req = createSignedGet({
