@@ -1,7 +1,7 @@
 import Bull from 'bull';
 import * as tmp from 'tmp';
 import * as fs from 'node:fs';
-import unzipper from 'unzipper';
+import { ZipReader } from 'slacc';
 import { getConnection } from 'typeorm';
 
 import { queueLogger } from '../../logger.js';
@@ -48,9 +48,9 @@ export async function importCustomEmojis(job: Bull.Job<DbUserImportJobData>, don
 	}
 
 	const outputPath = path + '/emojis';
-	const unzipStream = fs.createReadStream(destPath);
-	const extractor = unzipper.Extract({ path: outputPath });
-	extractor.on('close', async () => {
+	try {
+		logger.succ(`Unzipping to ${outputPath}`);
+		ZipReader.withDestinationPath(outputPath).viaBuffer(await fs.promises.readFile(destPath));
 		const metaRaw = fs.readFileSync(outputPath + '/meta.json', 'utf-8');
 		const meta = JSON.parse(metaRaw);
 
@@ -82,10 +82,14 @@ export async function importCustomEmojis(job: Bull.Job<DbUserImportJobData>, don
 		await getConnection().queryResultCache!.remove(['meta_emojis']);
 
 		cleanup();
-	
+
 		logger.succ('Imported');
 		done();
-	});
-	unzipStream.pipe(extractor);
-	logger.succ(`Unzipping to ${outputPath}`);
+	} catch (e) {
+		if (e instanceof Error || typeof e === 'string') {
+			logger.error(e);
+		}
+		cleanup();
+		throw e;
+	}
 }
