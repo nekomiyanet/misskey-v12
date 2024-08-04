@@ -7,7 +7,7 @@ RUN dnf update -y \
  && dnf groupinstall -y "Development Tools" \
  && dnf install -y wget gcc-c++
 
-ENV NODE_VER="16.20.2"
+ENV NODE_VER="18.20.4"
 RUN ARCH= && \
     unameArch="$(uname -m)" && \
   case "${unameArch##*-}" in \
