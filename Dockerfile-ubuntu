@@ -53,8 +53,8 @@ ENV PATH="${PATH}:/opt/node/bin"
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 RUN apt-get update && \
   apt-get -y --no-install-recommends install \
-	  ffmpeg tini && \
-	ln -s /opt/misskey /misskey && \
+	  ffmpeg tini curl libjemalloc-dev libjemalloc2 && \
+  ln -s /usr/lib/$(uname -m)-linux-gnu/libjemalloc.so.2 /usr/local/lib/libjemalloc.so && \
 	rm -rf /var/cache && \
 	rm -rf /var/lib/apt/lists/*
 
@@ -65,6 +65,7 @@ COPY --from=build-dep /misskey/packages/backend/node_modules ./packages/backend/
 COPY --from=build-dep /misskey/packages/backend/built ./packages/backend/built
 COPY --from=build-dep /misskey/packages/client/node_modules ./packages/client/node_modules
 
+ENV LD_PRELOAD=/usr/local/lib/libjemalloc.so
 # Run misskey services in prod mode
 ENV NODE_ENV="production"
 
