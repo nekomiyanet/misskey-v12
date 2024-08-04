@@ -1,4 +1,4 @@
-FROM ubuntu:23.10 as build-dep
+FROM ubuntu:24.04 as build-dep
 
 # Use bash for the shell
 SHELL ["/bin/bash", "-c"]
@@ -39,7 +39,7 @@ RUN yarn install --network-timeout 100000 --pure-lockfile
 RUN yarn build
 RUN rm -rf .git
 
-FROM ubuntu:23.10
+FROM ubuntu:24.04
 
 WORKDIR /misskey
 
