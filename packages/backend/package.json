@@ -137,7 +137,7 @@
 		"qrcode": "1.5.0",
 		"random-seed": "0.3.0",
 		"ratelimiter": "3.4.1",
-		"re2": "1.17.4",
+		"re2": "1.17.7",
 		"redis": "3.1.2",
 		"redis-lock": "0.1.4",
 		"reflect-metadata": "0.1.13",
