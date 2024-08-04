@@ -1,4 +1,4 @@
-FROM fedora:38 AS builder
+FROM fedora:40 AS builder
 
 ENV NODE_ENV=production
 WORKDIR /misskey
@@ -32,7 +32,7 @@ RUN yarn install --network-timeout 100000
 RUN yarn build
 RUN rm -rf .git
 
-FROM fedora:38 AS runner
+FROM fedora:40 AS runner
 
 WORKDIR /misskey
 
