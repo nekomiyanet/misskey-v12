@@ -30,7 +30,7 @@ jobs:
     - name: Start Docker container
       run: |
         docker run -d --net=host -v ./.config:/misskey/.config:ro --name my-container my-image-name
-        sleep 30
+        sleep 60
     - name: Check Docker container logs
       run: docker logs my-container
     - name: Test HTTP request to container
@@ -42,9 +42,24 @@ jobs:
           echo "HTTP request failed with status code: $response"
           exit 1
         fi
+    - name: Stop Docker container
+      run: docker stop my-container
 
   build-debian:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        ports:
+          - 54312:5432
+        env:
+          POSTGRES_DB: test-misskey
+          POSTGRES_HOST_AUTH_METHOD: trust
+      redis:
+        image: redis:7
+        ports:
+          - 56312:6379
 
     steps:
     - uses: actions/checkout@v3
@@ -52,9 +67,41 @@ jobs:
       run: docker build . --file Dockerfile-debian --tag my-image-name-debian
     - run: docker image ls my-image-name-debian
     - run: docker history my-image-name-debian
+    - name: Copy Configure
+      run: cp .github/misskey/test.yml .config/default.yml
+    - name: Start Docker container
+      run: |
+        docker run -d --net=host -v ./.config:/misskey/.config:ro --name my-container my-image-name-debian
+        sleep 60
+    - name: Check Docker container logs
+      run: docker logs my-container
+    - name: Test HTTP request to container
+      run: |
+        response=$(curl --retry 10 -X POST -s -o /dev/null -w "%{http_code}" http://localhost:61812/api/notes/local-timeline)
+        if [ $response -eq 200 ]; then
+          echo "HTTP request successful. Status code: $response"
+        else
+          echo "HTTP request failed with status code: $response"
+          exit 1
+        fi
+    - name: Stop Docker container
+      run: docker stop my-container
 
   build-fedora:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        ports:
+          - 54312:5432
+        env:
+          POSTGRES_DB: test-misskey
+          POSTGRES_HOST_AUTH_METHOD: trust
+      redis:
+        image: redis:7
+        ports:
+          - 56312:6379
 
     steps:
     - uses: actions/checkout@v3
@@ -62,9 +109,42 @@ jobs:
       run: docker build . --file Dockerfile-fedora --tag my-image-name-fedora
     - run: docker image ls my-image-name-fedora
     - run: docker history my-image-name-fedora
+    - name: Copy Configure
+      run: cp .github/misskey/test.yml .config/default.yml
+    - name: Start Docker container
+      run: |
+        docker run -d --net=host -v ./.config:/misskey/.config:ro --name my-container my-image-name-fedora
+        sleep 60
+    - name: Check Docker container logs
+      run: docker logs my-container
+    - name: Test HTTP request to container
+      run: |
+        response=$(curl --retry 10 -X POST -s -o /dev/null -w "%{http_code}" http://localhost:61812/api/notes/local-timeline)
+        if [ $response -eq 200 ]; then
+          echo "HTTP request successful. Status code: $response"
+        else
+          echo "HTTP request failed with status code: $response"
+          exit 1
+        fi
+    - name: Stop Docker container
+      run: docker stop my-container
+
 
   build-ubuntu:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        ports:
+          - 54312:5432
+        env:
+          POSTGRES_DB: test-misskey
+          POSTGRES_HOST_AUTH_METHOD: trust
+      redis:
+        image: redis:7
+        ports:
+          - 56312:6379
 
     steps:
     - uses: actions/checkout@v3
@@ -72,3 +152,22 @@ jobs:
       run: docker build . --file Dockerfile-ubuntu --tag my-image-name-ubuntu
     - run: docker image ls my-image-name-ubuntu
     - run: docker history my-image-name-ubuntu
+    - name: Copy Configure
+      run: cp .github/misskey/test.yml .config/default.yml
+    - name: Start Docker container
+      run: |
+        docker run -d --net=host -v ./.config:/misskey/.config:ro --name my-container my-image-name-ubuntu
+        sleep 60
+    - name: Check Docker container logs
+      run: docker logs my-container
+    - name: Test HTTP request to container
+      run: |
+        response=$(curl --retry 10 -X POST -s -o /dev/null -w "%{http_code}" http://localhost:61812/api/notes/local-timeline)
+        if [ $response -eq 200 ]; then
+          echo "HTTP request successful. Status code: $response"
+        else
+          echo "HTTP request failed with status code: $response"
+          exit 1
+        fi
+    - name: Stop Docker container
+      run: docker stop my-container
