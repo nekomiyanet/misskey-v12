@@ -8,6 +8,10 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20240809230215 (2024/08/09)
+### Bugfixes
+- Fix: Deliver queueのJSONシリアライズとダイジェスト計算は事前に行うように @mei23 @atsu1125
+
 ## 12.108.1-nekomiya-20240809160709 (2024/08/09)
 ### Improvements
 - Dockerでjemallocを使うように @atsu1125
