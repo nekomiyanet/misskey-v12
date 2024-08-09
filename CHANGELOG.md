@@ -8,6 +8,22 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20240809160709 (2024/08/09)
+### Improvements
+- Dockerでjemallocを使うように @atsu1125
+- Dockerの各OSバージョンアップ @atsu1125
+- Dockerのイメージ起動テスト追加 @atsu1125
+- Node 18.20.4 @atsu1125
+- ドライブのファイルのurl, uri, src の上限引き上げ @tai-cha @slofp @atsu1125
+- Deliver queueのJSONシリアライズとダイジェスト計算は事前に行うように @mei23 @atsu1125
+
+### Bugfixes
+- node-fetchのレスポンスのサイズを制限 @zotanmew @naskya @atsu1125
+- 名前を空白文字列だけにできる問題を修正 @kakkokari-gtyih
+- ユーザーのリアクション一覧でミュートとブロックが機能してないのを修正 @Sayamame-beans @zyoshoka @atsu1125
+- 連合の「連合中」,「購読中」,「配信中」に対してブロックしているサーバー、配信停止しているサーバーを含めないように @tai-cha
+- 下書き/削除して編集で保持されない項目があった問題（引用・DM宛先）を修正 @Sayamame-beans @atsu1125
+
 ## 12.108.1-nekomiya-20240627153240 (2024/06/27)
 ### Improvements
 - リモートユーザーのチャート無効化の強化 @atsu1125
