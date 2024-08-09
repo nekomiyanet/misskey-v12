@@ -151,10 +151,10 @@ async function fetch() {
 	});
 	suspended = instance.isSuspended;
 	isBlocked = instance.isBlocked;
-	isExactlyBlocked = meta.blockedHosts.includes(instance.host);
 	silenced = instance.isSilenced;
-	isExactlySilenced = meta.silencedHosts.includes(instance.host);
 	selfsilenced = instance.isSelfSilenced;
+	isExactlyBlocked = meta.blockedHosts.includes(instance.host);
+	isExactlySilenced = meta.silencedHosts.includes(instance.host);
 	isExactlySelfSilenced = meta.selfSilencedHosts.includes(instance.host);
 }
 
