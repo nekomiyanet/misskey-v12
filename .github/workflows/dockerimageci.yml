@@ -45,7 +45,7 @@ jobs:
     - name: Stop Docker container
       run: docker stop my-container
 
-  build-debian:
+  build-alpine:
     runs-on: ubuntu-latest
 
     services:
@@ -63,15 +63,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image for debian
-      run: docker build . --file Dockerfile-debian --tag my-image-name-debian
-    - run: docker image ls my-image-name-debian
-    - run: docker history my-image-name-debian
+    - name: Build the Docker image for alpine
+      run: docker build . --file Dockerfile-alpine --tag my-image-name-alpine
+    - run: docker image ls my-image-name-alpine
+    - run: docker history my-image-name-alpine
     - name: Copy Configure
       run: cp .github/misskey/test.yml .config/default.yml
     - name: Start Docker container
       run: |
-        docker run -d --net=host -v ./.config:/misskey/.config:ro --name my-container my-image-name-debian
+        docker run -d --net=host -v ./.config:/misskey/.config:ro --name my-container my-image-name-alpine
         sleep 60
     - name: Check Docker container logs
       run: docker logs my-container

@@ -1,28 +1,28 @@
-FROM node:18.20.4-alpine3.20 AS base
+FROM node:18.20.4-bookworm AS builder
 
-ENV NODE_ENV=production
+ARG NODE_ENV=production
 
 WORKDIR /misskey
 
-ENV BUILD_DEPS autoconf automake file g++ gcc libc-dev libtool make nasm pkgconfig python3 zlib-dev git
-
-FROM base AS builder
-
 COPY . ./
 
-RUN apk add --no-cache $BUILD_DEPS && \
-    git submodule update --init && \
-    yarn install && \
-    yarn build && \
-    rm -rf .git
+RUN apt-get update
+RUN apt-get install -y build-essential
+RUN git submodule update --init
+RUN yarn install
+RUN yarn build
+RUN rm -rf .git
 
-FROM base AS runner
+FROM node:18.20.4-bookworm-slim AS runner
 
-RUN apk add --no-cache \
-    ffmpeg \
-    tini
+WORKDIR /misskey
 
-ENTRYPOINT ["/sbin/tini", "--"]
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
+	ffmpeg tini curl libjemalloc-dev libjemalloc2 \
+	&& ln -s /usr/lib/$(uname -m)-linux-gnu/libjemalloc.so.2 /usr/local/lib/libjemalloc.so \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists
 
 COPY --from=builder /misskey/node_modules ./node_modules
 COPY --from=builder /misskey/built ./built
@@ -31,4 +31,7 @@ COPY --from=builder /misskey/packages/backend/built ./packages/backend/built
 COPY --from=builder /misskey/packages/client/node_modules ./packages/client/node_modules
 COPY . ./
 
+ENV LD_PRELOAD=/usr/local/lib/libjemalloc.so
+ENV NODE_ENV=production
+ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["npm", "run", "migrateandstart"]
