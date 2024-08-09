@@ -1,6 +1,9 @@
 import { Users, Followings } from '@/models/index.js';
 import { ILocalUser, IRemoteUser, User } from '@/models/entities/user.js';
 import { deliver } from '@/queue/index.js';
+import { publicToHome } from '@/queue/processors/deliver.js';
+import { fetchMeta } from '@/misc/fetch-meta.js';
+import { toPuny } from '@/misc/convert-host.js';
 
 //#region types
 interface IRecipe {
@@ -101,7 +104,14 @@ export default class DeliverManager {
 
 		// deliver
 		for (const inbox of inboxes) {
-			deliver(this.actor, this.activity, inbox);
+			const meta = await fetchMeta();
+			const { host } = new URL(inbox.url);
+			if (meta.selfSilencedHosts.some(x => toPuny(host).endsWith(x))) {
+				const act = publicToHome(this.activity, this.actor);
+				deliver(this.actor, act, inbox);
+			} else {
+				deliver(this.actor, this.activity, inbox);
+			}
 		}
 	}
 }
