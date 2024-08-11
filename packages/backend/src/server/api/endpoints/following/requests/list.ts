@@ -1,5 +1,6 @@
 import define from '../../../define.js';
 import { FollowRequests } from '@/models/index.js';
+import { makePaginationQuery } from '../../../common/make-pagination-query.js';
 
 export const meta = {
 	tags: ['following', 'account'],
@@ -37,15 +38,22 @@ export const meta = {
 
 export const paramDef = {
 	type: 'object',
-	properties: {},
+	properties: {
+		sinceId: { type: 'string', format: 'misskey:id' },
+		untilId: { type: 'string', format: 'misskey:id' },
+		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
+	},
 	required: [],
 } as const;
 
 // eslint-disable-next-line import/no-default-export
 export default define(meta, paramDef, async (ps, user) => {
-	const reqs = await FollowRequests.find({
-		followeeId: user.id,
-	});
+	const query = makePaginationQuery(FollowRequests.createQueryBuilder('request'), ps.sinceId, ps.untilId)
+		.andWhere('request.followeeId = :meId', { meId: user.id });
 
-	return await Promise.all(reqs.map(req => FollowRequests.pack(req)));
+	const requests = await query
+		.take(ps.limit)
+		.getMany();
+
+	return await Promise.all(requests.map(req => FollowRequests.pack(req)));
 });
