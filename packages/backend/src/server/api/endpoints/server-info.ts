@@ -16,22 +16,26 @@ export const paramDef = {
 } as const;
 
 // eslint-disable-next-line import/no-default-export
-export default define(meta, paramDef, async () => {
+export default define(meta, paramDef, async (ps, user) => {
+	let metricsActive = false;
+	if (!config.hideServerInfo || (user != null && (user.isAdmin || user.isModerator))) {
+		metricsActive = true;
+	}
 	const memStats = await si.mem();
 	const fsStats = await si.fsSize();
 
 	return {
-		machine: config.hideServerInfo ? 'Misskey Hosting Server' : os.hostname(),
+		machine: !metricsActive ? 'Misskey Hosting Server' : os.hostname(),
 		cpu: {
-			model: config.hideServerInfo ? getRandomCPUModel() : os.cpus()[0].model,
-			cores: config.hideServerInfo ? getRandomCPUCores() : os.cpus().length,
+			model: !metricsActive ? getRandomCPUModel() : os.cpus()[0].model,
+			cores: !metricsActive ? getRandomCPUCores() : os.cpus().length,
 		},
 		mem: {
-			total: config.hideServerInfo ? 7881341952 + Math.floor(Math.random() * 8000000000) : memStats.total,
+			total: !metricsActive ? 7881341952 + Math.floor(Math.random() * 8000000000) : memStats.total,
 		},
 		fs: {
-			total: config.hideServerInfo ? 31525367808 + Math.floor(Math.random() * 6000000000) : fsStats[0].size,
-			used: config.hideServerInfo ? 7881341952  + Math.floor(Math.random() * 6000000000) : fsStats[0].used,
+			total: !metricsActive ? 31525367808 + Math.floor(Math.random() * 6000000000) : fsStats[0].size,
+			used: !metricsActive ? 7881341952  + Math.floor(Math.random() * 6000000000) : fsStats[0].used,
 		},
 	};
 

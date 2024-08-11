@@ -7,7 +7,8 @@ const ev = new Xev.default();
 export default class extends Channel {
 	public readonly chName = 'serverStats';
 	public static shouldShare = true;
-	public static requireCredential = false;
+	public static requireCredential = true;
+	private active = false;
 
 	constructor(id: string, connection: Channel['connection']) {
 		super(id, connection);
@@ -16,17 +17,16 @@ export default class extends Channel {
 	}
 
 	public async init(params: any) {
-		if (config.hideServerInfo) return;
-		ev.addListener('serverStats', this.onStats);
+		this.active = !config.hideServerInfo || !!(this.user?.isAdmin || this.user?.isModerator);
+		if (this.active) ev.addListener('serverStats', this.onStats);
 	}
 
 	private onStats(stats: any) {
-		if (config.hideServerInfo) return;
 		this.send('stats', stats);
 	}
 
 	public onMessage(type: string, body: any) {
-		if (config.hideServerInfo) return;
+		if (!this.active) return;
 		switch (type) {
 			case 'requestLog':
 				ev.once(`serverStatsLog:${body.id}`, statsLog => {
