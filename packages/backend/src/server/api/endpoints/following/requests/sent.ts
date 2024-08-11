@@ -1,5 +1,6 @@
 import define from "@/server/api/define.js";
 import { FollowRequests } from "@/models/index.js";
+import { makePaginationQuery } from '../../../common/make-pagination-query.js';
 
 export const meta = {
 	tags: ["following", "users"],
@@ -41,15 +42,22 @@ export const meta = {
 } as const;
 
 export const paramDef = {
-	type: "object",
-	properties: {},
+	type: 'object',
+	properties: {
+		sinceId: { type: 'string', format: 'misskey:id' },
+		untilId: { type: 'string', format: 'misskey:id' },
+		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
+	},
 	required: [],
 } as const;
 
 export default define(meta, paramDef, async (ps, user) => {
-	const reqs = await FollowRequests.find({
-		followerId: user.id,
-	});
+	const query = makePaginationQuery(FollowRequests.createQueryBuilder('request'), ps.sinceId, ps.untilId)
+		.andWhere('request.followerId = :meId', { meId: user.id });
 
-	return await Promise.all(reqs.map((req) => FollowRequests.pack(req)));
+	const requests = await query
+		.take(ps.limit)
+		.getMany();
+
+	return await Promise.all(requests.map(req => FollowRequests.pack(req)));
 });
