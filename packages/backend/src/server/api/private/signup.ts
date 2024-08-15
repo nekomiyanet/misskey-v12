@@ -10,9 +10,31 @@ import { sendEmail } from '@/services/send-email.js';
 import { emailDeliver } from '@/queue/index.js';
 import { genId } from '@/misc/gen-id.js';
 import { validateEmailForAccount } from '@/services/validate-email-for-account.js';
+import { limiter } from '../limiter.js';
+import { getIpHash } from '@/misc/get-ip-hash.js';
 
 export default async (ctx: Koa.Context) => {
 	const body = ctx.request.body;
+
+	function error(status: number, error: { id: string }) {
+		ctx.status = status;
+		ctx.body = { error };
+	}
+
+	try {
+		// not more than 1 attempt per second and not more than 5 attempts per hour
+		await limiter({ key: 'signup', duration: 60 * 60 * 1000, max: 5, minInterval: 1000 }, getIpHash(ctx.ip));
+	} catch (err) {
+		ctx.status = 429;
+		ctx.body = {
+			error: {
+				message: 'Too many attempts to sign up. Try again later.',
+				code: 'TOO_MANY_AUTHENTICATION_FAILURES',
+				id: '22d05606-fbcf-421a-a2db-b32610dcfd1b',
+			},
+		};
+		return;
+	}
 
 	const instance = await fetchMeta(true);
 
