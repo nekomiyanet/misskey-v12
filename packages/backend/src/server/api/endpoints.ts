@@ -59,6 +59,7 @@ import * as ep___admin_serverInfo from './endpoints/admin/server-info.js';
 import * as ep___admin_showModerationLogs from './endpoints/admin/show-moderation-logs.js';
 import * as ep___admin_showUser from './endpoints/admin/show-user.js';
 import * as ep___admin_showUsers from './endpoints/admin/show-users.js';
+import * as ep___admin_showUserSignins from './endpoints/admin/show-user-signins.js';
 import * as ep___admin_silenceUser from './endpoints/admin/silence-user.js';
 import * as ep___admin_localsilenceUser from './endpoints/admin/local-silence-user.js';
 import * as ep___admin_privatesilenceUser from './endpoints/admin/private-silence-user.js';
@@ -389,6 +390,7 @@ const eps = [
 	['admin/show-moderation-logs', ep___admin_showModerationLogs],
 	['admin/show-user', ep___admin_showUser],
 	['admin/show-users', ep___admin_showUsers],
+	['admin/show-user-signins', ep___admin_showUserSignins],
 	['admin/silence-user', ep___admin_silenceUser],
 	['admin/local-silence-user', ep___admin_localsilenceUser],
 	['admin/private-silence-user', ep___admin_privatesilenceUser],

@@ -96,6 +96,24 @@
 
 			<MkObjectView tall :value="user">
 			</MkObjectView>
+
+			<FormSection v-if="user.host == null && $i.isAdmin">
+				<template #label>{{ $ts.signinHistory }}</template>
+				<MkPagination :pagination="pagination">
+					<template v-slot="{items}">
+						<div>
+							<div v-for="item in items" :key="item.id" v-panel class="timnmucd">
+								<header>
+									<i v-if="item.success" class="fas fa-check icon succ"></i>
+									<i v-else class="fas fa-times-circle icon fail"></i>
+									<code class="ip _monospace">{{ item.ip }}</code>
+									<MkTime :time="item.createdAt" class="time"/>
+								</header>
+							</div>
+						</div>
+					</template>
+				</MkPagination>
+			</FormSection>
 		</div>
 	</FormSuspense>
 </MkSpacer>
@@ -111,6 +129,7 @@ import FormSection from '@/components/form/section.vue';
 import FormButton from '@/components/ui/button.vue';
 import MkKeyValue from '@/components/key-value.vue';
 import FormSuspense from '@/components/form/suspense.vue';
+import MkPagination from '@/components/ui/pagination.vue';
 import * as os from '@/os';
 import number from '@/filters/number';
 import bytes from '@/filters/bytes';
@@ -130,6 +149,7 @@ export default defineComponent({
 		FormLink,
 		MkKeyValue,
 		FormSuspense,
+		MkPagination,
 	},
 
 	props: {
@@ -167,6 +187,13 @@ export default defineComponent({
 			suspended: false,
 			usage: null,
 			capacity: null,
+			pagination: {
+				endpoint: 'admin/show-user-signins' as const,
+				limit: 5,
+				params: computed(() => ({
+					userId: this.user.id,
+				}))
+			},
 		};
 	},
 
@@ -454,6 +481,56 @@ export default defineComponent({
 		> div {
 			height: $size;
 			border-radius: math.div($size, 2);
+		}
+	}
+}
+
+.timnmucd {
+	padding: 16px;
+
+	&:first-child {
+		border-top-left-radius: 6px;
+		border-top-right-radius: 6px;
+	}
+
+	&:last-child {
+		border-bottom-left-radius: 6px;
+		border-bottom-right-radius: 6px;
+	}
+
+	&:not(:last-child) {
+		border-bottom: solid 0.5px var(--divider);
+	}
+
+	> header {
+		display: flex;
+		align-items: center;
+
+		> .icon {
+			width: 1em;
+			margin-right: 0.75em;
+
+			&.succ {
+				color: var(--success);
+			}
+
+			&.fail {
+				color: var(--error);
+			}
+		}
+
+		> .ip {
+			flex: 1;
+			min-width: 0;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			margin-right: 12px;
+		}
+
+		> .time {
+			margin-left: auto;
+			opacity: 0.7;
 		}
 	}
 }
