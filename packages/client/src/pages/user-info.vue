@@ -19,6 +19,16 @@
 					<template #value><span class="_monospace">{{ user.id }}</span></template>
 				</MkKeyValue>
 
+				<MkKeyValue oneline style="margin: 1em 0;">
+					<template #key>{{ $ts.createdAt }}</template>
+					<template #value><span class="_monospace"><MkTime :time="user.createdAt" :mode="'detail'"/></span></template>
+				</MkKeyValue>
+
+				<MkKeyValue v-if="info && $i.isAdmin && user.host == null" oneline style="margin: 1em 0;">
+					<template #key>{{ $ts.lastActiveDate }}</template>
+					<template #value><span class="_monospace"><MkTime :time="info.lastActiveDate" :mode="'detail'"/></span></template>
+				</MkKeyValue>
+
 				<MkKeyValue :copy="info.email" v-if="info && $i.isAdmin" oneline style="margin: 1em 0;">
 					<template #key>Email</template>
 					<template #value><span class="_monospace">{{ info.email }}</span></template>

@@ -87,6 +87,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		isForceSensitive: user.isForceSensitive,
 		isDisabled: user.isDisabled,
 		isHidden: user.isHidden,
+		lastActiveDate: user.lastActiveDate,
 		capacity: capacity,
 		usage: usage,
 	};

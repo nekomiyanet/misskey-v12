@@ -940,6 +940,7 @@ deleted: "削除済み"
 typeToConfirm: "この操作を行うには {x} と入力してください"
 deleteAccount: "アカウント削除"
 deleteAccountFederation: "リモートインスタンスにアカウント削除を送信する"
+lastActiveDate: "最終利用日時"
 
 _emailUnavailable:
   used: "既に使用されています"
