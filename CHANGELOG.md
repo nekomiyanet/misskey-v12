@@ -8,6 +8,21 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20240817211402 (2024/08/17)
+### Improvements
+- hideServerInfoでもadminなどは許可するように @mei23 @atsu1125
+- IPレベルのレートリミット @Johann150 @atsu1125
+- signupのレートリミット @atsu1125
+- delete系のレートリミット @Johann150 @atsu1125
+- サインインログ @mei23 @atsu1125
+- 最終利用日時 @syuilo @atsu1125
+
+### Bugfixes
+- フォローリクエストのページネーションを修正 @sim1222 @atsu1125
+- ローカルユーザー設定値をここでコミットしてるのは変 @mei23
+- downloadUrlがプロキシ除外ホストの設定を読んでない @mei23
+- パスワードリセットで期限切れのものを削除するように・レートリミット追加 @Johann150 @atsu1125
+
 ## 12.108.1-nekomiya-20240809230215 (2024/08/09)
 ### Bugfixes
 - Fix: Deliver queueのJSONシリアライズとダイジェスト計算は事前に行うように @mei23 @atsu1125
