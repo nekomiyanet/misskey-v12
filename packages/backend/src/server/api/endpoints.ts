@@ -31,9 +31,15 @@ import * as ep___admin_emoji_setAliasesBulk from './endpoints/admin/emoji/set-al
 import * as ep___admin_emoji_setCategoryBulk from './endpoints/admin/emoji/set-category-bulk.js';
 import * as ep___admin_emoji_update from './endpoints/admin/emoji/update.js';
 import * as ep___admin_federation_deleteAllFiles from './endpoints/admin/federation/delete-all-files.js';
+import * as ep___admin_federation_followers from './endpoints/admin/federation/followers.js';
+import * as ep___admin_federation_following from './endpoints/admin/federation/following.js';
+import * as ep___admin_federation_instances from './endpoints/admin/federation/instances.js';
 import * as ep___admin_federation_refreshRemoteInstanceMetadata from './endpoints/admin/federation/refresh-remote-instance-metadata.js';
 import * as ep___admin_federation_removeAllFollowing from './endpoints/admin/federation/remove-all-following.js';
+import * as ep___admin_federation_showInstance from './endpoints/admin/federation/show-instance.js';
 import * as ep___admin_federation_updateInstance from './endpoints/admin/federation/update-instance.js';
+import * as ep___admin_federation_updateRemoteUser from './endpoints/admin/federation/update-remote-user.js';
+import * as ep___admin_federation_users from './endpoints/admin/federation/users.js';
 import * as ep___admin_getIndexStats from './endpoints/admin/get-index-stats.js';
 import * as ep___admin_getTableStats from './endpoints/admin/get-table-stats.js';
 import * as ep___admin_hideUser from './endpoints/admin/hide-user.js';
@@ -362,9 +368,15 @@ const eps = [
 	['admin/emoji/set-category-bulk', ep___admin_emoji_setCategoryBulk],
 	['admin/emoji/update', ep___admin_emoji_update],
 	['admin/federation/delete-all-files', ep___admin_federation_deleteAllFiles],
+	['admin/federation/followers', ep___admin_federation_followers],
+	['admin/federation/following', ep___admin_federation_following],
+	['admin/federation/instances', ep___admin_federation_instances],
 	['admin/federation/refresh-remote-instance-metadata', ep___admin_federation_refreshRemoteInstanceMetadata],
 	['admin/federation/remove-all-following', ep___admin_federation_removeAllFollowing],
+	['admin/federation/show-instance', ep___admin_federation_showInstance],
 	['admin/federation/update-instance', ep___admin_federation_updateInstance],
+	['admin/federation/update-remote-user', ep___admin_federation_updateRemoteUser],
+	['admin/federation/users', ep___admin_federation_users],
 	['admin/get-index-stats', ep___admin_getIndexStats],
 	['admin/get-table-stats', ep___admin_getTableStats],
 	['admin/hide-user', ep___admin_hideUser],

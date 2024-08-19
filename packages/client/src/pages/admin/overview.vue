@@ -163,7 +163,7 @@ export default defineComponent({
 		async showInstanceInfo(q) {
 			let instance = q;
 			if (typeof q === 'string') {
-				instance = await os.api('federation/show-instance', {
+				instance = await os.api('admin/federation/show-instance', {
 					host: q
 				});
 			}
