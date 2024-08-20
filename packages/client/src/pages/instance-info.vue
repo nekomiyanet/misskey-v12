@@ -146,16 +146,24 @@ let chartSpan = $ref('hour');
 
 async function fetch() {
 	meta = await os.api('meta', { detail: true });
-	instance = await os.api('federation/show-instance', {
-		host: props.host,
-	});
+	if (iAmModerator) {
+		instance = await os.api('admin/federation/show-instance', {
+			host: props.host,
+		});
+	} else {
+		instance = await os.api('federation/show-instance', {
+			host: props.host,
+		});
+	}
 	suspended = instance.isSuspended;
 	isBlocked = instance.isBlocked;
 	silenced = instance.isSilenced;
 	selfsilenced = instance.isSelfSilenced;
-	isExactlyBlocked = meta.blockedHosts.includes(instance.host);
-	isExactlySilenced = meta.silencedHosts.includes(instance.host);
-	isExactlySelfSilenced = meta.selfSilencedHosts.includes(instance.host);
+	if ($i && $i.isAdmin) {
+		isExactlyBlocked = meta.blockedHosts.includes(instance.host);
+		isExactlySilenced = meta.silencedHosts.includes(instance.host);
+		isExactlySelfSilenced = meta.selfSilencedHosts.includes(instance.host);
+	}
 }
 
 async function toggleBlock(ev) {
