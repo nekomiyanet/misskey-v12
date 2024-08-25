@@ -3,7 +3,7 @@ import define from '../../define.js';
 import { publishAdminStream } from '@/services/stream.js';
 import { ApiError } from '../../error.js';
 import { getUser } from '../../common/getters.js';
-import { AbuseUserReports, Users } from '@/models/index.js';
+import { AbuseUserReports, Users, UserProfiles } from '@/models/index.js';
 import { genId } from '@/misc/gen-id.js';
 import { sendEmail } from '@/services/send-email.js';
 import { emailDeliver } from '@/queue/index.js';
@@ -87,6 +87,16 @@ export default define(meta, paramDef, async (ps, me) => {
 				reporterId: report.reporterId,
 				comment: report.comment,
 			});
+
+			const emailRecipientProfile = await UserProfiles.findOne({
+				userId: moderator.id,
+			});
+
+			if (emailRecipientProfile.email && emailRecipientProfile.emailVerified) {
+				emailDeliver(emailRecipientProfile.email, 'New abuse report',
+					sanitizeHtml(ps.comment),
+					sanitizeHtml(ps.comment));
+			}
 		}
 
 		const meta = await fetchMeta();
