@@ -8,6 +8,19 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20240828164530 (2024/08/28)
+### Improvements
+- 連合系のAPIをモデレータ用に切り出し @atsu1125
+- 通報発生時にモデレータにメールを送るように @atsu1125
+
+### Bugfixes
+- Adminがユーザー情報が開けないことがあるのを修正 @atsu1125
+- 非ブロックインスタンスのクエリを間違っていたのを修正 @atsu1125
+- 通報発生時に管理者にメールを送れてなかったのを修正 @atsu1125
+- Twemoji 14の対応を間違っていたのを修正 @atsu1125
+- 絵文字を追加したユーザーのアカウント削除ができなくなっていたのを修正 @atsu1125
+- タブレット端末でウィジェット表示ボタンが消えていたのを修正 @atsu1125
+
 ## 12.108.1-nekomiya-20240817211402 (2024/08/17)
 ### Improvements
 - hideServerInfoでもadminなどは許可するように @mei23 @atsu1125
