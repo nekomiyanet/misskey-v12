@@ -15,7 +15,10 @@ export async function deleteFile(file: DriveFile, isExpired = false) {
 			publicUrl: file.webpublicUrl,
 		});
 		if (emojis != null) {
-			return; // emojiのpublicUrlがfileに含まれている場合は処理をスキップ
+			await DriveFiles.update({ id: file.id }, {
+				user: null,
+			});
+			return; // emojiのpublicUrlがfileに含まれている場合は所有ユーザーをnullにして終了
 		}
 	} else if (file.url != null) {
 		let emojis = await Emojis.findOne({
@@ -23,7 +26,10 @@ export async function deleteFile(file: DriveFile, isExpired = false) {
 			publicUrl: file.url,
 		});
 		if (emojis != null) {
-			return; // emojiのpublicUrlがfileに含まれている場合は処理をスキップ
+			await DriveFiles.update({ id: file.id }, {
+				user: null,
+			});
+			return; // emojiのpublicUrlがfileに含まれている場合は所有ユーザーをnullにして終了
 		}
 	}
 
@@ -59,7 +65,10 @@ export async function deleteFileSync(file: DriveFile, isExpired = false) {
 			publicUrl: file.webpublicUrl,
 		});
 		if (emojis != null) {
-			return; // emojiのpublicUrlがfileに含まれている場合は処理をスキップ
+			await DriveFiles.update({ id: file.id }, {
+				user: null,
+			});
+			return; // emojiのpublicUrlがfileに含まれている場合は所有ユーザーをnullにして終了
 		}
 	} else if (file.url != null) {
 		let emojis = await Emojis.findOne({
@@ -67,7 +76,10 @@ export async function deleteFileSync(file: DriveFile, isExpired = false) {
 			publicUrl: file.url,
 		});
 		if (emojis != null) {
-			return; // emojiのpublicUrlがfileに含まれている場合は処理をスキップ
+			await DriveFiles.update({ id: file.id }, {
+				user: null,
+			});
+			return; // emojiのpublicUrlがfileに含まれている場合は所有ユーザーをnullにして終了
 		}
 	}
 
