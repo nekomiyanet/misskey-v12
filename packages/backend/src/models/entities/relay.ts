@@ -16,4 +16,9 @@ export class Relay {
 		enum: ['requesting', 'accepted', 'rejected'],
 	})
 	public status: 'requesting' | 'accepted' | 'rejected';
+
+	@Column('boolean', {
+		default: false,
+	})
+	public onlyHashtag: boolean;
 }

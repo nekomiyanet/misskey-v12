@@ -81,10 +81,16 @@ export async function deliverToRelays(user: { id: User['id']; host: null; }, act
 		retryable = true;
 	}
 
+	let hasHashtag = false;
+
 	const relays = await Relays.find({
 		status: 'accepted',
 	});
 	if (relays.length === 0) return;
+
+	if (activity.object.type === 'Note' && activity.object.tag.length > 0) {
+		hasHashtag = true;
+	}
 
 	const copy = JSON.parse(JSON.stringify(activity));
 	if (!copy.to) copy.to = ['https://www.w3.org/ns/activitystreams#Public'];
@@ -92,6 +98,7 @@ export async function deliverToRelays(user: { id: User['id']; host: null; }, act
 	const signed = await attachLdSignature(copy, user);
 
 	for (const relay of relays) {
+		if (!!relay.onlyHashtag && !hasHashtag) return;
 		createDeliverRelaysJob(user, signed, relay.inbox, retryable);
 	}
 }

@@ -8,6 +8,10 @@
 			<i v-else class="fas fa-clock icon requesting"></i>
 			<span>{{ $t(`_relayStatus.${relay.status}`) }}</span>
 		</div>
+		<div class="status">
+			<i v-if="relay.onlyHashtag" class="fas fa-hashtag icon"></i>
+			<span v-if="relay.onlyHashtag">{{ $ts.hashtags }}</span>
+		</div>
 		<MkButton class="button" inline danger @click="remove(relay.inbox)"><i class="fas fa-trash-alt"></i> {{ $ts.remove }}</MkButton>
 	</div>
 </MkSpacer>

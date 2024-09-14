@@ -34,6 +34,10 @@ export const meta = {
 						'rejected',
 					],
 				},
+				onlyHashtag: {
+					type: 'boolean',
+					optional: false, nullable: false,
+				},
 			},
 		},
 	},
