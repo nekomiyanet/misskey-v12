@@ -48,7 +48,7 @@ describe('Note', () => {
 		assert.deepStrictEqual(res.body.createdNote.fileIds, [file.id]);
 	}));
 
-	it('他人のファイルは無視', async(async () => {
+	it('他人のファイルは怒られる', async(async () => {
 		const file = await uploadUrl(bob, 'https://raw.githubusercontent.com/nekomiyanet/misskey-v12/v12.108/packages/backend/test/resources/Lenna.jpg');
 
 		const res = await request('/notes/create', {
@@ -56,9 +56,7 @@ describe('Note', () => {
 			fileIds: [file.id]
 		}, alice);
 
-		assert.strictEqual(res.status, 200);
-		assert.strictEqual(typeof res.body === 'object' && !Array.isArray(res.body), true);
-		assert.deepStrictEqual(res.body.createdNote.fileIds, []);
+		assert.strictEqual(res.status, 400);
 	}));
 
 	it('存在しないファイルで怒られる', async(async () => {
