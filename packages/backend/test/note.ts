@@ -61,15 +61,13 @@ describe('Note', () => {
 		assert.deepStrictEqual(res.body.createdNote.fileIds, []);
 	}));
 
-	it('存在しないファイルは無視', async(async () => {
+	it('存在しないファイルで怒られる', async(async () => {
 		const res = await request('/notes/create', {
 			text: 'test',
 			fileIds: ['000000000000000000000000']
 		}, alice);
 
-		assert.strictEqual(res.status, 200);
-		assert.strictEqual(typeof res.body === 'object' && !Array.isArray(res.body), true);
-		assert.deepStrictEqual(res.body.createdNote.fileIds, []);
+		assert.strictEqual(res.status, 400);
 	}));
 
 	it('不正なファイルIDで怒られる', async(async () => {
