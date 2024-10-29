@@ -189,7 +189,9 @@ export default async (user: { id: User['id']; username: User['username']; host: 
 					throw new Error('Renote target is not public or home');
 				}
 				// Renote対象がfollowersならfollowersにする
-				data.visibility = 'followers';
+				if (data.visibility === 'public' || data.visibility === 'home') {
+					data.visibility = 'followers';
+				}
 				break;
 			case 'specified':
 				// specified / direct noteはreject
