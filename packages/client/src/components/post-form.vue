@@ -202,11 +202,16 @@ const maxTextLength = $computed((): number => {
 	return instance ? instance.maxNoteTextLength : 1000;
 });
 
+const cwLength = $computed((): number => {
+	return length(cw.trim());
+});
+
 const canPost = $computed((): boolean => {
 	return !posting &&
 		(1 <= textLength || 1 <= files.length || !!poll || !!props.renote) &&
 		(textLength <= maxTextLength) &&
-		(!poll || poll.choices.length >= 2);
+		(!poll || poll.choices.length >= 2) &&
+		(!useCw || (useCw && cw && 1 <= cwLength));
 });
 
 const withHashtags = $computed(defaultStore.makeGetterSetter('postFormWithHashtags'));
