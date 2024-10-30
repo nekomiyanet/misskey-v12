@@ -28,6 +28,12 @@ export const meta = {
 			code: 'YOU_HAVE_BEEN_BLOCKED',
 			id: '20ef5475-9f38-4e4c-bd33-de6d979498ec',
 		},
+
+		cannotReactToRenote: {
+			message: 'You cannot react to Renote.',
+			code: 'CANNOT_REACT_TO_RENOTE',
+			id: 'eaccdc08-ddef-43fe-908f-d108faad57f5',
+		},
 	},
 } as const;
 
@@ -49,6 +55,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	await createReaction(user, note, ps.reaction).catch(e => {
 		if (e.id === '51c42bb4-931a-456b-bff7-e5a8a70dd298') throw new ApiError(meta.errors.alreadyReacted);
 		if (e.id === 'e70412a4-7197-4726-8e74-f3e0deb92aa7') throw new ApiError(meta.errors.youHaveBeenBlocked);
+		if (e.id === '12c35529-3c79-4327-b1cc-e2cf63a71925') throw new ApiError(meta.errors.cannotReactToRenote);
 		throw e;
 	});
 	return;
