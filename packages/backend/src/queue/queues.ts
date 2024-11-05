@@ -10,3 +10,14 @@ export const dbQueue = initializeQueue<DbJobData>('db');
 export const objectStorageQueue = initializeQueue<ObjectStorageJobData>('objectStorage');
 export const createDeleteNoteQueue = initializeQueue<DeleteNoteJobData>('createDeleteNote');
 export const emailDeliverQueue = initializeQueue<EmailJobData>('emailDeliver');
+
+export const queues = [
+	systemQueue,
+	endedPollNotificationQueue,
+	deliverQueue,
+	inboxQueue,
+	dbQueue,
+	objectStorageQueue,
+  createDeleteNoteQueue,
+  emailDeliverQueue,
+];
