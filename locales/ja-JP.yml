@@ -941,6 +941,11 @@ typeToConfirm: "この操作を行うには {x} と入力してください"
 deleteAccount: "アカウント削除"
 deleteAccountFederation: "リモートインスタンスにアカウント削除を送信する"
 lastActiveDate: "最終利用日時"
+doNotSendNotificationEmailsForAbuseReport: "通報の通知メールを発送しないようにする"
+doNotSendNotificationEmailsForAbuseReportToModerator: "通報の通知メールをモデレータには発送しないようにする"
+emailToReceiveAbuseReport: "通報通知を受け取るためのメールアドレス"
+emailToReceiveAbuseReportCaption: "通報通知を受け取るためのメールアドレスを指定します。ここの入力欄を空にするとメールサーバーのメールアドレスが使用されます。"
+abuseReportResolvers: "通報リゾルバー"
 
 _emailUnavailable:
   used: "既に使用されています"
@@ -1827,3 +1832,9 @@ _deck:
     list: "リスト"
     mentions: "あなた宛て"
     direct: "ダイレクト"
+
+_abuse:
+  _resolver:
+    targetUserPattern: "通報先のパターン"
+    reporterPattern: "通報元のパターン"
+    reportContentPattern: "通報内容のパターン"

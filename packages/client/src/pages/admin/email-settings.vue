@@ -7,6 +7,19 @@
 				<template #caption>{{ $ts.emailConfigInfo }}</template>
 			</FormSwitch>
 
+			<template v-if="enableEmail">
+				<FormInput v-model="emailToReceiveAbuseReport" type="email" class="_formBlock">
+					<template #label>{{ $ts.emailToReceiveAbuseReport }}</template>
+					<template #caption>{{ $ts.emailToReceiveAbuseReportCaption }}</template>
+				</FormInput>
+				<FormSwitch v-model="doNotSendNotificationEmailsForAbuseReport" class="_formBlock">
+					<template #label>{{ $ts.doNotSendNotificationEmailsForAbuseReport }}</template>
+				</FormSwitch>
+				<FormSwitch v-if="!doNotSendNotificationEmailsForAbuseReport" v-model="doNotSendNotificationEmailsForAbuseReportToModerator" class="_formBlock">
+					<template #label>{{ $ts.doNotSendNotificationEmailsForAbuseReportToModerator }}</template>
+				</FormSwitch>
+			</template>
+
 		</div>
 	</FormSuspense>
 </MkSpacer>
@@ -14,6 +27,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import FormInput from '@/components/form/input.vue';
 import FormSwitch from '@/components/form/switch.vue';
 import FormSuspense from '@/components/form/suspense.vue';
 import * as os from '@/os';
@@ -23,6 +37,7 @@ import { fetchInstance } from '@/instance';
 export default defineComponent({
 	components: {
 		FormSwitch,
+		FormInput,
 		FormSuspense,
 	},
 
@@ -46,6 +61,9 @@ export default defineComponent({
 				}],
 			},
 			enableEmail: false,
+			emailToReceiveAbuseReport: null,
+			doNotSendNotificationEmailsForAbuseReport: false,
+			doNotSendNotificationEmailsForAbuseReportToModerator: false,
 		}
 	},
 
@@ -53,6 +71,9 @@ export default defineComponent({
 		async init() {
 			const meta = await os.api('meta', { detail: true });
 			this.enableEmail = meta.enableEmail;
+			this.emailToReceiveAbuseReport = meta.emailToReceiveAbuseReport;
+			this.doNotSendNotificationEmailsForAbuseReport = meta.doNotSendNotificationEmailsForAbuseReport;
+			this.doNotSendNotificationEmailsForAbuseReportToModerator = meta.doNotSendNotificationEmailsForAbuseReportToModerator;
 		},
 
 		async testEmail() {
@@ -72,6 +93,9 @@ export default defineComponent({
 		save() {
 			os.apiWithDialog('admin/update-meta', {
 				enableEmail: this.enableEmail,
+				emailToReceiveAbuseReport: this.emailToReceiveAbuseReport,
+				doNotSendNotificationEmailsForAbuseReport: this.doNotSendNotificationEmailsForAbuseReport,
+				doNotSendNotificationEmailsForAbuseReportToModerator: this.doNotSendNotificationEmailsForAbuseReportToModerator,
 			}).then(() => {
 				fetchInstance();
 			});
