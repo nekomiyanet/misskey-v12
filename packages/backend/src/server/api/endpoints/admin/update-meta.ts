@@ -96,6 +96,7 @@ export const paramDef = {
 		privateMode: { type: 'boolean' },
 		secureMode: { type: 'boolean' },
 		doNotSendNotificationEmailsForAbuseReport: { type: 'boolean' },
+		doNotSendNotificationEmailsForAbuseReportToModerator: { type: 'boolean' },
 		emailToReceiveAbuseReport: { type: 'string', nullable: true },
 	},
 	required: [],
@@ -348,7 +349,11 @@ export default define(meta, paramDef, async (ps, me) => {
 	if (ps.doNotSendNotificationEmailsForAbuseReport !== undefined) {
 		set.doNotSendNotificationEmailsForAbuseReport = ps.doNotSendNotificationEmailsForAbuseReport;
 	}
-	
+
+	if (ps.doNotSendNotificationEmailsForAbuseReportToModerator !== undefined) {
+		set.doNotSendNotificationEmailsForAbuseReportToModerator = ps.doNotSendNotificationEmailsForAbuseReportToModerator;
+	}
+
 	if (ps.emailToReceiveAbuseReport !== undefined) {
 		set.emailToReceiveAbuseReport = ps.emailToReceiveAbuseReport;
 	}

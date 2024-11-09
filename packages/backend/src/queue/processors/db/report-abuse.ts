@@ -64,6 +64,8 @@ export async function reportAbuse(job: Bull.Job<DbAbuseReportJobData>): Promise<
 			}],
 		});
 
+		const meta = await fetchMeta();
+
 		for (const moderator of moderators) {
 			publishAdminStream(moderator.id, 'newAbuseUserReport', {
 				id: job.data.id,
@@ -72,18 +74,19 @@ export async function reportAbuse(job: Bull.Job<DbAbuseReportJobData>): Promise<
 				comment: job.data.comment,
 			});
 
-			//const emailRecipientProfile = await UserProfiles.findOne({
-			//	userId: moderator.id,
-			//});
+			if ((meta.email && meta.enableEmail) && !meta.doNotSendNotificationEmailsForAbuseReport && !meta.doNotSendNotificationEmailsForAbuseReportToModerator) {
+				const emailRecipientProfile = await UserProfiles.findOne({
+					userId: moderator.id,
+				});
 
-			//if (emailRecipientProfile.email && emailRecipientProfile.emailVerified && emailRecipientProfile.receiveAnnouncementEmail) {
-			//	emailDeliver(emailRecipientProfile.email, 'New abuse report',
-			//		sanitizeHtml(job.data.comment),
-			//		sanitizeHtml(job.data.comment));
-			//}
+				if (emailRecipientProfile.email && emailRecipientProfile.emailVerified && emailRecipientProfile.receiveAnnouncementEmail) {
+					emailDeliver(emailRecipientProfile.email, 'New abuse report',
+						sanitizeHtml(job.data.comment),
+						sanitizeHtml(job.data.comment));
+				}
+			}
 		}
 
-		const meta = await fetchMeta();
 		if ((meta.emailToReceiveAbuseReport || meta.email) && !meta.doNotSendNotificationEmailsForAbuseReport) {
 			emailDeliver(meta.emailToReceiveAbuseReport ?? meta.email!, 'New abuse report',
 				sanitizeHtml(job.data.comment),

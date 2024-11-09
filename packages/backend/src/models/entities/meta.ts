@@ -368,4 +368,9 @@ export class Meta {
 		default: false,
 	})
 	public doNotSendNotificationEmailsForAbuseReport: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public doNotSendNotificationEmailsForAbuseReportToModerator: boolean;
 }
