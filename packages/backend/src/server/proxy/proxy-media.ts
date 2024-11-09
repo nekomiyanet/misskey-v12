@@ -16,6 +16,14 @@ export async function proxyMedia(ctx: Koa.Context) {
 		return;
 	}
 
+	if (!ctx.headers['user-agent']) {
+		ctx.status = 400;
+		return;
+	} else if (ctx.headers['user-agent'].toLowerCase().indexOf('misskey/') !== -1) {
+		ctx.status = 403;
+		return;
+	}
+
 	// Create temp file
 	const [path, cleanup] = await createTemp();
 
