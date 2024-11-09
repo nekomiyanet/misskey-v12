@@ -87,7 +87,7 @@ export default define(meta, paramDef, async (ps, me) => {
 	} else if (ps.reportContentPattern === null) {
 		properties.reportContentPattern = null;
 	}
-	if (ps.forward) properties.forward = ps.forward;
+	if (ps.forward !== undefined) properties.forward = ps.forward;
 
 	await AbuseReportResolvers.update(resolver.id, {
 		...properties,
