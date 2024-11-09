@@ -43,7 +43,7 @@ export async function reportAbuse(job: Bull.Job<DbAbuseReportJobData>): Promise<
 		const isReportContentPatternMatched = resolver.reportContentPattern ? new RE2(resolver.reportContentPattern).test(job.data.comment) : true;
 		if (isTargetUserPatternMatched && isReporterPatternMatched && isReportContentPatternMatched) {
 			if (resolver.forward && job.data.targetUserHost !== null && job.data.reporterHost === null) {
-				deliver(actor, renderActivity(renderFlag(actor, [targetUser.uri!], report.comment)), targetUser.inbox);
+				deliver(actor, renderActivity(renderFlag(actor, [targetUser.uri!], job.data.comment)), targetUser.inbox);
 			}
 			await AbuseUserReports.update(job.data.id, {
 				resolved: true,
