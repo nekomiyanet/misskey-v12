@@ -1,6 +1,7 @@
 import { DriveFile } from '@/models/entities/drive-file.js';
 import { Note } from '@/models/entities/note';
 import { User } from '@/models/entities/user.js';
+import { AbuseReportResolver } from '@/models/entities/abuse-report-resolver.js';
 import { IActivity } from '@/remote/activitypub/type.js';
 import httpSignature from '@peertube/http-signature';
 
@@ -20,7 +21,7 @@ export type InboxJobData = {
 	signature: httpSignature.IParsedSignature;
 };
 
-export type DbJobData = DbUserJobData | DbUserImportJobData | DbUserDeleteJobData;
+export type DbJobData = DbUserJobData | DbUserImportJobData | DbUserDeleteJobData | DbAbuseReportJobData;
 
 export type DbUserJobData = {
 	user: ThinUser;
@@ -37,6 +38,8 @@ export type DbUserImportJobData = {
 	user: ThinUser;
 	fileId: DriveFile['id'];
 };
+
+export type DbAbuseReportJobData = AbuseReportResolver;
 
 export type ObjectStorageJobData = ObjectStorageFileJobData | Record<string, unknown>;
 

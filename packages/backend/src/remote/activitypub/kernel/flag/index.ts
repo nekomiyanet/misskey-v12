@@ -4,6 +4,7 @@ import { IFlag, getApIds } from '../../type.js';
 import { AbuseUserReports, Users } from '@/models/index.js';
 import { In } from 'typeorm';
 import { genId } from '@/misc/gen-id.js';
+import { createReportAbuseJob } from '@/queue/index.js';
 
 export default async (actor: IRemoteUser, activity: IFlag): Promise<string> => {
 	// objectは `(User|Note) | (User|Note)[]` だけど、全パターンDBスキーマと対応させられないので
@@ -16,7 +17,7 @@ export default async (actor: IRemoteUser, activity: IFlag): Promise<string> => {
 	});
 	if (users.length < 1) return `skip`;
 
-	await AbuseUserReports.insert({
+	const report = await AbuseUserReports.insert({
 		id: genId(),
 		createdAt: new Date(),
 		targetUserId: users[0].id,
@@ -24,7 +25,9 @@ export default async (actor: IRemoteUser, activity: IFlag): Promise<string> => {
 		reporterId: actor.id,
 		reporterHost: actor.host,
 		comment: `${activity.content}\n${JSON.stringify(uris, null, 2)}`,
-	});
+	}).then(x => AbuseUserReports.findOneOrFail(x.identifiers[0]));
+
+	createReportAbuseJob(report);
 
 	return `ok`;
 };

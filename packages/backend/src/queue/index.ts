@@ -279,6 +279,13 @@ export function createDeleteAccountJob(user: ThinUser, opts: { soft?: boolean; }
 	});
 }
 
+export function createReportAbuseJob(report: object) {
+	return dbQueue.add('reportAbuse', report, {
+		removeOnComplete: true,
+		removeOnFail: false,
+	});
+}
+
 export function createDeleteObjectStorageFileJob(key: string) {
 	return objectStorageQueue.add('deleteFile', {
 		key: key,

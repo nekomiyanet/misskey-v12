@@ -13,6 +13,7 @@ import { deleteAccount } from './delete-account.js';
 import { importMuting } from './import-muting.js';
 import { importBlocking } from './import-blocking.js';
 import { importCustomEmojis } from './import-custom-emojis.js';
+import { reportAbuse } from './report-abuse.js';
 
 const jobs = {
 	deleteDriveFiles,
@@ -28,6 +29,7 @@ const jobs = {
 	importUserLists,
 	importCustomEmojis,
 	deleteAccount,
+	reportAbuse,
 } as Record<string, Bull.ProcessCallbackFunction<DbJobData> | Bull.ProcessPromiseFunction<DbJobData>>;
 
 export default function(dbQueue: Bull.Queue<DbJobData>) {

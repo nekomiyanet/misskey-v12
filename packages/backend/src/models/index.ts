@@ -1,4 +1,5 @@
 import { getRepository, getCustomRepository } from 'typeorm';
+import { AbuseReportResolver } from './entities/abuse-report-resolver.js';
 import { Announcement } from './entities/announcement.js';
 import { AnnouncementRead } from './entities/announcement-read.js';
 import { Instance } from './entities/instance.js';
@@ -64,6 +65,7 @@ import { PasswordResetRequest } from './entities/password-reset-request.js';
 import { UserPending } from './entities/user-pending.js';
 import { InstanceRepository } from './repositories/instance.js';
 
+export const AbuseReportResolvers = getRepository(AbuseReportResolver);
 export const Announcements = getRepository(Announcement);
 export const AnnouncementReads = getRepository(AnnouncementRead);
 export const Apps = getCustomRepository(AppRepository);

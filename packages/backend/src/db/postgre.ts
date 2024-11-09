@@ -72,6 +72,7 @@ import { RegistryItem } from '@/models/entities/registry-item.js';
 import { Ad } from '@/models/entities/ad.js';
 import { PasswordResetRequest } from '@/models/entities/password-reset-request.js';
 import { UserPending } from '@/models/entities/user-pending.js';
+import { AbuseReportResolver } from '@/models/entities/abuse-report-resolver.js';
 
 import { entities as charts } from '@/services/chart/entities.js';
 
@@ -175,6 +176,7 @@ export const entities = [
 	Ad,
 	PasswordResetRequest,
 	UserPending,
+	AbuseReportResolver,
 	...charts,
 ];
 

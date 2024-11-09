@@ -95,6 +95,8 @@ export const paramDef = {
 		feedbackUrl: { type: 'string' },
 		privateMode: { type: 'boolean' },
 		secureMode: { type: 'boolean' },
+		doNotSendNotificationEmailsForAbuseReport: { type: 'boolean' },
+		emailToReceiveAbuseReport: { type: 'string', nullable: true },
 	},
 	required: [],
 } as const;
@@ -341,6 +343,14 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (ps.secureMode !== undefined) {
 		set.secureMode = ps.secureMode;
+	}
+
+	if (ps.doNotSendNotificationEmailsForAbuseReport !== undefined) {
+		set.doNotSendNotificationEmailsForAbuseReport = ps.doNotSendNotificationEmailsForAbuseReport;
+	}
+	
+	if (ps.emailToReceiveAbuseReport !== undefined) {
+		set.emailToReceiveAbuseReport = ps.emailToReceiveAbuseReport;
 	}
 
 	await getConnection().transaction(async transactionalEntityManager => {

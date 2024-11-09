@@ -417,6 +417,14 @@ export const meta = {
 					optional: false, nullable: false,
 				},
 			},
+			doNotSendNotificationEmailsForAbuseReport: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
+			emailToReceiveAbuseReport: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
 		},
 	},
 } as const;
@@ -560,6 +568,8 @@ export default define(meta, paramDef, async (ps, me, token) => {
 			response.secureMode = instance.secureMode;
 			response.privateMode = instance.privateMode;
 			response.allowedHosts = instance.allowedHosts;
+			response.doNotSendNotificationEmailsForAbuseReport = instance.doNotSendNotificationEmailsForAbuseReport;
+			response.emailToReceiveAbuseReport = instance.emailToReceiveAbuseReport;
 		}
 	}
 

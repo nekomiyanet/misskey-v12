@@ -1,13 +1,9 @@
-import sanitizeHtml from 'sanitize-html';
 import define from '../../define.js';
-import { publishAdminStream } from '@/services/stream.js';
 import { ApiError } from '../../error.js';
 import { getUser } from '../../common/getters.js';
 import { AbuseUserReports, Users, UserProfiles } from '@/models/index.js';
 import { genId } from '@/misc/gen-id.js';
-import { sendEmail } from '@/services/send-email.js';
-import { emailDeliver } from '@/queue/index.js';
-import { fetchMeta } from '@/misc/fetch-meta.js';
+import { createReportAbuseJob } from '@/queue/index.js';
 
 export const meta = {
 	tags: ['users'],
@@ -70,40 +66,5 @@ export default define(meta, paramDef, async (ps, me) => {
 		comment: ps.comment,
 	}).then(x => AbuseUserReports.findOneOrFail(x.identifiers[0]));
 
-	// Publish event to moderators
-	setTimeout(async () => {
-		const moderators = await Users.find({
-			where: [{
-				isAdmin: true,
-			}, {
-				isModerator: true,
-			}],
-		});
-
-		for (const moderator of moderators) {
-			publishAdminStream(moderator.id, 'newAbuseUserReport', {
-				id: report.id,
-				targetUserId: report.targetUserId,
-				reporterId: report.reporterId,
-				comment: report.comment,
-			});
-
-			const emailRecipientProfile = await UserProfiles.findOne({
-				userId: moderator.id,
-			});
-
-			if (emailRecipientProfile.email && emailRecipientProfile.emailVerified && emailRecipientProfile.receiveAnnouncementEmail) {
-				emailDeliver(emailRecipientProfile.email, 'New abuse report',
-					sanitizeHtml(ps.comment),
-					sanitizeHtml(ps.comment));
-			}
-		}
-
-		const meta = await fetchMeta();
-		if (meta.email) {
-			emailDeliver(meta.email, 'New abuse report',
-				sanitizeHtml(ps.comment),
-				sanitizeHtml(ps.comment));
-		}
-	}, 1);
+	createReportAbuseJob(report);
 });

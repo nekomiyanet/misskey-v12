@@ -37,6 +37,11 @@ export class Meta {
 	})
 	public maintainerEmail: string | null;
 
+	@Column('varchar', {
+		length: 1024, nullable: true,
+	})
+	public emailToReceiveAbuseReport: string | null;
+
 	@Column('boolean', {
 		default: false,
 	})
@@ -358,4 +363,9 @@ export class Meta {
 		nullable: true,
 	})
 	public defaultDarkTheme: string | null;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public doNotSendNotificationEmailsForAbuseReport: boolean;
 }
