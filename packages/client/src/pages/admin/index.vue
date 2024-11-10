@@ -36,6 +36,7 @@ import { scroll } from '@/scripts/scroll';
 import { instance } from '@/instance';
 import * as symbols from '@/symbols';
 import * as os from '@/os';
+import { $i } from '@/account';
 import { lookupUser, lookupUserByEmail, lookupFile } from '@/scripts/lookup-user';
 
 export default defineComponent({
@@ -90,9 +91,9 @@ export default defineComponent({
 
 		os.api('meta', { detail: true }).then(meta => {
 			// TODO: 設定が完了しても残ったままになるので、ストリーミングでmeta更新イベントを受け取ってよしなに更新する
-			noMaintainerInformation.value = isEmpty(meta.maintainerName) || isEmpty(meta.maintainerEmail);
-			noBotProtection.value = !meta.enableHcaptcha && !meta.enableRecaptcha;
-			noEmailServer.value = !meta.enableEmail;
+			noMaintainerInformation.value = $i.isAdmin && (isEmpty(meta.maintainerName) || isEmpty(meta.maintainerEmail));
+			noBotProtection.value = $i.isAdmin && (!meta.enableHcaptcha && !meta.enableRecaptcha);
+			noEmailServer.value = $i.isAdmin && (!meta.enableEmail);
 		});
 
 		os.api('admin/abuse-user-reports', {
