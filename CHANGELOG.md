@@ -24,7 +24,7 @@ You should also include the user name that made the change.
 - admin/drive/filesのAPI権限定義修正 @CyberRex0
 - Internal Storageのドライブファイルが見つからない時にDummy imageが返されないのを修正 @atsu1125
 - notes/createで、fileIdsと見つかったファイルの数が異なる場合はスルーするのではなくエラーにする @syuilo @atsu1125
-- 自分のフォロワーのみ投稿をダイレクト公開範囲で投稿できないのを修正 @atsu1125
+- 自分のフォロワーのみ投稿をダイレクト公開範囲でリノートできないのを修正 @atsu1125
 - 純粋なリノートにリアクションできないように @zyoshoka @atsu1125
 - MiAuth 外部URLへのリダイレクトのバリデーションを強化 @kakkokari-gtyih @u1-liquid
 - SQLのサニタイズを強化 @kakkokari-gtyih @u1-liquid
