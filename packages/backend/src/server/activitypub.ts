@@ -302,6 +302,16 @@ async function userInfo(ctx: Router.RouterContext, user: User | undefined) {
 		return;
 	}
 
+	// リモートだったらリダイレクト
+	if (user.host != null) {
+		if (user.uri == null || isSelfHost(user.host)) {
+			ctx.status = 500;
+			return;
+		}
+		ctx.redirect(user.uri);
+		return;
+	}
+
 	ctx.body = renderActivity(await renderPerson(user as ILocalUser));
 	const meta = await fetchMeta();
 	if (meta.secureMode || meta.privateMode) {
