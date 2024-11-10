@@ -266,6 +266,7 @@ export class UserRepository extends Repository<User> {
 
 		const meId = me ? me.id : null;
 		const isMe = meId === user.id;
+		const iAmModerator = me ? (me.isAdmin || me.isModerator) : false;
 
 		const relation = meId && !isMe && opts.detail ? await this.getRelation(meId, user.id) : null;
 		const pins = opts.detail ? await UserNotePinings.createQueryBuilder('pin')
@@ -355,6 +356,9 @@ export class UserRepository extends Repository<User> {
 				publicReactions: profile!.publicReactions,
 				ffVisibility: profile!.ffVisibility,
 				notesCountVisibility: profile!.notesCountVisibility,
+			} : {}),
+
+			...(opts.detail && (isMe || iAmModerator) ? {
 				twoFactorEnabled: profile!.twoFactorEnabled,
 				usePasswordLessLogin: profile!.usePasswordLessLogin,
 				securityKeys: profile!.twoFactorEnabled
