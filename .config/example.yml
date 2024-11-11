@@ -192,3 +192,6 @@ id: 'aid'
 
 # Whether Disable Remote Users Chart
 #disableChartsForRemoteUser: true
+
+# Whether Disable Url Preview
+#disableUrlPreview: true

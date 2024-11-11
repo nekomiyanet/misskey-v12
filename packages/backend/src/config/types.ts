@@ -94,6 +94,7 @@ export type Source = {
 	disableSearch?: boolean;
 	chartCommitIntervalSecond?: number;
 	disableChartsForRemoteUser?: boolean;
+	disableUrlPreview?: boolean;
 };
 
 /**

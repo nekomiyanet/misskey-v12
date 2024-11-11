@@ -24,6 +24,13 @@ export const urlPreviewHandler = async (ctx: Koa.Context) => {
 
 	const meta = await fetchMeta();
 
+	if (config.disableUrlPreview) {
+		ctx.status = 200;
+		ctx.set('Cache-Control', 'public, max-age=600');
+		ctx.body = '{}';
+		return;
+	}
+
 	logger.info(meta.summalyProxy
 		? `(Proxy) Getting preview of ${url}@${lang} ...`
 		: `Getting preview of ${url}@${lang} ...`);
