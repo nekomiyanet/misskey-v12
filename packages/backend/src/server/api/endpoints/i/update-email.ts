@@ -72,11 +72,18 @@ export default define(meta, paramDef, async (ps, user) => {
 		throw new ApiError(meta.errors.emailRequired);
 	}
 
-	await UserProfiles.update(user.id, {
-		email: ps.email,
-		emailVerified: false,
-		emailVerifyCode: null,
-	});
+	if (ps.email == null) {
+		await UserProfiles.update(user.id, {
+			email: ps.email,
+			emailVerified: false,
+			emailVerifyCode: null,
+		});
+	} else {
+		await UserProfiles.update(user.id, {
+			unverifiedEmail: ps.email,
+			emailVerifyCode: null,
+		});
+	}
 
 	const iObj = await Users.pack(user.id, user, {
 		detail: true,

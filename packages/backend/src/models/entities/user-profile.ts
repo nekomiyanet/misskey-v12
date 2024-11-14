@@ -62,6 +62,12 @@ export class UserProfile {
 
 	@Column('varchar', {
 		length: 128, nullable: true,
+		comment: 'The unverified email address of the User.',
+	})
+	public unverifiedEmail: string | null;
+
+	@Column('varchar', {
+		length: 128, nullable: true,
 	})
 	public emailVerifyCode: string | null;
 

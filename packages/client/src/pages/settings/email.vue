@@ -4,7 +4,7 @@
 		<template #label>{{ $ts.emailAddress }}</template>
 		<FormInput v-model="emailAddress" type="email" manual-save>
 			<template #prefix><i class="fas fa-envelope"></i></template>
-			<template v-if="$i.email && !$i.emailVerified" #caption>{{ $ts.verificationEmailSent }}</template>
+			<template v-if="($i.email && !$i.emailVerified) || ($i.unverifiedEmail)" #caption>{{ $ts.verificationEmailSent }}</template>
 			<template v-else-if="emailAddress === $i.email && $i.emailVerified" #caption><i class="fas fa-check" style="color: var(--success);"></i> {{ $ts.emailVerified }}</template>
 		</FormInput>
 	</FormSection>

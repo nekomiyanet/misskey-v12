@@ -406,6 +406,7 @@ export class UserRepository extends Repository<User> {
 
 			...(opts.includeSecrets ? {
 				email: profile!.email,
+				unverifiedEmail: profile!.unverifiedEmail,
 				emailVerified: profile!.emailVerified,
 				securityKeysList: profile!.twoFactorEnabled
 					? UserSecurityKeys.find({

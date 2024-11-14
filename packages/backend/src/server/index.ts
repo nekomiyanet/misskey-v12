@@ -103,6 +103,8 @@ router.get('/verify-email/:code', async ctx => {
 		ctx.status = 200;
 
 		await UserProfiles.update({ userId: profile.userId }, {
+			email: profile.unverifiedEmail,
+			unverifiedEmail: null,
 			emailVerified: true,
 			emailVerifyCode: null,
 		});
