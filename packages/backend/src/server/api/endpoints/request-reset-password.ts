@@ -4,7 +4,7 @@ import rndstr from 'rndstr';
 import config from '@/config/index.js';
 import ms from 'ms';
 import { Users, UserProfiles, PasswordResetRequests } from '@/models/index.js';
-import { sendEmail } from '@/services/send-email.js';
+import { emailDeliver } from '@/queue/index.js';
 import { ApiError } from '../error.js';
 import { genId } from '@/misc/gen-id.js';
 import { IsNull } from 'typeorm';
@@ -66,7 +66,7 @@ export default define(meta, paramDef, async (ps) => {
 
 	const link = `${config.url}/reset-password/${token}`;
 
-	sendEmail(ps.email, 'Password reset requested',
+	emailDeliver(ps.email, 'Password reset requested',
 		`To reset password, please click this link:<br><a href="${link}">${link}</a>`,
 		`To reset password, please click this link: ${link}`);
 });
