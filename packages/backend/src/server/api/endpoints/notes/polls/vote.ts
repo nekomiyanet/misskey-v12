@@ -157,15 +157,19 @@ export default define(meta, paramDef, async (ps, user) => {
 		}
 	});
 
+	const pollUser = await Users.findOne(user.id);
+
 	// リモート投票の場合リプライ送信
 	if (note.userHost != null) {
 		const pollOwner = await Users.findOneOrFail(note.userId) as IRemoteUser;
 
-		if (!user.isLocalSilenced) {
+		if (!pollUser.isLocalSilenced) {
 			deliver(user, renderActivity(await renderVote(user, vote, note, poll, pollOwner)), pollOwner.inbox);
 		}
 	}
 
 	// リモートフォロワーにUpdate配信
-	deliverQuestionUpdate(note.id);
+	if (!pollUser.isLocalSilenced) {
+		deliverQuestionUpdate(note.id);
+	}
 });
