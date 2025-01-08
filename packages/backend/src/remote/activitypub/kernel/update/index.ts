@@ -27,7 +27,7 @@ export default async (actor: IRemoteUser, activity: IUpdate): Promise<string> =>
 		await updatePerson(actor.uri!, resolver, object);
 		return 'ok: Person updated';
 	} else if (getApType(object) === 'Question') {
-		await updateQuestion(object, resolver).catch(e => console.log(e));
+		await updateQuestion(object, actor, resolver).catch(e => console.log(e));
 		return 'ok: Question updated';
 	} else if (isPost(object)) {
 		return await updateNote(actor, object);
