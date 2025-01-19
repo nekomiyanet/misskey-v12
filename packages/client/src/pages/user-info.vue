@@ -393,8 +393,16 @@ export default defineComponent({
 		},
 
 		async toggleModerator(v) {
-			await os.api(v ? 'admin/moderators/add' : 'admin/moderators/remove', { userId: this.user.id });
-			await this.refreshUser();
+			const confirm = await os.confirm({
+				type: 'warning',
+				text: v ? this.$ts.grantModeratorConfirm : this.$ts.revokeModeratorConfirm,
+			});
+			if (confirm.canceled) {
+				this.moderator = !v;
+			} else {
+				await os.api(v ? 'admin/moderators/add' : 'admin/moderators/remove', { userId: this.user.id });
+				await this.refreshUser();
+			}
 		},
 
 		async sendModNotification() {

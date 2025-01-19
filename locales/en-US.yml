@@ -139,6 +139,8 @@ accountdisableConfirm: "Are you sure that you want to disable login of this acco
 accountenableConfirm: "Are you sure that you want to enable login of this account?"
 accountHideConfirm: "Are you sure that you want to hide profile of this account from Non Login User?"
 accountUnhideConfirm: "Are you sure that you want to unhide profile of this account from Non Login User?"
+grantModeratorConfirm: "Are you sure that you want to grant this account Moderator?"
+revokeModeratorConfirm: "Are you sure that you want to revoke this account Moderator?"
 selectList: "Select a list"
 selectAntenna: "Select an antenna"
 selectWidget: "Select a widget"
