@@ -24,17 +24,17 @@
 				</MkInput>
 			</div>
 			<div class="inputs" style="display: flex; padding-top: 1.2em;">
+				<MkInput v-model="searchUser" :debounce="true" type="search" style="margin: 0; flex: 1;">
+					<template #label>User ID</template>
+				</MkInput>
 				<MkInput v-model="type" :debounce="true" type="search" style="margin: 0; flex: 1;">
 					<template #label>MIME type</template>
 				</MkInput>
-				<MkInput v-model="searchUser" :debounce="true" type="search" style="margin: 0; flex: 1;">
-					<template #label>UserId</template>
-				</MkInput>
 			</div>
-			<MkPagination v-slot="{items}" :pagination="pagination" class="urempief">
-				<button v-for="file in items" :key="file.id" class="file _panel _button _gap" @click="show(file, $event)">
+			<MkPagination v-slot="{items}" :pagination="pagination" class="urempief" :class="{ grid: viewMode === 'grid' }">
+				<button v-for="file in items" :key="file.id" v-tooltip.mfm="`${file.type}\n${bytes(file.size)}\n${new Date(file.createdAt).toLocaleString()}\nby ${file.user ? '@' + Acct.toString(file.user) : 'system'}`" class="file _panel _button" @click="show(file, $event)">
 					<MkDriveFileThumbnail class="thumbnail" :file="file" fit="contain"/>
-					<div class="body">
+					<div v-if="viewMode === 'list'" class="body">
 						<div>
 							<small style="opacity: 0.7;">{{ file.name }}</small>
 						</div>
@@ -69,12 +69,14 @@ import bytes from '@/filters/bytes';
 import * as os from '@/os';
 import * as symbols from '@/symbols';
 import { i18n } from '@/i18n';
+import * as Acct from 'misskey-js/built/acct';
 
 let q = $ref(null);
 let origin = $ref('local');
 let type = $ref(null);
 let searchHost = $ref('');
 let searchUser = $ref('');
+let viewMode = $ref('grid');
 const pagination = {
 	endpoint: 'admin/drive/files' as const,
 	limit: 10,
@@ -141,29 +143,47 @@ defineExpose({
 	.urempief {
 		margin-top: var(--margin);
 
-		> .file {
-			display: flex;
-			width: 100%;
-			box-sizing: border-box;
-			text-align: left;
-			align-items: center;
+		&.list {
+			> .file {
+				display: flex;
+				width: 100%;
+				box-sizing: border-box;
+				text-align: left;
+				align-items: center;
 
-			&:hover {
-				color: var(--accent);
+				&:hover {
+					color: var(--accent);
+				}
+
+				> .thumbnail {
+					width: 128px;
+					height: 128px;
+				}
+
+				> .body {
+					margin-left: 0.3em;
+					padding: 8px;
+					flex: 1;
+
+					@media (max-width: 500px) {
+						font-size: 14px;
+					}
+				}
 			}
+		}
 
-			> .thumbnail {
-				width: 128px;
-				height: 128px;
-			}
+		&.grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+			grid-gap: 12px;
+			margin: var(--margin) 0;
 
-			> .body {
-				margin-left: 0.3em;
-				padding: 8px;
-				flex: 1;
+			> .file {
+				aspect-ratio: 1;
 
-				@media (max-width: 500px) {
-					font-size: 14px;
+				> .thumbnail {
+					width: 100%;
+					height: 100%;
 				}
 			}
 		}

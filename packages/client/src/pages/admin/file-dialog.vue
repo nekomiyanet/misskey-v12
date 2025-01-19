@@ -22,6 +22,8 @@
 		<div class="_section">
 			<div class="_content">
 				<MkButton full @click="showUser"><i class="fas fa-external-link-square-alt"></i> {{ $ts.user }}</MkButton>
+				<MkButton full @click="copyUrl"><i class="fas fa-link"></i> {{ $ts.copyUrl }}</MkButton>
+				<MkButton full primary @click="downloadFile"><i class="fas fa-download"></i> {{ $ts.download }}</MkButton>
 				<MkButton full danger @click="del"><i class="fas fa-trash-alt"></i> {{ $ts.delete }}</MkButton>
 			</div>
 		</div>
@@ -40,6 +42,7 @@ import MkButton from '@/components/ui/button.vue';
 import MkSwitch from '@/components/form/switch.vue';
 import XModalWindow from '@/components/ui/modal-window.vue';
 import MkDriveFileThumbnail from '@/components/drive-file-thumbnail.vue';
+import copyToClipboard from '@/scripts/copy-to-clipboard';
 import bytes from '@/filters/bytes';
 import * as os from '@/os';
 
@@ -99,6 +102,15 @@ export default defineComponent({
 			this.isSensitive = v;
 		},
 
+		copyUrl() {
+			copyToClipboard(this.file.url);
+			os.success();
+		},
+
+		downloadFile() {
+			window.open(this.file.url, '_blank');
+		},
+
 		bytes
 	}
 });
@@ -116,7 +128,7 @@ export default defineComponent({
 			text-align: center;
 			margin-top: 8px;
 		}
-		
+
 		> .rawdata {
 			overflow: auto;
 		}
