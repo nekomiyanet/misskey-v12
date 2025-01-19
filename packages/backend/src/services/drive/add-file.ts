@@ -22,6 +22,7 @@ import { getS3 } from './s3.js';
 import sharp from 'sharp';
 import { FILE_TYPE_BROWSERSAFE } from '@/const.js';
 import config from '@/config/index.js';
+import { correctFilename } from '@/misc/correct-filename.js';
 
 const logger = driveLogger.createSubLogger('register', 'yellow');
 
@@ -72,7 +73,7 @@ async function save(file: DriveFile, path: string, name: string, type: string, h
 		//#region Uploads
 		logger.info(`uploading original: ${key}`);
 		const uploads = [
-			upload(key, fs.createReadStream(path), type, name),
+			upload(key, fs.createReadStream(path), type, ext, name),
 		];
 
 		if (alts.webpublic) {
@@ -80,7 +81,7 @@ async function save(file: DriveFile, path: string, name: string, type: string, h
 			webpublicUrl = `${ baseUrl }/${ webpublicKey }`;
 
 			logger.info(`uploading webpublic: ${webpublicKey}`);
-			uploads.push(upload(webpublicKey, alts.webpublic.data, alts.webpublic.type, name));
+			uploads.push(upload(webpublicKey, alts.webpublic.data, alts.webpublic.type, alts.webpublic.ext, name));
 		}
 
 		if (alts.thumbnail) {
@@ -88,7 +89,7 @@ async function save(file: DriveFile, path: string, name: string, type: string, h
 			thumbnailUrl = `${ baseUrl }/${ thumbnailKey }`;
 
 			logger.info(`uploading thumbnail: ${thumbnailKey}`);
-			uploads.push(upload(thumbnailKey, alts.thumbnail.data, alts.thumbnail.type));
+			uploads.push(upload(thumbnailKey, alts.thumbnail.data, alts.thumbnail.type, alts.thumbnail.ext));
 		}
 
 		await Promise.all(uploads);
@@ -247,7 +248,7 @@ export async function generateAlts(path: string, type: string, generateWeb: bool
 /**
  * Upload to ObjectStorage
  */
-async function upload(key: string, stream: fs.ReadStream | Buffer, type: string, filename?: string) {
+async function upload(key: string, stream: fs.ReadStream | Buffer, type: string, ext?: string | null, filename?: string) {
 	if (type === 'image/apng') type = 'image/png';
 	if (!FILE_TYPE_BROWSERSAFE.includes(type)) type = 'application/octet-stream';
 
@@ -259,7 +260,12 @@ async function upload(key: string, stream: fs.ReadStream | Buffer, type: string,
 		CacheControl: 'max-age=31536000, immutable',
 	} as S3.PutObjectRequest;
 
-	if (filename) params.ContentDisposition = contentDisposition('inline', filename);
+	if (filename) params.ContentDisposition = contentDisposition(
+		'inline',
+		// 拡張子からContent-Typeを設定してそうな挙動を示すオブジェクトストレージ (upcloud?) も存在するので、
+		// 許可されているファイル形式でしか拡張子をつけない
+		ext ? correctFilename(filename, ext) : filename,
+	);
 	if (config.s3!.options.setPublicRead) params.ACL = 'public-read';
 
 	const s3 = getS3();
@@ -337,7 +343,12 @@ export async function addFile({
 	logger.info(`${JSON.stringify(info)}`);
 
 	// detect name
-	const detectedName = name || (info.type.ext ? `untitled.${info.type.ext}` : 'untitled');
+	const detectedName = correctFilename(
+		// DriveFile.nameは256文字, validateFileNameは200文字制限であるため、
+		// extを付加してデータベースの文字数制限に当たることはまずない
+		(name && DriveFiles.validateFileName(name)) ? name : 'untitled',
+		info.type.ext
+	);
 
 	if (user && !force) {
 		// Check if there is a file with the same hash
