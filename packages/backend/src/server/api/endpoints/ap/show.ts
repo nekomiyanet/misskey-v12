@@ -117,6 +117,9 @@ async function fetchAny(uri: string): Promise<SchemaType<typeof meta['res']> | n
 		}
 	}
 
+	// local object, not found in db? fail
+	if (isSelfOrigin(uri)) return null;
+
 	// ブロックしてたら中断
 	const fetchedMeta = await fetchMeta();
 	if (fetchedMeta.blockedHosts.some(x => extractDbHost(uri).endsWith(x))) return null;
