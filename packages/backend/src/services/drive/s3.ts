@@ -19,7 +19,7 @@ export function getS3() {
 			? false
 			: config.s3!.options.forcePathStyle,
 		httpOptions: {
-			agent: getAgentByUrl(new URL(u), !config.s3!.options.useProxy),
+			agent: getAgentByUrl(new URL(u), !config.s3!.options.useProxy, true),
 		},
 	});
 }
