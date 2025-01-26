@@ -74,7 +74,11 @@ redis:
 #   ┌────────────────────────────────────┐
 #───┘ File storage (Drive) configuration └──────────────────────
 
+# Whether enable override s3 configuration for hosting
+# enableS3Override: true
+
 #s3:
+#  enableS3: true
 #  baseUrl: s3.example.com
 #  bucket: example-bucket
 #  prefix: example-prefix

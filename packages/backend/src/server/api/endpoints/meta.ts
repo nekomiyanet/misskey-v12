@@ -399,6 +399,54 @@ export const meta = {
 				type: 'string',
 				optional: true, nullable: true,
 			},
+			useObjectStorage: {
+				type: 'boolean',
+				optional: true, nullable: false,
+			},
+			objectStorageBaseUrl: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
+			objectStorageBucket: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
+			objectStoragePrefix: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
+			objectStorageEndpoint: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
+			objectStorageRegion: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
+			objectStoragePort: {
+				type: 'number',
+				optional: true, nullable: true,
+			},
+			objectStorageAccessKey: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
+			objectStorageSecretKey: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
+			objectStorageUseSSL: {
+				type: 'boolean',
+				optional: true, nullable: false,
+			},
+			objectStorageUseProxy: {
+				type: 'boolean',
+				optional: true, nullable: false,
+			},
+			objectStorageSetPublicRead: {
+				type: 'boolean',
+				optional: true, nullable: false,
+			},
 			secureMode: {
 				type: 'boolean',
 				optional: true, nullable: false,
@@ -567,6 +615,19 @@ export default define(meta, paramDef, async (ps, me, token) => {
 			response.discordClientSecret = instance.discordClientSecret;
 			response.summalyProxy = instance.summalyProxy;
 			response.swPrivateKey = instance.swPrivateKey;
+			response.useObjectStorage = instance.useObjectStorage;
+			response.objectStorageBaseUrl = instance.objectStorageBaseUrl;
+			response.objectStorageBucket = instance.objectStorageBucket;
+			response.objectStoragePrefix = instance.objectStoragePrefix;
+			response.objectStorageEndpoint = instance.objectStorageEndpoint;
+			response.objectStorageRegion = instance.objectStorageRegion;
+			response.objectStoragePort = instance.objectStoragePort;
+			response.objectStorageAccessKey = instance.objectStorageAccessKey;
+			response.objectStorageSecretKey = instance.objectStorageSecretKey;
+			response.objectStorageUseSSL = instance.objectStorageUseSSL;
+			response.objectStorageUseProxy = instance.objectStorageUseProxy;
+			response.objectStorageSetPublicRead = instance.objectStorageSetPublicRead;
+			response.objectStorageS3ForcePathStyle = instance.objectStorageS3ForcePathStyle;
 			response.deeplAuthKey = instance.deeplAuthKey;
 			response.deeplIsPro = instance.deeplIsPro;
 			response.secureMode = instance.secureMode;

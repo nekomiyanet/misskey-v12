@@ -32,6 +32,7 @@ export type Source = {
 		index?: string;
 	};
 	s3?: {
+		enableS3: boolean;
 		baseUrl: string;
 		bucket: string;
 		prefix: string;
@@ -95,6 +96,7 @@ export type Source = {
 	chartCommitIntervalSecond?: number;
 	disableChartsForRemoteUser?: boolean;
 	disableUrlPreview?: boolean;
+	enableS3Override?: boolean;
 };
 
 /**

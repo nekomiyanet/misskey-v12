@@ -38,7 +38,11 @@ async function save(file: DriveFile, path: string, name: string, type: string, h
 	// thunbnail, webpublic を必要なら生成
 	const alts = await generateAlts(path, type, !file.uri);
 
-	if (config.s3) {
+	const meta = await fetchMeta();
+
+	const s3Enabled = (config.enableS3Override && config.s3.enableS3) || (!config.enableS3Override && meta.useObjectStorage);
+
+	if (s3Enabled) {
 		//#region ObjectStorage params
 		let [ext] = (name.match(/\.([a-zA-Z0-9_-]+)$/) || ['']);
 
@@ -56,11 +60,17 @@ async function save(file: DriveFile, path: string, name: string, type: string, h
 			ext = '';
 		}
 
-		const baseUrl = config.s3.baseUrl
-			|| `${ config.s3.useSSL ? 'https' : 'http' }://${ config.s3.endpoint }/${ config.s3.bucket }`;
+		const s3baseUrl = config.enableS3Override ? (config.s3.baseUrl || null) : (meta.objectStorageBaseUrl || null);
+		const s3useSSL = config.enableS3Override ? config.s3.useSSL : meta.objectStorageUseSSL;
+		const s3endpoint = config.enableS3Override ? (config.s3.endpoint || null) : (meta.objectStorageEndpoint || null);
+		const s3bucket = config.enableS3Override ? config.s3.bucket : meta.objectStorageBucket;
+		const s3prefix = config.enableS3Override ? config.s3.prefix : meta.objectStoragePrefix;
+
+		const baseUrl = s3baseUrl
+			|| `${ s3useSSL ? 'https' : 'http' }://${ s3endpoint }/${ s3bucket }`;
 
 		// for original
-		const key = `${ config.s3.prefix }/${uuid()}${ext}`;
+		const key = `${ s3prefix }/${uuid()}${ext}`;
 		const url = `${ baseUrl }/${ key }`;
 
 		// for alts
@@ -252,6 +262,8 @@ async function upload(key: string, stream: fs.ReadStream | Buffer, type: string,
 	if (type === 'image/apng') type = 'image/png';
 	if (!FILE_TYPE_BROWSERSAFE.includes(type)) type = 'application/octet-stream';
 
+	const meta = await fetchMeta();
+
 	const params = {
 		Bucket: config.s3!.bucket,
 		Key: key,
@@ -266,9 +278,10 @@ async function upload(key: string, stream: fs.ReadStream | Buffer, type: string,
 		// 許可されているファイル形式でしか拡張子をつけない
 		ext ? correctFilename(filename, ext) : filename,
 	);
-	if (config.s3!.options.setPublicRead) params.ACL = 'public-read';
+	const s3optionssetPublicRead = config.enableS3Override ? config.s3!.options.setPublicRead : meta.objectStorageSetPublicRead;
+	if (s3optionssetPublicRead) params.ACL = 'public-read';
 
-	const s3 = getS3();
+	const s3 = getS3(meta);
 
 	const upload = s3.upload(params, {
 		partSize: s3.endpoint?.hostname === 'storage.googleapis.com' ? 500 * 1024 * 1024 : 8 * 1024 * 1024,
