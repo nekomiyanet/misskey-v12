@@ -65,12 +65,15 @@ export async function reportAbuse(job: Bull.Job<DbAbuseReportJobData>): Promise<
 			order: {
 				lastActiveDate: 'DESC',
 			},
-			take: 3,
 		});
 
 		const meta = await fetchMeta();
 
+		let emailSentCount = 0;
+
 		for (const moderator of moderators) {
+			if (emailSentCount >= 3) break;
+
 			publishAdminStream(moderator.id, 'newAbuseUserReport', {
 				id: job.data.id,
 				targetUserId: job.data.targetUserId,
@@ -87,6 +90,7 @@ export async function reportAbuse(job: Bull.Job<DbAbuseReportJobData>): Promise<
 					emailDeliver(emailRecipientProfile.email, 'New abuse report',
 						sanitizeHtml(job.data.comment),
 						sanitizeHtml(job.data.comment));
+					emailSentCount++;
 				}
 			}
 		}
