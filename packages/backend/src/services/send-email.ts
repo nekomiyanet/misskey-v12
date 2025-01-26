@@ -14,7 +14,14 @@ export async function sendEmail(to: string, subject: string, html: string, text:
 	const iconUrl = `${config.url}/static-assets/mi-white.png`;
 	const emailSettingUrl = `${config.url}/settings/email`;
 
-	const enableAuth = config.smtp.user != null && config.smtp.user !== '';
+	const configsmtpuser = config.enableSMTPOverride ? (config.smtp.user || null) : (meta.smtpUser || null);
+	const configsmtppass = config.enableSMTPOverride ? (config.smtp.pass || null) : (meta.smtpPass || null);
+	const configsmtphost = config.enableSMTPOverride ? (config.smtp.host || null) : (meta.smtpHost || null);
+	const configsmtpport = config.enableSMTPOverride ? (config.smtp.port || null) : (meta.smtpPort || null);
+	const configsmtpuseTLS = config.enableSMTPOverride ? config.smtp.useTLS : meta.smtpSecure;
+	const senderaddress = config.enableSMTPOverride ? (config.smtp.senderaddress || null) : (meta.email || null);
+
+	const enableAuth = configsmtpuser != null && configsmtpuser !== '';
 
 	// メールドメインブロックしてたら中断
 	const domain = extractDomain(to).toLowerCase();
@@ -25,21 +32,21 @@ export async function sendEmail(to: string, subject: string, html: string, text:
 	}
 
 	const transporter = nodemailer.createTransport({
-		host: config.smtp.host,
-		port: config.smtp.port,
-		secure: config.smtp.useTLS,
+		host: configsmtphost,
+		port: configsmtpport,
+		secure: configsmtpuseTLS,
 		ignoreTLS: !enableAuth,
 		proxy: config.proxySmtp,
 		auth: enableAuth ? {
-			user: config.smtp.user,
-			pass: config.smtp.pass,
+			user: configsmtpuser,
+			pass: configsmtppass,
 		} : undefined,
 	} as any);
 
 	try {
 		// TODO: htmlサニタイズ
 		const info = await transporter.sendMail({
-			from: config.smtp.senderaddress!,
+			from: senderaddress!,
 			to: to,
 			subject: subject,
 			text: text,

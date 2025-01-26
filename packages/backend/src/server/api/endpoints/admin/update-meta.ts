@@ -87,6 +87,12 @@ export const paramDef = {
 		discordClientId: { type: 'string', nullable: true },
 		discordClientSecret: { type: 'string', nullable: true },
 		enableEmail: { type: 'boolean' },
+		email: { type: 'string', nullable: true },
+		smtpSecure: { type: 'boolean' },
+		smtpHost: { type: 'string', nullable: true },
+		smtpPort: { type: 'integer', nullable: true },
+		smtpUser: { type: 'string', nullable: true },
+		smtpPass: { type: 'string', nullable: true },
 		enableServiceWorker: { type: 'boolean' },
 		swPublicKey: { type: 'string', nullable: true },
 		swPrivateKey: { type: 'string', nullable: true },
@@ -311,6 +317,30 @@ export default define(meta, paramDef, async (ps, me) => {
 		set.enableEmail = ps.enableEmail;
 	}
 
+	if (ps.email !== undefined) {
+		set.email = ps.email;
+	}
+
+	if (ps.smtpSecure !== undefined) {
+		set.smtpSecure = ps.smtpSecure;
+	}
+
+	if (ps.smtpHost !== undefined) {
+		set.smtpHost = ps.smtpHost;
+	}
+
+	if (ps.smtpPort !== undefined) {
+		set.smtpPort = ps.smtpPort;
+	}
+
+	if (ps.smtpUser !== undefined) {
+		set.smtpUser = ps.smtpUser;
+	}
+	
+	if (ps.smtpPass !== undefined) {
+		set.smtpPass = ps.smtpPass;
+	}
+
 	if (ps.errorImageUrl !== undefined) {
 		set.errorImageUrl = ps.errorImageUrl;
 	}
@@ -386,7 +416,7 @@ export default define(meta, paramDef, async (ps, me) => {
 	if (ps.objectStorageSetPublicRead !== undefined) {
 		set.objectStorageSetPublicRead = ps.objectStorageSetPublicRead;
 	}
-	
+
 	if (ps.objectStorageS3ForcePathStyle !== undefined) {
 		set.objectStorageS3ForcePathStyle = ps.objectStorageS3ForcePathStyle;
 	}

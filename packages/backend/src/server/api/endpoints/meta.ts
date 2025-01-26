@@ -395,6 +395,30 @@ export const meta = {
 				type: 'string',
 				optional: true, nullable: true,
 			},
+			email: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
+			smtpSecure: {
+				type: 'boolean',
+				optional: true, nullable: false,
+			},
+			smtpHost: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
+			smtpPort: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
+			smtpUser: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
+			smtpPass: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
 			swPrivateKey: {
 				type: 'string',
 				optional: true, nullable: true,
@@ -614,6 +638,12 @@ export default define(meta, paramDef, async (ps, me, token) => {
 			response.discordClientId = instance.discordClientId;
 			response.discordClientSecret = instance.discordClientSecret;
 			response.summalyProxy = instance.summalyProxy;
+			response.email = instance.email;
+			response.smtpSecure = instance.smtpSecure;
+			response.smtpHost = instance.smtpHost;
+			response.smtpPort = instance.smtpPort;
+			response.smtpUser = instance.smtpUser;
+			response.smtpPass = instance.smtpPass;
 			response.swPrivateKey = instance.swPrivateKey;
 			response.useObjectStorage = instance.useObjectStorage;
 			response.objectStorageBaseUrl = instance.objectStorageBaseUrl;

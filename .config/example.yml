@@ -95,6 +95,9 @@ redis:
 #   ┌─────────────────────┐
 #───┘ email configuration └──────────────────────
 
+# Whether enable override SMTP configuration for hosting
+# enableSMTPOverride: true
+
 #smtp:
 #  host: smtp.example.com
 #  port: 25

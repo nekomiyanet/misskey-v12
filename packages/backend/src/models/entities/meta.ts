@@ -251,6 +251,40 @@ export class Meta {
 	})
 	public enableEmail: boolean;
 
+	@Column('varchar', {
+		length: 128,
+		nullable: true,
+	})
+	public email: string | null;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public smtpSecure: boolean;
+
+	@Column('varchar', {
+		length: 128,
+		nullable: true,
+	})
+	public smtpHost: string | null;
+
+	@Column('integer', {
+		nullable: true,
+	})
+	public smtpPort: number | null;
+
+	@Column('varchar', {
+		length: 128,
+		nullable: true,
+	})
+	public smtpUser: string | null;
+
+	@Column('varchar', {
+		length: 128,
+		nullable: true,
+	})
+	public smtpPass: string | null;
+
 	@Column('boolean', {
 		default: false,
 	})
@@ -430,7 +464,7 @@ export class Meta {
 		default: false,
 	})
 	public objectStorageSetPublicRead: boolean;
-	
+
 	@Column('boolean', {
 		default: true,
 	})
