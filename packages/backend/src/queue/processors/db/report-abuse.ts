@@ -62,6 +62,10 @@ export async function reportAbuse(job: Bull.Job<DbAbuseReportJobData>): Promise<
 			}, {
 				isModerator: true,
 			}],
+			order: {
+				lastActiveDate: 'DESC',
+			},
+			take: 3,
 		});
 
 		const meta = await fetchMeta();
