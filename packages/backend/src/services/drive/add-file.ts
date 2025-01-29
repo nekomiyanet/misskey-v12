@@ -65,9 +65,9 @@ async function save(file: DriveFile, path: string, name: string, type: string, h
 		const s3endpoint = config.enableS3Override ? (config.s3.endpoint || null) : (meta.objectStorageEndpoint || null);
 		const s3bucket = config.enableS3Override ? config.s3.bucket : meta.objectStorageBucket;
 		const s3prefix = config.enableS3Override ? config.s3.prefix : meta.objectStoragePrefix;
-
+		const s3port = config.enableS3Override ? null : meta.objectStoragePort;
 		const baseUrl = s3baseUrl
-			|| `${ s3useSSL ? 'https' : 'http' }://${ s3endpoint }/${ s3bucket }`;
+			|| `${ s3useSSL ? 'https' : 'http' }://${ s3endpoint }${ s3port ? `:${s3port}` : '' }/${ s3bucket }`;
 
 		// for original
 		const key = `${ s3prefix }/${uuid()}${ext}`;
