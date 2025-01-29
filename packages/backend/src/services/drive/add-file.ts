@@ -87,7 +87,7 @@ async function save(file: DriveFile, path: string, name: string, type: string, h
 		];
 
 		if (alts.webpublic) {
-			webpublicKey = `${ config.s3.prefix }/webpublic-${uuid()}.${alts.webpublic.ext}`;
+			webpublicKey = `${ s3prefix }/webpublic-${uuid()}.${alts.webpublic.ext}`;
 			webpublicUrl = `${ baseUrl }/${ webpublicKey }`;
 
 			logger.info(`uploading webpublic: ${webpublicKey}`);
@@ -95,7 +95,7 @@ async function save(file: DriveFile, path: string, name: string, type: string, h
 		}
 
 		if (alts.thumbnail) {
-			thumbnailKey = `${ config.s3.prefix }/thumbnail-${uuid()}.${alts.thumbnail.ext}`;
+			thumbnailKey = `${ s3prefix }/thumbnail-${uuid()}.${alts.thumbnail.ext}`;
 			thumbnailUrl = `${ baseUrl }/${ thumbnailKey }`;
 
 			logger.info(`uploading thumbnail: ${thumbnailKey}`);
