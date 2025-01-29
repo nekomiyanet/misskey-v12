@@ -22,7 +22,7 @@ import { genId } from '@/misc/gen-id.js';
 import { instanceChart, usersChart } from '@/services/chart/index.js';
 import { UserPublickey } from '@/models/entities/user-publickey.js';
 import { isDuplicateKeyValueError } from '@/misc/is-duplicate-key-value-error.js';
-import { toPuny, isSelfOrigin } from '@/misc/convert-host.js';
+import { extractDbHost, toPuny, isSelfOrigin } from '@/misc/convert-host.js';
 import { UserProfile } from '@/models/entities/user-profile.js';
 import { getConnection } from 'typeorm';
 import { toArray } from '@/prelude/array.js';
@@ -42,7 +42,7 @@ const summaryLength = 2048;
  * @param uri Fetch target URI
  */
 function validateActor(x: IObject, uri: string): IActor {
-	const expectHost = toPuny(new URL(uri).hostname);
+	const expectHost = extractDbHost(uri);
 
 	if (x == null) {
 		throw new Error('invalid Actor: object is null');
@@ -50,6 +50,40 @@ function validateActor(x: IObject, uri: string): IActor {
 
 	if (!isActor(x)) {
 		throw new Error(`invalid Actor type '${x.type}'`);
+	}
+
+	if (!(typeof x.id === "string" && x.id.length > 0)) {
+		throw new Error("invalid Actor: wrong id");
+	}
+
+	if (!(typeof x.inbox === "string" && x.inbox.length > 0 && extractDbHost(x.inbox) === expectHost)) {
+		throw new Error("invalid Actor: wrong inbox");
+	}
+
+	if (!(typeof x.outbox === "string" && x.outbox.length > 0 && extractDbHost(getApId(x.outbox)) === expectHost)) {
+		throw new Error("invalid Actor: wrong outbox");
+	}
+
+	const sharedInboxObject = x.sharedInbox ?? (x.endpoints ? x.endpoints.sharedInbox : undefined);
+	if (sharedInboxObject != null) {
+		const sharedInbox = getApId(sharedInboxObject);
+		if (!(typeof sharedInbox === "string" && sharedInbox.length > 0 && extractDbHost(sharedInbox) === expectHost)) {
+			throw new Error("invalid Actor: wrong shared inbox");
+		}
+	}
+
+	if (x.followers != null) {
+		x.followers = getApId(x.followers);
+		if (!(typeof x.followers === "string" && x.followers.length > 0 && extractDbHost(x.followers) === expectHost)) {
+			throw new Error("invalid Actor: wrong followers");
+		}
+	}
+
+	if (x.following != null) {
+		x.following = getApId(x.following);
+		if (!(typeof x.following === "string" && x.following.length > 0 && extractDbHost(x.following) === expectHost)) {
+			throw new Error("invalid Actor: wrong following");
+		}
 	}
 
 	const validate = (name: string, value: any, validater: Context) => {
@@ -67,7 +101,7 @@ function validateActor(x: IObject, uri: string): IActor {
 	validate('name', truncate(x.name, nameLength), $.default.optional.nullable.str);
 	validate('summary', truncate(x.summary, summaryLength), $.default.optional.nullable.str);
 
-	const idHost = toPuny(new URL(x.id!).hostname);
+	const idHost = toPuny(new URL(x.id!).host);
 	if (idHost !== expectHost) {
 		throw new Error('invalid Actor: id has different host');
 	}
@@ -77,7 +111,7 @@ function validateActor(x: IObject, uri: string): IActor {
 			throw new Error('invalid Actor: publicKey.id is not a string');
 		}
 
-		const publicKeyIdHost = toPuny(new URL(x.publicKey.id).hostname);
+		const publicKeyIdHost = toPuny(new URL(x.publicKey.id).host);
 		if (publicKeyIdHost !== expectHost) {
 			throw new Error('invalid Actor: publicKey.id has different host');
 		}
@@ -139,13 +173,29 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 
 	const bday = person['vcard:bday']?.match(/^\d{4}-\d{2}-\d{2}/);
 
+	let url = getOneApHrefNullable(person.url);
+	const urlUrl = url != null ? new URL(url) : null;
+	const uriUrl = new URL(uri);
+
+	if (urlUrl != null && urlUrl.protocol != 'https:') {
+		throw new Error(`unexpected schema of person url: ${url}`);
+	}
+
+	if (urlUrl != null && urlUrl.host != uriUrl.host) {
+		logger.debug("Person url host doesn't match person uri host, clearing variable");
+		url = undefined;
+	}
+
 	const registerDate = person['published']?.match(/^\d{4}-\d{2}-\d{2}/);
 
 	let followersCount: number | undefined;
 
 	if (typeof person.followers === "string") {
 		try {
-			let data = await fetch(person.followers, { headers: { "Accept": "application/json" } });
+			let data = await fetch(person.followers, {
+				headers: { Accept: "application/json" },
+				size: 1024 * 1024
+			});
 			let json_data = JSON.parse(await data.text());
 
 			followersCount = json_data.totalItems;
@@ -158,7 +208,10 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 
 	if (typeof person.following === "string") {
 		try {
-			let data = await fetch(person.following, { headers: { "Accept": "application/json" } });
+			let data = await fetch(person.following, {
+				headers: { Accept: "application/json" },
+				size: 1024 * 1024
+			});
 			let json_data = JSON.parse(await data.text());
 
 			followingCount = json_data.totalItems;
@@ -171,7 +224,10 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 
 	if (typeof person.outbox === "string") {
 		try {
-			let data = await fetch(person.outbox, { headers: { "Accept": "application/json" } });
+			let data = await fetch(person.outbox, {
+				headers: { Accept: "application/json" },
+				size: 1024 * 1024
+			});
 			let json_data = JSON.parse(await data.text());
 
 			notesCount = json_data.totalItems;
@@ -295,9 +351,22 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 	//#endregion
 
 	if (registerDate) {
-		await Users.update({ id: user!.id }, {
-			createdAt: person['published'] || user!.createdAt,
-		});
+		// Skip if user is made before 2007 (1yr before Fedi was created)
+		// OR skip if user is made 3 days in advance
+		const DateChecker = new Date(registerDate);
+		const FutureCheck = new Date();
+		FutureCheck.setDate(FutureCheck.getDate() + 3); // Allow some wiggle room for misconfigured hosts
+		if (DateChecker.getFullYear() < 2007) {
+			logger.warn(
+				"User somehow made before Activitypub was created; discarding",
+			);
+		} else if (DateChecker > FutureCheck) {
+			logger.warn("User somehow made after today; discarding");
+		} else {
+			await Users.update({ id: exist.id }, {
+				createdAt: person['published'] || exist.createdAt,
+			});
+		}
 	}
 
 	if (followersCount !== undefined) {
@@ -408,7 +477,10 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 
 	if (typeof person.followers === "string") {
 		try {
-			let data = await fetch(person.followers, { headers: { "Accept": "application/json" } });
+			let data = await fetch(person.followers, {
+				headers: { Accept: "application/json" },
+				size: 1024 * 1024
+			});
 			let json_data = JSON.parse(await data.text());
 
 			followersCount = json_data.totalItems;
@@ -421,7 +493,10 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 
 	if (typeof person.following === "string") {
 		try {
-			let data = await fetch(person.following, { headers: { "Accept": "application/json" } });
+			let data = await fetch(person.following, {
+				headers: { Accept: "application/json" },
+				size: 1024 * 1024
+			});
 			let json_data = JSON.parse(await data.text());
 
 			followingCount = json_data.totalItems;
@@ -434,7 +509,10 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 
 	if (typeof person.outbox === "string") {
 		try {
-			let data = await fetch(person.outbox, { headers: { "Accept": "application/json" } });
+			let data = await fetch(person.outbox, {
+				headers: { Accept: "application/json" },
+				size: 1024 * 1024
+			});
 			let json_data = JSON.parse(await data.text());
 
 			notesCount = json_data.totalItems;
@@ -488,9 +566,22 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 	});
 
 	if (registerDate) {
-		await Users.update({ id: exist.id }, {
-			createdAt: person['published'] || exist.createdAt,
-		});
+		// Skip if user is made before 2007 (1yr before Fedi was created)
+		// OR skip if user is made 3 days in advance
+		const DateChecker = new Date(registerDate);
+		const FutureCheck = new Date();
+		FutureCheck.setDate(FutureCheck.getDate() + 3); // Allow some wiggle room for misconfigured hosts
+		if (DateChecker.getFullYear() < 2007) {
+			logger.warn(
+				"User somehow made before Activitypub was created; discarding",
+			);
+		} else if (DateChecker > FutureCheck) {
+			logger.warn("User somehow made after today; discarding");
+		} else {
+			await Users.update({ id: exist.id }, {
+				createdAt: person['published'] || exist.createdAt,
+			});
+		}
 	}
 
 	if (followersCount !== undefined) {
