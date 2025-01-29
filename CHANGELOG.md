@@ -8,6 +8,46 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20250129200821 (2025/01/29)
+### Improvements
+- URLプレビューを無効化できるように @atsu1125
+- Bull-boardを6.5.4に更新 @atsu1125
+- Node 18.20.5 @atsu1125
+- Nodeinfoの応答はキャッシュするように @syuilo
+- websocketをwsに置き換え @Johann150 @atsu1125
+- 新しいログインをメール通知 @atsu1125
+- private-ipをipaddr.jsに置き換え @saschanaz @GrapeApple0
+- downloadUrlでContent-Dispositionからファイル名を取得 @tamaina @atsu1125
+- モデレータ付与時に確認ダイアログを表示 @atsu1125
+- admin/filesをタイル形式に @atsu1125
+- サマリープロキシをmisskey-dev/summaly 5.1.0に更新 @atsu1125
+- チャートの更新は一斉にではなく一つずつ行うように @atsu1125
+- api/statsとnodeinfoの取得は一斉にではなく一つずつ行うように @atsu1125
+- オブジェクトストレージの設定を設定ファイルとデータベース両方から行えるように @atsu1125
+- メールサーバーの設定を設定ファイルとデータベース両方から行えるように @atsu1125
+
+### Bugfixes
+- 自分とモデレータ以外は二段階認証のユーザーデータは取得できないように @atsu1125
+- メールアドレス変更時に認証が通ってからメールアドレスを書き換えるように @atsu1125
+- 動画のサムネイル生成ができないのを修正 @atsu1125
+- チャンネルの入力中のユーザーのストリームが動かないのを修正 @syuilo @atsu1125
+- 無制限にストリーミングのチャンネルに接続できるのを修正 @syuilo @atsu1125
+- 全てのメール配信をキューにする @atsu1125
+- 投票の更新を偽装できないように @Julia @syuilo @atsu1125
+- 投票の配送がノートの発信元のインスタンスに行われないのを修正 @atsu1125
+- ローカルのみノートの配送はもっと手前で打ち切るように @samunohito @atsu1125
+- apGetには管理権限を要求 @atsu1125
+- 自分のインスタンス内のオブジェクトが見つからなかったら連合に照会はしないように @atsu1125
+- HTTPリクエストを送信する前にプライベートIPへのアクセスはブロックするように @atsu1125
+- Note RepositoryのisVisibleForMeでブロックも考慮 @atsu1125
+- parseAudienceにresolverがなかったら新しく作成するように @atsu1125
+- db-resolverで自分のインスタンスのオブジェクトを正しくするように @atsu1125
+- アカウント削除後にログインしていた端末で凍結されたと表示されないように @atsu1125
+- 通報の通知メール送信は直近でアクティブでメールアドレスが有効なモデレータ３人だけに送るように @atsu1125
+- インスタンスティッカーのfaviconを読み込む際に偽サイト警告が出ることがあるのを修正 @syuilo @atsu1125
+- 画面を閉じる直前にAudioContextを閉じるように @kakkokari-gtyi @atsu1125
+- Improve validation of AP activities & objects @atsu1125
+
 ## 12.108.1-nekomiya-20241110155348 (2024/11/10)
 ### Improvements
 - 管理者が一括でノートを消すAPIを追加 @Johann150 @atsu1125
