@@ -264,8 +264,10 @@ async function upload(key: string, stream: fs.ReadStream | Buffer, type: string,
 
 	const meta = await fetchMeta();
 
+	const s3bucket = config.enableS3Override ? config.s3.bucket : meta.objectStorageBucket;
+
 	const params = {
-		Bucket: config.s3!.bucket,
+		Bucket: s3bucket,
 		Key: key,
 		Body: stream,
 		ContentType: type,

@@ -46,7 +46,7 @@ export type Source = {
 			forcePathStyle?: boolean;
 			useProxy?: boolean;
 		}
-	}
+	};
 	smtp?: {
 		host: string;
 		port: number;
@@ -54,7 +54,7 @@ export type Source = {
 		user: string;
 		pass: string;
 		senderaddress: string;
-	}
+	};
 
 	proxy?: string;
 	proxySmtp?: string;
