@@ -45,7 +45,7 @@ export type Source = {
 			setPublicRead?: boolean;
 			forcePathStyle?: boolean;
 			useProxy?: boolean;
-		}
+		};
 	};
 	smtp?: {
 		host: string;
