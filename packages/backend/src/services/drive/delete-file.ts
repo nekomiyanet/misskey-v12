@@ -147,7 +147,7 @@ export async function deleteObjectStorageFile(key: string) {
 	const s3bucket = config.enableS3Override ? config.s3!.bucket! : meta.objectStorageBucket!;
 
 	await s3.deleteObject({
-		Bucket: config.s3!.bucket!,
+		Bucket: s3bucket!,
 		Key: key,
 	}).promise();
 }
