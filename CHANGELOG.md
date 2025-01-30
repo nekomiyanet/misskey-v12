@@ -33,7 +33,7 @@ You should also include the user name that made the change.
 - チャンネルの入力中のユーザーのストリームが動かないのを修正 @syuilo @atsu1125
 - 無制限にストリーミングのチャンネルに接続できるのを修正 @syuilo @atsu1125
 - 全てのメール配信をキューにする @atsu1125
-- 投票の更新を偽装できないように @Julia @syuilo @atsu1125
+- 投票の更新を偽装できないように @K4rakara @syuilo @atsu1125
 - 投票の配送がノートの発信元のインスタンスに行われないのを修正 @atsu1125
 - ローカルのみノートの配送はもっと手前で打ち切るように @samunohito @atsu1125
 - apGetには管理権限を要求 @atsu1125
@@ -41,11 +41,11 @@ You should also include the user name that made the change.
 - HTTPリクエストを送信する前にプライベートIPへのアクセスはブロックするように @atsu1125
 - Note RepositoryのisVisibleForMeでブロックも考慮 @atsu1125
 - parseAudienceにresolverがなかったら新しく作成するように @atsu1125
-- db-resolverで自分のインスタンスのオブジェクトを正しくするように @atsu1125
+- db-resolverで自分のインスタンスのオブジェクトを正しく判定するように @atsu1125
 - アカウント削除後にログインしていた端末で凍結されたと表示されないように @atsu1125
 - 通報の通知メール送信は直近でアクティブでメールアドレスが有効なモデレータ３人だけに送るように @atsu1125
 - インスタンスティッカーのfaviconを読み込む際に偽サイト警告が出ることがあるのを修正 @syuilo @atsu1125
-- 画面を閉じる直前にAudioContextを閉じるように @kakkokari-gtyi @atsu1125
+- 画面を閉じる直前にAudioContextを閉じるように @kakkokari-gtyih @atsu1125
 - Improve validation of AP activities & objects @atsu1125
 
 ## 12.108.1-nekomiya-20241110155348 (2024/11/10)
