@@ -8,6 +8,17 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20250215175959 (2025/02/15)
+### Improvements
+- Node 18.20.6 @atsu1125
+- bull-board to 6.7.7 @atsu1125
+
+### Bugfixes
+- ActivityPubのフォローアクティビティにユニークなIDを付与 @Johann150 @atsu1125
+- koa from 2.13.4 to 2.15.4 @atsu1125
+- Cookieの属性を修正、サインアウト時に削除、送信する最小限のパス指定 @nexryai @atsu1125
+- jsrsasignの型定義を修正 @Johann150
+
 ## 12.108.1-nekomiya-20250129200821 (2025/01/29)
 ### Improvements
 - URLプレビューを無効化できるように @atsu1125
