@@ -13,7 +13,7 @@ import { notesChart, perUserNotesChart, instanceChart } from '@/services/chart/i
 import { deliverToFollowers, deliverToUser } from '@/remote/activitypub/deliver-manager.js';
 import { countSameRenotes } from '@/misc/count-same-renotes.js';
 import { deliverToRelays } from '../relay.js';
-import { Brackets, In } from 'typeorm';
+import { Brackets, In, IsNull, Not } from 'typeorm';
 
 /**
  * 投稿を削除します。
@@ -163,12 +163,32 @@ async function getMentionedRemoteUsers(note: Note) {
 	}) as IRemoteUser[];
 }
 
+async function getRenotedOrRepliedRemoteUsers(note: Note) {
+	const query = Notes.createQueryBuilder('note')
+		.leftJoinAndSelect('note.user', 'user')
+		.where(new Brackets(qb => {
+			qb.orWhere('note.renoteId = :renoteId', { renoteId: note.id });
+			qb.orWhere('note.replyId = :replyId', { replyId: note.id });
+		}))
+		.andWhere({ userHost: Not(IsNull()) });
+	const notes = await query.getMany() as (Note & { user: IRemoteUser })[];
+	const remoteUsers = notes.map(({ user }) => user);
+	return remoteUsers;
+}
+
 async function deliverToConcerned(user: ILocalUser, note: Note, content: any) {
 	const retryable = true;
-	deliverToFollowers(user, content);
-	deliverToRelays(user, content, retryable);
+	// ノート作成者のフォロワーとリレーに配信
+  deliverToFollowers(user, content);
+  deliverToRelays(user, content, retryable);
+	// ノート作成者がメンションしたリモートユーザーに配信
 	const remoteUsers = await getMentionedRemoteUsers(note);
 	for (const remoteUser of remoteUsers) {
 		deliverToUser(user, content, remoteUser);
+	}
+  // ノートにリノート・引用やリプライをしたリモートユーザーに配信
+  const renotedOrRepliedRemoteUsers = await getRenotedOrRepliedRemoteUsers(note);
+	for (const renotedOrRepliedRemoteUser of renotedOrRepliedRemoteUsers) {
+		deliverToUser(user, content, renotedOrRepliedRemoteUser);
 	}
 }
