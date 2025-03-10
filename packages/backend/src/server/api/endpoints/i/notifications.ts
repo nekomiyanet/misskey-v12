@@ -70,6 +70,10 @@ export default define(meta, paramDef, async (ps, user) => {
 		.select('users.id')
 		.where('users.isSuspended = TRUE');
 
+	const silencedQuery = Users.createQueryBuilder('users')
+		.select('users.id')
+		.where('users.isSilenced = TRUE');
+
 	const query = makePaginationQuery(Notifications.createQueryBuilder('notification'), ps.sinceId, ps.untilId)
 		.andWhere(`notification.notifieeId = :meId`, { meId: user.id })
 		.leftJoinAndSelect('notification.notifier', 'notifier')
@@ -104,6 +108,16 @@ export default define(meta, paramDef, async (ps, user) => {
 		.where(`notification.notifierId NOT IN (${ suspendedQuery.getQuery() })`)
 		.orWhere('notification.notifierId IS NULL');
 	}));
+
+	query.andWhere(new Brackets(qb => { qb
+		.where(`((notification.notifierId IN (${ followingQuery.getQuery() })) OR (notification.notifierId = :meId))`, { meId: user.id })
+	  .orWhere(`notification.notifierId NOT IN (${ silencedQuery.getQuery() })`)
+		.orWhere('notification.notifierId IS NULL');
+	}));
+	query.setParameters({
+		...followingQuery.getParameters(),
+		...silencedQuery.getParameters()
+	});
 
 	if (ps.following) {
 		query.andWhere(`((notification.notifierId IN (${ followingQuery.getQuery() })) OR (notification.notifierId = :meId))`, { meId: user.id });
