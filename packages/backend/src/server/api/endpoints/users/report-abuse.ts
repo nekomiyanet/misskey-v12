@@ -1,4 +1,5 @@
 import define from '../../define.js';
+import ms from 'ms';
 import { ApiError } from '../../error.js';
 import { getUser } from '../../common/getters.js';
 import { AbuseUserReports, Users, UserProfiles } from '@/models/index.js';
@@ -9,6 +10,12 @@ export const meta = {
 	tags: ['users'],
 
 	requireCredential: true,
+
+	limit: {
+		duration: ms('30min'),
+		max: 10,
+		minInterval: ms('10sec'),
+	},
 
 	errors: {
 		noSuchUser: {
