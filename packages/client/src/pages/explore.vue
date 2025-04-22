@@ -167,6 +167,7 @@ export default defineComponent({
 			searchPagination: {
 				endpoint: 'users/search' as const,
 				limit: 10,
+				offsetMode: true,
 				params: computed(() => (this.searchQuery && this.searchQuery !== '') ? {
 					query: this.searchQuery,
 					origin: this.searchOrigin,
