@@ -31,7 +31,7 @@ export default class extends Channel {
 	private async onNote(note: Packed<'Note'>) {
 		if (note.user.host !== null) return;
 		if (note.visibility !== 'public') return;
-		if (note.channelId != null && !this.followingChannels.has(note.channelId)) return;
+		if (note.channelId != null) return;
 		if (['{}'].some(x => x.endsWith(note.fileIds))) return;
 
 		// リプライなら再pack
