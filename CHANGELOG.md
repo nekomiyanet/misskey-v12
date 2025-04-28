@@ -8,6 +8,16 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20250428175520 (2025/04/28)
+### Improvements
+- フォローしていないサイレンスしているユーザーからの通知を発行しないように @atsu1125
+- チャットの送信のAPIレートリミット @atsu1125
+
+### Bugfixes
+- ユーザー検索でページネーションが機能しない問題を修正 @atsu1125
+- チャンネル投稿が正しいタイムラインに表示されていない問題を修正 @samunohito @atsu1125
+- リモートユーザーのブロック時にエラーとなりアクティビティが送信されない問題を修正 @xianonn @atsu1125
+
 ## 12.108.1-nekomiya-20250405193803 (2025/04/05)
 ### Improvements
 - Node 18.20.8 @atsu1125
@@ -18,7 +28,7 @@ You should also include the user name that made the change.
 - リモートユーザーはグループに招待できないのでエラーを返すように @atsu1125
 - ノートを削除するときにリノートかリプライしたリモートユーザーのインスタンスにも配送するように @zyoshoka @atsu1125
 - カスタム絵文字をインポートするときにリモートインスタンスの同名の絵文字を削除しないように @yunochi @atsu1125
-- 通報のAPIリミット @atsu1125
+- 通報のAPIレートリミット @atsu1125
 - 2段階認証を有効化しているとログインできない問題を修正 @atsu1125
 
 ## 12.108.1-nekomiya-20250215175959 (2025/02/15)
