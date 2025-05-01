@@ -1,5 +1,5 @@
 <template>
-<component :is="self ? 'MkA' : 'a'" ref="el" class="ieqqeuvs _link" :[attr]="self ? url.substr(local.length) : url" :rel="rel" :target="target"
+<component :is="self ? 'MkA' : 'a'" ref="el" class="ieqqeuvs _link" :[attr]="maybeRelativeUrl" :rel="rel" :target="target"
 	@contextmenu.stop="() => {}"
 >
 	<template v-if="!self">
@@ -23,6 +23,7 @@ import { toUnicode as decodePunycode } from 'punycode/';
 import { url as local } from '@/config';
 import * as os from '@/os';
 import { useTooltip } from '@/scripts/use-tooltip';
+import { maybeMakeRelative } from "@/scripts/url";
 
 export default defineComponent({
 	props: {
@@ -37,7 +38,8 @@ export default defineComponent({
 		}
 	},
 	setup(props) {
-		const self = props.url.startsWith(local);
+		const maybeRelativeUrl = maybeMakeRelative(props.url, local);
+		const self = maybeRelativeUrl !== props.url;
 		const url = new URL(props.url);
 		if (!['http:', 'https:'].includes(url.protocol)) throw new Error('invalid url');
 		const el = ref();
