@@ -51,7 +51,7 @@ export async function createNotification(
 	} as Partial<Notification>)
 		.then(x => Notifications.findOneOrFail(x.identifiers[0]));
 
-	if (isMutedForSilenced) return null;
+	if (isMutedForSilenced) return notification;
 
 	const packed = await Notifications.pack(notification, {});
 
