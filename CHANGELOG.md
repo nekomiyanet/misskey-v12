@@ -8,6 +8,16 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20250513153006 (2025/05/13)
+### Improvements
+- アンテナのローカルのみを設定するカラムをUpstreamに合わせる @atsu1125
+- アカウント削除時にユーザー名の確認を必須とする @atsu1125
+
+### Bugfixes
+- URLプレビューの画像は全てメディアプロキシを通す @atsu1125
+- クライアントのリンクの自ホスト（インスタンス公開URL）の検証を堅牢に @atsu1125
+- aiscriptにて親ディレクトリへのアクセスを拒否 @atsu1125
+
 ## 12.108.1-nekomiya-20250428175520 (2025/04/28)
 ### Improvements
 - フォローしていないサイレンスしているユーザーからの通知を発行しないように @atsu1125
