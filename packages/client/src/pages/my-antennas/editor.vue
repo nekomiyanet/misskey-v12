@@ -35,7 +35,7 @@
 		</MkTextarea>
 		<MkSwitch v-model="caseSensitive" class="_formBlock">{{ $ts.caseSensitive }}</MkSwitch>
 		<MkSwitch v-model="withFile" class="_formBlock">{{ $ts.withFileAntenna }}</MkSwitch>
-		<MkSwitch v-model="local" class="_formBlock">{{ $ts.local }}</MkSwitch>
+		<MkSwitch v-model="localOnly" class="_formBlock">{{ $ts.local }}</MkSwitch>
 		<MkSwitch v-model="notify" class="_formBlock">{{ $ts.notifyAntenna }}</MkSwitch>
 	</div>
 	<div class="actions">
@@ -82,7 +82,7 @@ export default defineComponent({
 			notify: false,
 			userLists: null,
 			userGroups: null,
-			local: false,
+			localOnly: false,
 		};
 	},
 
@@ -113,7 +113,7 @@ export default defineComponent({
 		this.withReplies = this.antenna.withReplies;
 		this.withFile = this.antenna.withFile;
 		this.notify = this.antenna.notify;
-		this.local = this.antenna.local;
+		this.localOnly = this.antenna.localOnly;
 	},
 
 	methods: {
@@ -131,7 +131,7 @@ export default defineComponent({
 					users: this.users.trim().split('\n').map(x => x.trim()),
 					keywords: this.keywords.trim().split('\n').map(x => x.trim().split(' ')),
 					excludeKeywords: this.excludeKeywords.trim().split('\n').map(x => x.trim().split(' ')),
-					local: this.local,
+					localOnly: this.localOnly,
 				});
 				this.$emit('created');
 			} else {
@@ -148,7 +148,7 @@ export default defineComponent({
 					users: this.users.trim().split('\n').map(x => x.trim()),
 					keywords: this.keywords.trim().split('\n').map(x => x.trim().split(' ')),
 					excludeKeywords: this.excludeKeywords.trim().split('\n').map(x => x.trim().split(' ')),
-					local: this.local,
+					localOnly: this.localOnly,
 				});
 				this.$emit('updated');
 			}

@@ -62,7 +62,7 @@ export const paramDef = {
 		withReplies: { type: 'boolean' },
 		withFile: { type: 'boolean' },
 		notify: { type: 'boolean' },
-		local:  { type: 'boolean' },
+		localOnly:  { type: 'boolean' },
 	},
 	required: ['name', 'src', 'keywords', 'excludeKeywords', 'users', 'caseSensitive', 'withReplies', 'withFile', 'notify'],
 } as const;
@@ -109,7 +109,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		withReplies: ps.withReplies,
 		withFile: ps.withFile,
 		notify: ps.notify,
-		local: ps.local,
+		localOnly: ps.localOnly,
 	}).then(x => Antennas.findOneOrFail(x.identifiers[0]));
 
 	publishInternalEvent('antennaCreated', antenna);
