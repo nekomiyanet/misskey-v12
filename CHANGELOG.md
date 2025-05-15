@@ -8,6 +8,18 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20250515202729 (2025/05/15)
+### Improvements
+- サイレンスされたユーザーの通知のミュート処理でキャッシュを使うように @atsu1125
+- 凍結されたユーザのノートが各種タイムラインで表示されないように @anatawa12 @syuilo @atsu1125
+
+### Bugfixes
+- アカウント削除の試行回数を3回にして試行間隔にapBackoffを利用する @atsu1125
+- ノート投稿の公開範囲を記憶する設定でローカルのみを記憶するように @taiyme @atsu1125
+- user.featured列が状況によってJSON文字列になっていたのを修正 @eternal-flame-AD
+- プロフィール追加情報で無効なURLに入力された場合に照会エラーを出るのを修正 @eternal-flame-AD
+- URLをクリックしても推移できず何も起こらないのを修正 @atsu1125
+
 ## 12.108.1-nekomiya-20250513153006 (2025/05/13)
 ### Improvements
 - アンテナのローカルのみを設定するカラムをUpstreamに合わせる @atsu1125
