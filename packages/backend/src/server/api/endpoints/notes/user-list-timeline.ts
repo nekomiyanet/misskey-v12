@@ -10,6 +10,7 @@ import { generateMutedInstanceQuery } from '../../common/generate-muted-instance
 import { generateMutedNoteQuery } from '../../common/generate-muted-note-query.js';
 import { generateBlockedUserQuery, generateBlockingUserQuery } from '../../common/generate-block-query.js';
 import { generateMutedUserRenotesQueryForNotes } from '../../common/generated-muted-renote-query.js';
+import { generateSuspendedUserQueryForNote } from '../../common/generate-suspended-query.js';
 
 export const meta = {
 	tags: ['notes', 'lists'],
@@ -84,6 +85,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		.setParameters(listQuery.getParameters());
 
 	generateVisibilityQuery(query, user);
+	generateSuspendedUserQueryForNote(query);
 	generateMutedUserQuery(query, user);
 	generateMutedInstanceQuery(query, user);
 	generateMutedNoteQuery(query, user);

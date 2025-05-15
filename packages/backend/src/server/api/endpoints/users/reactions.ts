@@ -5,6 +5,7 @@ import { generateVisibilityQuery } from '../../common/generate-visibility-query.
 import { generateMutedUserQuery } from '../../common/generate-muted-user-query.js';
 import { generateBlockedUserQuery } from '../../common/generate-block-query.js';
 import { generateMutedInstanceQuery } from '../../common/generate-muted-instance-query.js';
+import { generateSuspendedUserQueryForNote } from '../../common/generate-suspended-query.js';
 import { ApiError } from '../../error.js';
 import { getUser } from '../../common/getters.js';
 
@@ -61,9 +62,15 @@ export default define(meta, paramDef, async (ps, me) => {
 	const query = makePaginationQuery(NoteReactions.createQueryBuilder('reaction'),
 			ps.sinceId, ps.untilId, ps.sinceDate, ps.untilDate)
 		.andWhere(`reaction.userId = :userId`, { userId: ps.userId })
-		.leftJoinAndSelect('reaction.note', 'note');
+		.leftJoinAndSelect('reaction.note', 'note')
+		.leftJoinAndSelect('note.user', 'user')
+		.leftJoinAndSelect('note.reply', 'reply')
+		.leftJoinAndSelect('note.renote', 'renote')
+		.leftJoinAndSelect('reply.user', 'replyUser')
+		.leftJoinAndSelect('renote.user', 'renoteUser');
 
 	generateVisibilityQuery(query, me);
+	generateSuspendedUserQueryForNote(query);
 	if (me) {
 		generateMutedUserQuery(query, me, user);
 		generateMutedInstanceQuery(query, me);

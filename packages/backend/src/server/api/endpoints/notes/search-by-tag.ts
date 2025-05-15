@@ -8,6 +8,7 @@ import { safeForSql } from '@/misc/safe-for-sql.js';
 import { normalizeForSearch } from '@/misc/normalize-for-search.js';
 import { generateBlockedUserQuery, generateBlockingUserQuery } from '../../common/generate-block-query.js';
 import { generateMutedInstanceQuery } from '../../common/generate-muted-instance-query.js';
+import { generateSuspendedUserQueryForNote } from '../../common/generate-suspended-query.js';
 
 export const meta = {
 	tags: ['notes', 'hashtags'],
@@ -59,6 +60,7 @@ export default define(meta, paramDef, async (ps, me) => {
 		.leftJoinAndSelect('renoteUser.banner', 'renoteUserBanner');
 
 	generateVisibilityQuery(query, me);
+	generateSuspendedUserQueryForNote(query);
 	if (me) generateMutedUserQuery(query, me);
 	if (me) generateBlockingUserQuery(query, me);
 	if (me && !me.isAdmin && !me.isModerator) {
