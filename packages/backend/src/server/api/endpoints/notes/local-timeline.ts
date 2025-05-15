@@ -12,6 +12,7 @@ import { generateMutedNoteQuery } from '../../common/generate-muted-note-query.j
 import { generateChannelQuery } from '../../common/generate-channel-query.js';
 import { generateBlockedUserQuery, generateBlockingUserQuery } from '../../common/generate-block-query.js';
 import { generateMutedUserRenotesQueryForNotes } from '../../common/generated-muted-renote-query.js';
+import { generateSuspendedUserQueryForNote } from '../../common/generate-suspended-query.js';
 
 export const meta = {
 	tags: ['notes'],
@@ -80,6 +81,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	generateChannelQuery(query, user);
 	generateRepliesQuery(query, user);
 	generateVisibilityQuery(query, user);
+	generateSuspendedUserQueryForNote(query);
 	if (user) generateMutedUserQuery(query, user);
 	if (user) generateMutedNoteQuery(query, user);
 	if (user) generateBlockingUserQuery(query, user);
