@@ -10,7 +10,7 @@
 	<template v-if="pathname === '/' && self">
 		<span class="self">{{ hostname }}</span>
 	</template>
-	<span v-if="pathname != ''" class="pathname">{{ self ? pathname.substr(1) : pathname }}</span>
+	<span v-if="pathname != ''" class="pathname">{{ self ? pathname.substring(1) : pathname }}</span>
 	<span class="query">{{ query }}</span>
 	<span class="hash">{{ hash }}</span>
 	<i v-if="target === '_blank'" class="fas fa-external-link-square-alt icon"></i>
@@ -71,6 +71,7 @@ export default defineComponent({
 			self: self,
 			attr: self ? 'to' : 'href',
 			target: self ? null : '_blank',
+			maybeRelativeUrl: maybeRelativeUrl,
 			el,
 		};
 	},
