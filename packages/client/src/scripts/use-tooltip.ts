@@ -15,6 +15,8 @@ export function useTooltip(
 
 	let changeShowingState: (() => void) | null;
 
+	let autoHidingTimer;
+
 	const open = () => {
 		close();
 		if (!isHovering) return;
@@ -27,6 +29,16 @@ export function useTooltip(
 		changeShowingState = () => {
 			showing.value = false;
 		};
+
+		autoHidingTimer = window.setInterval(() => {
+			if (!document.body.contains(elRef.value)) {
+				if (!isHovering) return;
+				isHovering = false;
+				window.clearTimeout(timeoutId);
+				close();
+				window.clearInterval(autoHidingTimer);
+			}
+		}, 1000);
 	};
 
 	const close = () => {
@@ -47,6 +59,7 @@ export function useTooltip(
 		if (!isHovering) return;
 		isHovering = false;
 		window.clearTimeout(timeoutId);
+		window.clearInterval(autoHidingTimer);
 		close();
 	};
 
@@ -61,6 +74,7 @@ export function useTooltip(
 		if (!isHovering) return;
 		isHovering = false;
 		window.clearTimeout(timeoutId);
+		window.clearInterval(autoHidingTimer);
 		close();
 	};
 
