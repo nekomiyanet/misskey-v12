@@ -2,7 +2,6 @@ import * as nodemailer from 'nodemailer';
 import { fetchMeta } from '@/misc/fetch-meta.js';
 import Logger from './logger.js';
 import config from '@/config/index.js';
-import extractDomain from 'extract-domain';
 
 export const logger = new Logger('email');
 
@@ -24,7 +23,7 @@ export async function sendEmail(to: string, subject: string, html: string, text:
 	const enableAuth = configsmtpuser != null && configsmtpuser !== '';
 
 	// メールドメインブロックしてたら中断
-	const domain = extractDomain(to).toLowerCase();
+	const domain: string = to.split('@')[1];
 
 	if (meta.blockedEmailDomains.some(x => domain.endsWith(x))) {
 		logger.error(`Blocked Email Domain: ${domain}`);
