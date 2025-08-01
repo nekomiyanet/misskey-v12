@@ -157,11 +157,11 @@ export default defineComponent({
 				sort: '+follower',
 			} },
 			recentlyUpdatedUsersF: { endpoint: 'users', limit: 10, noPaging: true, params: {
-				origin: 'combined',
+				origin: 'remote',
 				sort: '+updatedAt',
 			} },
 			recentlyRegisteredUsersF: { endpoint: 'users', limit: 10, noPaging: true, params: {
-				origin: 'combined',
+				origin: 'remote',
 				sort: '+createdAt',
 			} },
 			searchPagination: {
