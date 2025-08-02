@@ -22,6 +22,11 @@
 				<template #key>{{ $ts._wordMute.mutedNotes }}</template>
 				<template #value>{{ number(hardWordMutedNotesCount) }}</template>
 			</MkKeyValue>
+			<MkFolder :foldable="true" :expanded="false">
+				<MkSpacer :content-max="300">
+					<XNotes ref="notes" :pagination="pagination"/>
+				</MkSpacer>
+			</MkFolder>
 		</div>
 	</div>
 	<MkButton primary inline :disabled="!changed" @click="save()"><i class="fas fa-save"></i> {{ $ts.save }}</MkButton>
@@ -35,6 +40,8 @@ import MkKeyValue from '@/components/key-value.vue';
 import MkButton from '@/components/ui/button.vue';
 import MkInfo from '@/components/ui/info.vue';
 import MkTab from '@/components/tab.vue';
+import XNotes from '@/components/notes.vue';
+import MkFolder from '@/components/ui/folder.vue';
 import * as os from '@/os';
 import number from '@/filters/number';
 import * as symbols from '@/symbols';
@@ -46,10 +53,12 @@ export default defineComponent({
 		MkKeyValue,
 		MkTab,
 		MkInfo,
+		XNotes,
+		MkFolder,
 	},
 
 	emits: ['info'],
-	
+
 	data() {
 		return {
 			[symbols.PAGE_INFO]: {
@@ -62,6 +71,10 @@ export default defineComponent({
 			hardMutedWords: '',
 			hardWordMutedNotesCount: null,
 			changed: false,
+			pagination: {
+				endpoint: 'notes/hard-muted-notes' as const,
+				limit: 10
+			},
 		}
 	},
 
