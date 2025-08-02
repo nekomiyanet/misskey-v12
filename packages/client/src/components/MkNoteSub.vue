@@ -62,8 +62,8 @@ const muted = ref(checkMute(props.note, $i, defaultStore.state.mutedWords));
 function checkMute(note: misskey.entities.Note, me: Record<string, any> | null | undefined, mutedWords: Array<string | string[]> | undefined | null): boolean {
 	if (mutedWords == null) return false;
 	if (checkWordMute(note, me, mutedWords)) return true;
-	if (note.reply && checkWordMute(note.reply, me, mutedWords)) return true;
-	if (note.renote && checkWordMute(note.renote, me, mutedWords)) return true;
+	if (note.reply && (me && (note.userId !== me.id)) && checkWordMute(note.reply, me, mutedWords)) return true;
+	if (note.renote && (me && (note.userId !== me.id)) && checkWordMute(note.renote, me, mutedWords)) return true;
 	return false;
 }
 
