@@ -180,12 +180,20 @@ const collapsed = ref(appearNote.cw == null && appearNote.text != null && (
 	(urls && urls.length >= 4)
 ));
 const isDeleted = ref(false);
-const muted = ref(checkWordMute(appearNote, $i, defaultStore.state.mutedWords));
+const muted = ref(checkMute(appearNote, $i, defaultStore.state.mutedWords));
 const translation = ref(null);
 const translating = ref(false);
 const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && appearNote.user.instance);
 const enableAbsoluteTime = defaultStore.state.enableAbsoluteTime;
 const showDeleteButtonOnTop = defaultStore.state.showDeleteButtonOnTop;
+
+function checkMute(note: misskey.entities.Note, me: Record<string, any> | null | undefined, mutedWords: Array<string | string[]> | undefined | null): boolean {
+	if (mutedWords == null) return false;
+	if (checkWordMute(note, me, mutedWords)) return true;
+	if (note.reply && checkWordMute(note.reply, me, mutedWords)) return true;
+	if (note.renote && checkWordMute(note.renote, me, mutedWords)) return true;
+	return false;
+}
 
 const keymap = {
 	'r': () => reply(true),
