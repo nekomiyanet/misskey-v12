@@ -159,7 +159,7 @@
 		"throttle-debounce": "3.0.1",
 		"tinycolor2": "1.4.2",
 		"tmp": "0.2.1",
-		"ts-loader": "9.3.0",
+		"ts-loader": "9.5.2",
 		"ts-node": "10.8.1",
 		"tsc-alias": "1.4.1",
 		"tsconfig-paths": "3.13.0",
