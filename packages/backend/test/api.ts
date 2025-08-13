@@ -1,6 +1,6 @@
 process.env.NODE_ENV = 'test';
 
-import * as assert from 'assert';
+import assert from 'node:assert';
 import * as childProcess from 'child_process';
 import { async, signup, request, post, react, uploadFile, startServer, shutdownServer } from './utils.js';
 

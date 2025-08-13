@@ -1,6 +1,6 @@
 process.env.NODE_ENV = 'test';
 
-import * as assert from 'assert';
+import assert from 'node:assert';
 import * as childProcess from 'child_process';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';

@@ -1,4 +1,4 @@
-import * as assert from 'assert';
+import assert from 'node:assert';
 import { query } from '../../src/prelude/url.js';
 
 describe('url', () => {

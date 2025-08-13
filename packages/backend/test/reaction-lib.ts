@@ -1,5 +1,5 @@
 /*
-import * as assert from 'assert';
+import assert from 'node:assert';
 
 import { toDbReaction } from '../src/misc/reaction-lib.js';
 

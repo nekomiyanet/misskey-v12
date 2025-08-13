@@ -1,4 +1,4 @@
-import * as assert from 'assert';
+import assert from 'node:assert';
 import { just, nothing } from '../../src/prelude/maybe.js';
 
 describe('just', () => {

@@ -1,4 +1,4 @@
-import * as assert from 'assert';
+import assert from 'node:assert';
 
 import { extractMentions } from '../src/misc/extract-mentions.js';
 import { parse } from 'mfm-js';
