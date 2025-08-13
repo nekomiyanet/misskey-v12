@@ -160,7 +160,7 @@
 		"tinycolor2": "1.4.2",
 		"tmp": "0.2.1",
 		"ts-loader": "9.5.2",
-		"ts-node": "10.8.1",
+		"ts-node": "10.9.2",
 		"tsc-alias": "1.4.1",
 		"tsconfig-paths": "3.13.0",
 		"twemoji-parser": "14.0.0",
