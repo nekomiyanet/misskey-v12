@@ -4,7 +4,7 @@ ENV NODE_ENV=production
 WORKDIR /misskey
 
 RUN dnf update -y \
- && dnf group install -y "Development Tools" \
+ && dnf install @development-tools \
  && dnf install -y wget gcc-c++
 
 ENV NODE_VER="20.19.4"
