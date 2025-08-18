@@ -79,7 +79,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	if (user && !user.isAdmin && !user.isModerator) {
 		generateBlockedUserQuery(query, user);
 	}
-	generateMutedInstanceQuery(query, user);
+	if (user) generateMutedInstanceQuery(query, user);
 
 	const renotes = await query.take(ps.limit).getMany();
 

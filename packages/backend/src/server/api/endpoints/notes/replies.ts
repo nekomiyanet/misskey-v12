@@ -5,6 +5,7 @@ import { generateVisibilityQuery } from '../../common/generate-visibility-query.
 import { generateMutedUserQuery } from '../../common/generate-muted-user-query.js';
 import { generateBlockedUserQuery, generateBlockingUserQuery } from '../../common/generate-block-query.js';
 import { generateSuspendedUserQueryForNote } from '../../common/generate-suspended-query.js';
+import { generateMutedInstanceQuery } from '../../common/generate-muted-instance-query.js';
 
 export const meta = {
 	tags: ['notes'],
@@ -56,6 +57,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	if (user && !user.isAdmin && !user.isModerator) {
 		generateBlockedUserQuery(query, user);
 	}
+	if (user) generateMutedInstanceQuery(query, user);
 
 	const timeline = await query.take(ps.limit).getMany();
 
