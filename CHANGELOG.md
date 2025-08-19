@@ -8,7 +8,7 @@
 You should also include the user name that made the change.
 -->
 
-## 12.108.1-nekomiya-20250818094659 (2025/08/19)
+## 12.108.1-nekomiya-20250819100623 (2025/08/19)
 ### Improvements
 - サインンスされたユーザーは公開タイムラインとハイライトで表示されないように @atsu1125
 - サイレンスされたユーザーの投稿に対する他者のリノートも公開範囲をパブリック→ホームとするように @atsu1125
