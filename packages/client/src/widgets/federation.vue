@@ -6,7 +6,7 @@
 		<MkLoading v-if="fetching"/>
 		<transition-group v-else tag="div" :name="$store.state.animation ? 'chart' : ''" class="instances">
 			<div v-for="(instance, i) in instances" :key="instance.id" class="instance">
-				<img v-if="instance.iconUrl" :src="instance.iconUrl" alt=""/>
+				<img v-if="getInstanceIcon(instance)" :src="getInstanceIcon(instance)" alt=""/>
 				<div class="body">
 					<a class="a" :href="'https://' + instance.host" target="_blank" :title="instance.host">{{ instance.host }}</a>
 					<p>{{ instance.softwareName || '?' }} {{ instance.softwareVersion }}</p>
@@ -25,6 +25,7 @@ import { useWidgetPropsManager, Widget, WidgetComponentEmits, WidgetComponentExp
 import MkContainer from '@/components/ui/container.vue';
 import MkMiniChart from '@/components/mini-chart.vue';
 import * as os from '@/os';
+import { getProxiedImageUrlNullable } from '@/scripts/media-proxy';
 
 const name = 'federation';
 
@@ -63,6 +64,10 @@ const fetch = async () => {
 	charts.value = fetchedCharts;
 	fetching.value = false;
 };
+
+function getInstanceIcon(instance): string {
+	return getProxiedImageUrlNullable(instance.iconUrl, 'preview') ?? getProxiedImageUrlNullable(instance.faviconUrl, 'preview') ?? '/client-assets/dummy.png';
+}
 
 onMounted(() => {
 	fetch();
