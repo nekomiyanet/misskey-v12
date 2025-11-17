@@ -10,8 +10,6 @@
 - Add "Force Local Only visibility" to the Account (As Moderation)
 - Owner and Moderator is able to Delete Channel
 - Moderator is able to Delete Page (As Moderation)
-- Email Setting is moved to file (.config/default.yml)
-- Object Storage Setting is moved to file (.config/default.yml)
 - Add "Email Domain Blocking" (As Moderation)
 - Admin is able to view Email Address (As Moderation)
 - Moderator is able to check Email Registration Status(Verified or Not Verified) (As Moderation)
@@ -59,6 +57,7 @@
 - Automatic Delivery Management System
   - Stop delivery after failing for 1 week
   - Resume delivery when new activities arrive
+  - Circuit Breaker (If 10 continuous failures occur to the same host, delivery will be suspended for one minute.)
 - Do not send old notes/create activities to relay
 - Ability to All users of delete closed instance (Meisskey❤️ Misskey Fork)
 - Timed Delete Note function (#exp5s #exp5m #exp5h) (Meisskey❤️ Misskey Fork)
@@ -72,6 +71,39 @@
 - User deletion is not cascade
 - Prevent delete drive file which is used as emoji
 - Option of Do not Allow Follow
+- Synchronize Note count and following/follower count with other instances
+- Display the new destination for users who have moved
+- Moderators can check users' drive capacity
+- Option to disable note search and antenna
+- Media Timeline (LTL with including files)
+- List of Advertisements
+- Be able to list and delete invitation codes in the admin panel
+- Queue email delivery
+- Changed ApBackoff timing and default retry count
+- Enable Notification Email
+- Drop Renotes from blocking users
+- Inbound Note Editing activity
+- Accept more signature algorithms
+- Clearly separate the account suspension and account deletion functions
+- Also reject their follow requests when suspending or deleting a remote user
+- Ability to disable chart generation for remote users
+- Enable changing the interval for writing from the chart memory to the database
+- List of Sent Follow Requests
+- Use jemalloc for memory allocator of Docker image
+- Enhance Rate Limit
+- Send Email notification when new abuse report arrives
+- Automatic Abuse Report Resolver
+- Hashtag Relay Adaptive Mode
+- Object storage settings can be configured from both configuration files and databases
+- Email settings can be configured from both configuration files and databases
+- Send Email Notification for new login from new IP
+- Replace ws with websocket
+- Filter notifications from Silenced users whom you don't follow
+- Hide Suspended users' notes from most timelines
+- Hide Silenced users' notes from public timelines
+- Renotes on notes by silenced users also have their visibility set to Public → Home
+- Apply Word mute to renotes
+- Apply word mute to notification
 
 ## Client (Frondend)
 
@@ -111,3 +143,8 @@
 - Add Misskey v10 / Misskey v13 Sound
 - Show Expiration of mute
 - UnMuteAll / UnBlockAll from Setting
+- Moderation Log
+- Display waveforms on audio file playback
+- Added buttons to delete all users and to unfollow all users on instance info
+- Add Tooltip which can show instance software version for instance ticker
+- Apply Word mute to renotes and replies
