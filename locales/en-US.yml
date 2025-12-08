@@ -950,6 +950,8 @@ doNotSendNotificationEmailsForAbuseReportToModerator: "Do not send out notificat
 emailToReceiveAbuseReport: "Email address to receive notification of the report"
 emailToReceiveAbuseReportCaption: "Specify the email address to receive notification of the report. If this field is left blank, the mail server's email address will be used."
 abuseReportResolvers: "Report Resolver"
+cancelFollowRequestConfirm: "Are you sure you want to cancel Follow Request to {name}?"
+rejectFollowRequestConfirm: "Are you sure you want to reject Follow Request from {name}?"
 
 _emailUnavailable:
   used: "This email address is already being used"
