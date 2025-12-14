@@ -217,6 +217,7 @@ import * as ep___i_readAllMessagingMessages from './endpoints/i/read-all-messagi
 import * as ep___i_readAllUnreadNotes from './endpoints/i/read-all-unread-notes.js';
 import * as ep___i_readAnnouncement from './endpoints/i/read-announcement.js';
 import * as ep___i_regenerateToken from './endpoints/i/regenerate-token.js';
+import * as ep___i_redirect from './endpoints/i/redirect.js';
 import * as ep___i_registry_getAll from './endpoints/i/registry/get-all.js';
 import * as ep___i_registry_getDetail from './endpoints/i/registry/get-detail.js';
 import * as ep___i_registry_get from './endpoints/i/registry/get.js';
@@ -228,6 +229,7 @@ import * as ep___i_registry_set from './endpoints/i/registry/set.js';
 import * as ep___i_revokeToken from './endpoints/i/revoke-token.js';
 import * as ep___i_signinHistory from './endpoints/i/signin-history.js';
 import * as ep___i_unpin from './endpoints/i/unpin.js';
+import * as ep___i_unredirect from './endpoints/i/unredirect.js';
 import * as ep___i_updateEmail from './endpoints/i/update-email.js';
 import * as ep___i_update from './endpoints/i/update.js';
 import * as ep___i_userGroupInvites from './endpoints/i/user-group-invites.js';
@@ -560,6 +562,7 @@ const eps = [
 	['i/read-all-messaging-messages', ep___i_readAllMessagingMessages],
 	['i/read-all-unread-notes', ep___i_readAllUnreadNotes],
 	['i/read-announcement', ep___i_readAnnouncement],
+	['i/redirect', ep___i_redirect],
 	['i/regenerate-token', ep___i_regenerateToken],
 	['i/registry/get-all', ep___i_registry_getAll],
 	['i/registry/get-detail', ep___i_registry_getDetail],
@@ -572,6 +575,7 @@ const eps = [
 	['i/revoke-token', ep___i_revokeToken],
 	['i/signin-history', ep___i_signinHistory],
 	['i/unpin', ep___i_unpin],
+	['i/unredirect', ep___i_unredirect],
 	['i/update-email', ep___i_updateEmail],
 	['i/update', ep___i_update],
 	['i/user-group-invites', ep___i_userGroupInvites],
