@@ -48,6 +48,12 @@ export const meta = {
 			code: 'BLOCKED',
 			id: 'c4ab57cc-4e41-45e9-bfd9-584f61e35ce0',
 		},
+
+		moved: {
+			message: 'Followee is moved to another account.',
+			code: 'MOVED',
+			id: '81f7e3eb-fbb8-313a-5603-bf2ce55644f9',
+		},
 	},
 
 	res: {
