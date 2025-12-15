@@ -105,6 +105,11 @@ export const packedUserDetailedNotMeOnlySchema = {
 			nullable: true,
 			optional: false,
 		},
+		movedToUser: {
+			type: 'object',
+			ref: 'UserDetailed',
+			nullable: true, optional: false,
+		},
 		alsoKnownAs: {
 			type: 'array',
 			nullable: true,

@@ -9,8 +9,12 @@
 					<!-- <div class="punished" v-if="user.isSilenced"><i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i> {{ $ts.userSilenced }}</div> -->
 
 					<div class="profile">
+						<MkMoved
+							v-if="user.movedToUser"
+							:movedhost="user.movedToUser.host"
+							:acct="user.movedToUser.username"
+						/>
 						<MkRemoteCaution v-if="user.host != null" :href="user.url" class="warn"/>
-						<MkMovedCaution v-if="user.movedToUri != null" :href="user.movedToUri" class="warn"/>
 
 						<div :key="user.id" class="_block main">
 							<div class="banner-container" :style="style">
@@ -135,7 +139,7 @@ import MkFollowButton from '@/components/follow-button.vue';
 import MkContainer from '@/components/ui/container.vue';
 import MkFolder from '@/components/ui/folder.vue';
 import MkRemoteCaution from '@/components/remote-caution.vue';
-import MkMovedCaution from '@/components/moved-caution.vue';
+import MkMoved from '@/components/moved.vue';
 import MkTab from '@/components/tab.vue';
 import MkInfo from '@/components/ui/info.vue';
 import * as Acct from 'misskey-js/built/acct';
@@ -145,6 +149,7 @@ import number from '@/filters/number';
 import { userPage, acct as getAcct } from '@/filters/user';
 import * as os from '@/os';
 import * as symbols from '@/symbols';
+import { host } from '@/config';
 
 export default defineComponent({
 	components: {
@@ -153,7 +158,7 @@ export default defineComponent({
 		MkFollowButton,
 		MkContainer,
 		MkRemoteCaution,
-		MkMovedCaution,
+		MkMoved,
 		MkFolder,
 		MkTab,
 		MkInfo,
