@@ -104,6 +104,7 @@
 - Renotes on notes by silenced users also have their visibility set to Public → Home
 - Apply Word mute to renotes
 - Apply word mute to notification
+- Account Migration (Redirect Only)
 
 ## Client (Frondend)
 
