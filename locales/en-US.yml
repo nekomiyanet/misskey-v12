@@ -952,6 +952,20 @@ emailToReceiveAbuseReportCaption: "Specify the email address to receive notifica
 abuseReportResolvers: "Report Resolver"
 cancelFollowRequestConfirm: "Are you sure you want to cancel Follow Request to {name}?"
 rejectFollowRequestConfirm: "Are you sure you want to reject Follow Request from {name}?"
+migration: "Migration"
+moveTo: "Redirect current account to new account"
+moveToLabel: "Account you're redirecting to:"
+moveAccount: "Redirect account!"
+cancelMoveAccount: "Cancel redirect!"
+moveAccountDescription: "Your current account's profile will be updated with a redirect notice and be excluded from searches.
+  Unlike moving, followers are not moved.
+  No data will be moved automatically.
+  Your current account will not be fully usable afterwards. However, you will have access to data export as well as re-activation.
+  Following redirected accounts is not possible.
+  The redirect can be canceled at any time.
+  Please enter the tag of the account formatted like @person@server.com"
+movedAccountDescription: "Your account is redirecting, and may thus not accept new follows."
+migrationConfirm: "Are you absolutely sure you want to redirect your account to {account}?"
 
 _emailUnavailable:
   used: "This email address is already being used"

@@ -12,6 +12,8 @@
 
 	<FormLink to="/settings/account-info" class="_formBlock">{{ $ts.accountInfo }}</FormLink>
 
+	<FormLink to="/settings/migration" class="_formBlock"><template #icon><i class="fas fa-plane-departure"></i></template>{{ $ts.migration }}</FormLink>
+
 	<FormLink to="/settings/delete-account" class="_formBlock"><template #icon><i class="fas fa-exclamation-triangle"></i></template>{{ $ts.closeAccount }}</FormLink>
 </div>
 </template>

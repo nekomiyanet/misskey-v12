@@ -208,6 +208,7 @@ const component = computed(() => {
 		case 'import-export': return defineAsyncComponent(() => import('./import-export.vue'));
 		case 'account-info': return defineAsyncComponent(() => import('./account-info.vue'));
 		case 'delete-account': return defineAsyncComponent(() => import('./delete-account.vue'));
+		case 'migration': return defineAsyncComponent(() => import('./migration.vue'));
 	}
 	return null;
 });
