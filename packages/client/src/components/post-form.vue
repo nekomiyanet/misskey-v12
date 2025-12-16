@@ -108,6 +108,7 @@ const props = withDefaults(defineProps<{
 }>(), {
 	initialVisibleUsers: [],
 	autofocus: true,
+	initialLocalOnly: undefined,
 });
 
 const emit = defineEmits<{
@@ -133,8 +134,8 @@ let poll = $ref<{
 let useCw = $ref(false);
 let showPreview = $ref(false);
 let cw = $ref<string | null>(null);
-let localOnly = $ref<boolean>(props.initialLocalOnly ?? defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly);
-let visibility = $ref(props.initialVisibility ?? (defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility) as typeof misskey.noteVisibilities[number]);
+let localOnly = $ref(props.initialLocalOnly ?? defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly);
+let visibility = $ref(props.initialVisibility ?? (defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility));
 let visibleUsers = $ref([]);
 if (props.initialVisibleUsers) {
 	props.initialVisibleUsers.forEach(pushVisibleUser);
@@ -273,7 +274,13 @@ if (props.channel) {
 
 // 公開以外へのリプライ時は元の公開範囲を引き継ぐ
 if (props.reply && ['home', 'followers', 'specified'].includes(props.reply.visibility)) {
-	visibility = props.reply.visibility;
+	if (props.reply.visibility === 'home' && visibility === 'followers') {
+		visibility = 'followers'; // もともと公開範囲がフォロワーのみならホームには上げない
+	} else if (['home', 'followers'].includes(props.reply.visibility) && visibility === 'specified') {
+		visibility = 'specified'; // もともと公開範囲がダイレクトならホームもしくはフォロワーのみには上げない
+	} else {
+		visibility = props.reply.visibility;
+	}
 	if (props.reply.visibility === 'specified') {
 		os.api('users/show', {
 			userIds: props.reply.visibleUserIds.filter(uid => uid !== $i.id && uid !== props.reply.userId)

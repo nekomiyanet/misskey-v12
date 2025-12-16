@@ -1,6 +1,6 @@
 import define from '../../define.js';
 import { makePaginationQuery } from '../../common/make-pagination-query.js';
-import { Notes, Followings } from '@/models/index.js';
+import { Notes, Followings, ChannelFollowings } from '@/models/index.js';
 import { generateVisibilityQuery } from '../../common/generate-visibility-query.js';
 import { generateMutedUserQuery } from '../../common/generate-muted-user-query.js';
 import { generateMutedInstanceQuery } from '../../common/generate-muted-instance-query.js';
@@ -11,6 +11,7 @@ import { generateMutedNoteQuery } from '../../common/generate-muted-note-query.j
 import { generateChannelQuery } from '../../common/generate-channel-query.js';
 import { generateBlockedUserQuery, generateBlockingUserQuery } from '../../common/generate-block-query.js';
 import { generateMutedUserRenotesQueryForNotes } from '../../common/generated-muted-renote-query.js';
+import { generateSuspendedUserQueryForNote } from '../../common/generate-suspended-query.js';
 
 export const meta = {
 	tags: ['notes'],
@@ -53,16 +54,28 @@ export default define(meta, paramDef, async (ps, user) => {
 		take: 1,
 	})) !== 0;
 
+	const hasChannelFollowing = (await ChannelFollowings.count({
+		where: {
+			followerId: user.id,
+		},
+		take: 1,
+	})) !== 0;
+
 	//#region Construct query
 	const followingQuery = Followings.createQueryBuilder('following')
 		.select('following.followeeId')
 		.where('following.followerId = :followerId', { followerId: user.id });
+
+	const channelFollowingQuery = ChannelFollowings.createQueryBuilder('channelFollowing')
+		.select('channelFollowing.followeeId')
+		.where('channelFollowing.followerId = :followerId', { followerId: user.id });
 
 	const query = makePaginationQuery(Notes.createQueryBuilder('note'),
 			ps.sinceId, ps.untilId, ps.sinceDate, ps.untilDate)
 		.andWhere(new Brackets(qb => { qb
 			.where('note.userId = :meId', { meId: user.id });
 			if (hasFollowing) qb.orWhere(`note.userId IN (${ followingQuery.getQuery() })`);
+			if (hasChannelFollowing) qb.orWhere(`note.channelId IN (${ channelFollowingQuery.getQuery() })`);
 		}))
 		.innerJoinAndSelect('note.user', 'user')
 		.leftJoinAndSelect('user.avatar', 'avatar')
@@ -80,6 +93,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	generateChannelQuery(query, user);
 	generateRepliesQuery(query, user);
 	generateVisibilityQuery(query, user);
+	generateSuspendedUserQueryForNote(query);
 	generateMutedUserQuery(query, user);
 	generateMutedInstanceQuery(query, user);
 	generateMutedNoteQuery(query, user);

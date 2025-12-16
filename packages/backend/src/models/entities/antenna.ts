@@ -98,5 +98,5 @@ export class Antenna {
 	public notify: boolean;
 
 	@Column('boolean')
-	public local: boolean;
+	public localOnly: boolean;
 }

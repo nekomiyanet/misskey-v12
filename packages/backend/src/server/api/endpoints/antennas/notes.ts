@@ -7,6 +7,7 @@ import { generateMutedUserQuery } from '../../common/generate-muted-user-query.j
 import { ApiError } from '../../error.js';
 import { generateBlockedUserQuery, generateBlockingUserQuery } from '../../common/generate-block-query.js';
 import { generateMutedInstanceQuery } from '../../common/generate-muted-instance-query.js';
+import { generateSuspendedUserQueryForNote } from '../../common/generate-suspended-query.js';
 
 export const meta = {
 	tags: ['antennas', 'account', 'notes'],
@@ -79,6 +80,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		.setParameters(antennaQuery.getParameters());
 
 	generateVisibilityQuery(query, user);
+	generateSuspendedUserQueryForNote(query);
 	generateMutedUserQuery(query, user);
 	generateBlockingUserQuery(query, user);
 	if (user && !user.isAdmin && !user.isModerator) {

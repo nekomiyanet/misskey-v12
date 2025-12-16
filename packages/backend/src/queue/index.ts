@@ -273,7 +273,10 @@ export function createDeleteAccountJob(user: ThinUser, opts: { soft?: boolean; }
 		user: user,
 		soft: opts.soft,
 	}, {
-		attempts: 6,
+		attempts: 3,
+		backoff: {
+			type: 'apBackoff',
+		},
 		removeOnComplete: true,
 		removeOnFail: false,
 	});
@@ -340,21 +343,25 @@ export default function() {
 	systemQueue.add('tickCharts', {
 	}, {
 		repeat: { cron: '55 * * * *' },
+		removeOnComplete: true,
 	});
 
 	systemQueue.add('resyncCharts', {
 	}, {
 		repeat: { cron: '0 0 * * *' },
+		removeOnComplete: true,
 	});
 
 	systemQueue.add('cleanCharts', {
 	}, {
 		repeat: { cron: '0 0 * * *' },
+		removeOnComplete: true,
 	});
 
 	systemQueue.add('checkExpiredMutings', {
 	}, {
 		repeat: { cron: '*/5 * * * *' },
+		removeOnComplete: true,
 	});
 
 	processSystemQueue(systemQueue);

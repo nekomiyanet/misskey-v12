@@ -327,6 +327,18 @@ export default async (user: { id: User['id']; username: User['username']; host: 
 					});
 				}
 			});
+			if (data.renote && note.userId !== u.userId) {
+				checkWordMute(data.renote, { id: u.userId }, u.mutedWords).then(shouldMute => {
+					if (shouldMute) {
+						MutedNotes.insert({
+							id: genId(),
+							userId: u.userId,
+							noteId: note.id,
+							reason: 'word',
+						});
+					}
+				});
+			}
 		}
 	});
 
@@ -375,7 +387,8 @@ export default async (user: { id: User['id']; username: User['username']; host: 
 		endedPollNotificationQueue.add({
 			noteId: note.id,
 		}, {
-			delay
+			delay,
+			removeOnComplete: true,
 		});
 	}
 

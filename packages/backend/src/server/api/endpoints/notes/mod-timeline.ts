@@ -53,7 +53,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	//#region Construct query
 	const query = makePaginationQuery(Notes.createQueryBuilder('note'),
 			ps.sinceId, ps.untilId, ps.sinceDate, ps.untilDate)
-		.andWhere('(note.visibility = \'public\') AND (note.userHost IS NULL)')
+		.andWhere('(note.visibility = \'public\') AND (note.userHost IS NULL) AND (note.channelId IS NULL)')
 		.andWhere(new Brackets(qb => { qb
 			.andWhere('(select "isModerator" from "user" where id = note."userId")')
 			.orWhere('(select "isAdmin" from "user" where id = note."userId")')

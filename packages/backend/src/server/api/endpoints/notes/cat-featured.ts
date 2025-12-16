@@ -2,6 +2,7 @@ import define from '../../define.js';
 import { generateMutedUserQuery } from '../../common/generate-muted-user-query.js';
 import { Notes } from '@/models/index.js';
 import { generateBlockedUserQuery, generateBlockingUserQuery } from '../../common/generate-block-query.js';
+import { generateSilencedUserQueryForNote, generateSuspendedUserQueryForNote } from '../../common/generate-suspended-query.js';
 
 export const meta = {
 	tags: ['notes'],
@@ -52,6 +53,8 @@ export default define(meta, paramDef, async (ps, user) => {
 		.leftJoinAndSelect('renoteUser.avatar', 'renoteUserAvatar')
 		.leftJoinAndSelect('renoteUser.banner', 'renoteUserBanner');
 
+  generateSilencedUserQueryForNote(query);
+	generateSuspendedUserQueryForNote(query);
 	if (user) generateMutedUserQuery(query, user);
 	if (user) generateBlockingUserQuery(query, user);
 	if (user && !user.isAdmin && !user.isModerator) {

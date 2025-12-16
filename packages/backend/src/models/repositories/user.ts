@@ -149,26 +149,27 @@ export class UserRepository extends Repository<User> {
 	}
 
 	public async userFromURI(uri: string): Promise<User | null> {
-		const dbResolver = new DbResolver();
-		let local = await dbResolver.getUserFromApId(uri);
-		if (local) {
-			return sanitizeUrl(uri);
+		try {
+			const dbResolver = new DbResolver();
+			let local = await dbResolver.getUserFromApId(uri);
+			if (local) {
+				return local;
+			}
+
+			// fetching Object once from remote
+			const resolver = new Resolver();
+			const object = (await resolver.resolve(uri)) as any;
+
+			// /@user If a URI other than the id is specified,
+			// the URI is determined here
+			if (uri !== object.id) {
+				local = await dbResolver.getUserFromApId(object.id);
+				if (local != null) return local;
+			}
+
+			return isActor(object) ? await createPerson(getApId(object)) : null;
 		}
-
-		// fetching Object once from remote
-		const resolver = new Resolver();
-		const object = (await resolver.resolve(uri)) as any;
-
-		// /@user If a URI other than the id is specified,
-		// the URI is determined here
-		if (uri !== object.id) {
-			local = await dbResolver.getUserFromApId(object.id);
-			if (local != null) return sanitizeUrl(uri);
-		}
-
-		if (isActor(object)) {
-			return sanitizeUrl(uri);
-		} else {
+		catch {
 			return null;
 		}
 	}
@@ -266,7 +267,6 @@ export class UserRepository extends Repository<User> {
 
 		const meId = me ? me.id : null;
 		const isMe = meId === user.id;
-		const iAmModerator = me ? (me.isAdmin || me.isModerator) : false;
 
 		const relation = meId && !isMe && opts.detail ? await this.getRelation(meId, user.id) : null;
 		const pins = opts.detail ? await UserNotePinings.createQueryBuilder('pin')
@@ -321,7 +321,8 @@ export class UserRepository extends Repository<User> {
 			...(opts.detail ? {
 				url: sanitizeUrl(profile!.url),
 				uri: sanitizeUrl(user.uri),
-				movedToUri: user.movedToUri ? await this.userFromURI(user.movedToUri).catch(() => null) : null,
+				movedToUri: user.movedToUri ? sanitizeUrl(user.movedToUri) : null,
+				movedToUser: user.movedToUri ? await this.userFromURI(user.movedToUri).catch(() => null) : null,
 				alsoKnownAs: user.alsoKnownAs || null,
 				createdAt: user.createdAt.toISOString(),
 				updatedAt: user.updatedAt ? user.updatedAt.toISOString() : null,
@@ -356,9 +357,6 @@ export class UserRepository extends Repository<User> {
 				publicReactions: profile!.publicReactions,
 				ffVisibility: profile!.ffVisibility,
 				notesCountVisibility: profile!.notesCountVisibility,
-			} : {}),
-
-			...(opts.detail && (isMe || iAmModerator) ? {
 				twoFactorEnabled: profile!.twoFactorEnabled,
 				usePasswordLessLogin: profile!.usePasswordLessLogin,
 				securityKeys: profile!.twoFactorEnabled

@@ -1,13 +1,13 @@
-FROM fedora:40 AS builder
+FROM fedora:42 AS builder
 
 ENV NODE_ENV=production
 WORKDIR /misskey
 
 RUN dnf update -y \
- && dnf groupinstall -y "Development Tools" \
+ && dnf install -y @development-tools \
  && dnf install -y wget gcc-c++
 
-ENV NODE_VER="18.20.6"
+ENV NODE_VER="22.18.0"
 RUN ARCH= && \
     unameArch="$(uname -m)" && \
   case "${unameArch##*-}" in \
@@ -32,7 +32,7 @@ RUN yarn install --network-timeout 100000
 RUN yarn build
 RUN rm -rf .git
 
-FROM fedora:40 AS runner
+FROM fedora:42 AS runner
 
 WORKDIR /misskey
 

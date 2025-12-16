@@ -27,7 +27,7 @@ export default class extends Channel {
 	private async onNote(note: Packed<'Note'>) {
 		if (note.user.host !== null) return;
 		if (note.visibility !== 'public') return;
-		if (note.channelId != null && !this.followingChannels.has(note.channelId)) return;
+		if (note.channelId != null) return;
 		if (!note.user.isCat) return;
 
 		// リプライなら再pack
@@ -64,6 +64,7 @@ export default class extends Channel {
 		// レコードが追加されるNoteでも追加されるより先にここのストリーミングの処理に到達することが起こる。
 		// そのためレコードが存在するかのチェックでは不十分なので、改めてcheckWordMuteを呼んでいる
 		if (this.userProfile && await checkWordMute(note, this.user, this.userProfile.mutedWords)) return;
+		if (note.renote && this.user!.id && (this.user!.id !== note.userId) && this.userProfile && await checkWordMute(note.renote, this.user, this.userProfile.mutedWords)) return;
 
 		this.connection.cacheNote(note);
 

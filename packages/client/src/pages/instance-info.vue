@@ -2,7 +2,7 @@
 <MkSpacer :content-max="600" :margin-min="16" :margin-max="32">
 	<div v-if="instance" class="_formRoot">
 		<div class="fnfelxur">
-			<img :src="instance.iconUrl || instance.faviconUrl" alt="" class="icon"/>
+			<img :src="getInstanceIcon(instance)" alt="" class="icon"/>
 		</div>
 		<MkKeyValue :copy="host" oneline style="margin: 1em 0;">
 			<template #key>Host</template>
@@ -127,6 +127,7 @@ import bytes from '@/filters/bytes';
 import * as symbols from '@/symbols';
 import { iAmModerator, $i } from '@/account';
 import { i18n } from '@/i18n';
+import { getProxiedImageUrlNullable } from '@/scripts/media-proxy';
 
 const props = defineProps<{
 	host: string;
@@ -267,6 +268,10 @@ async function deleteFollowing() {
 		});
 	}
 }
+
+function getInstanceIcon(instance): string {
+	return getProxiedImageUrlNullable(instance.iconUrl, 'preview') ?? getProxiedImageUrlNullable(instance.faviconUrl, 'preview') ?? '/client-assets/dummy.png';
+};
 
 fetch();
 

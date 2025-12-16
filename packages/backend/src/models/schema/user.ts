@@ -105,6 +105,11 @@ export const packedUserDetailedNotMeOnlySchema = {
 			nullable: true,
 			optional: false,
 		},
+		movedToUser: {
+			type: 'object',
+			ref: 'UserDetailed',
+			nullable: true, optional: false,
+		},
 		alsoKnownAs: {
 			type: 'array',
 			nullable: true,
@@ -451,21 +456,6 @@ export const packedMeDetailedOnlySchema = {
 				type: 'string',
 				nullable: false, optional: false,
 			},
-		},
-		twoFactorEnabled: {
-			type: 'boolean',
-			nullable: false, optional: false,
-			default: false,
-		},
-		usePasswordLessLogin: {
-			type: 'boolean',
-			nullable: false, optional: false,
-			default: false,
-		},
-		securityKeys: {
-			type: 'boolean',
-			nullable: false, optional: false,
-			default: false,
 		},
 		//#region secrets
 		email: {

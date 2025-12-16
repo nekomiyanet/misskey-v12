@@ -1,11 +1,34 @@
 import { publishMainStream } from '@/services/stream.js';
 import pushSw from './push-notification.js';
-import { Notifications, Mutings, UserProfiles, Users, Blockings, Notes, UserGroups, UserGroupInvitations } from '@/models/index.js';
+import { Notifications, Mutings, UserProfiles, Users, Blockings, Notes, UserGroups, UserGroupInvitations, Followings } from '@/models/index.js';
 import { genId } from '@/misc/gen-id.js';
 import { User } from '@/models/entities/user.js';
 import { Notification } from '@/models/entities/notification.js';
 import { sendEmailNotification } from './send-email-notification.js';
 import config from '@/config/index.js';
+
+let silencedUsersCache: Set<string> | null = null;
+const CACHE_TTL_MS = 1 * 60 * 1000;
+let lastFetchedAt = 0;
+
+export async function getSilencedUsers(): Promise<Set<string>> {
+	const now = Date.now();
+
+	if (silencedUsersCache && (now - lastFetchedAt < CACHE_TTL_MS)) return silencedUsersCache;
+
+	const silencedUsers = await Users.find({
+		where: { isSilenced: true },
+		select: ['id'],
+	});
+	silencedUsersCache = new Set(silencedUsers.map(user => user.id));
+	lastFetchedAt = now;
+	return silencedUsersCache;
+}
+
+export function clearSilencedUserCache() {
+	silencedUsersCache = null;
+	lastFetchedAt = 0;
+}
 
 export async function createNotification(
 	notifieeId: User['id'],
@@ -20,6 +43,20 @@ export async function createNotification(
 
 	const isMuted = profile?.mutingNotificationTypes.includes(type);
 
+	// Mute For Silenced and non-following Users
+	let isMutedForSilenced = false;
+	const silencedUserSet = await getSilencedUsers();
+
+	if (data.notifierId && silencedUserSet.has(data.notifierId)) {
+		const followingsExists = await Followings.findOne({
+			followerId: notifieeId,
+			followeeId: data.notifierId,
+		});
+		if (!followingsExists) {
+			isMutedForSilenced = true;
+		}
+	}
+
 	// Create notification
 	const notification = await Notifications.insert({
 		id: genId(),
@@ -27,10 +64,12 @@ export async function createNotification(
 		notifieeId: notifieeId,
 		type: type,
 		// 相手がこの通知をミュートしているようなら、既読を予めつけておく
-		isRead: isMuted,
+		isRead: (isMuted || isMutedForSilenced),
 		...data,
 	} as Partial<Notification>)
 		.then(x => Notifications.findOneOrFail(x.identifiers[0]));
+
+	if (isMutedForSilenced) return notification;
 
 	const packed = await Notifications.pack(notification, {});
 
@@ -66,8 +105,7 @@ export async function createNotification(
 						isRead: true,
 					};
 					await Notifications.update({
-						notifierId: data.notifierId,
-						notifieeId: notifieeId,
+						id: notification.id,
 					}, updates);
 					return;
 				}

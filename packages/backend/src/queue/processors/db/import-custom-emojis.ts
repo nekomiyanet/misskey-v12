@@ -2,7 +2,7 @@ import Bull from 'bull';
 import * as tmp from 'tmp';
 import * as fs from 'node:fs';
 import unzipper from 'unzipper';
-import { getConnection } from 'typeorm';
+import { getConnection, IsNull } from 'typeorm';
 
 import { queueLogger } from '../../logger.js';
 import { downloadUrl } from '@/misc/download-url.js';
@@ -64,6 +64,7 @@ export async function importCustomEmojis(job: Bull.Job<DbUserImportJobData>, don
 			const emojiPath = outputPath + '/' + record.fileName;
 			await Emojis.delete({
 				name: emojiInfo.name,
+				host: IsNull(),
 			});
 			const driveFile = await addFile({ user: null, path: emojiPath, name: record.fileName, force: true });
 			const emoji = await Emojis.insert({
@@ -82,7 +83,7 @@ export async function importCustomEmojis(job: Bull.Job<DbUserImportJobData>, don
 		await getConnection().queryResultCache!.remove(['meta_emojis']);
 
 		cleanup();
-	
+
 		logger.succ('Imported');
 		done();
 	});

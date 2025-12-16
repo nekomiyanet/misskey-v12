@@ -1,6 +1,6 @@
 process.env.NODE_ENV = 'test';
 
-import * as assert from 'assert';
+import * as assert from "assert";
 import * as lolex from '@sinonjs/fake-timers';
 import { async, initTestDb } from './utils.js';
 import TestChart from '../src/services/chart/charts/test.js';

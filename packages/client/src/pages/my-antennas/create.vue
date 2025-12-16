@@ -23,7 +23,7 @@ let draft = $ref({
 	caseSensitive: false,
 	withFile: false,
 	notify: false,
-	local: false
+	localOnly: false
 });
 
 function onAntennaCreated() {

@@ -40,7 +40,7 @@
 		<MkPagination v-slot="{items}" ref="instances" :key="host + state" :pagination="pagination">
 			<div class="dqokceoi">
 				<MkA v-for="instance in items" :key="instance.id" class="instance" :to="`/instance-info/${instance.host}`">
-					<div class="host"><img :src="instance.iconUrl || instance.faviconUrl">{{ instance.host }}</div>
+					<div class="host"><img :src="getInstanceIcon(instance)">{{ instance.host }}</div>
 					<div class="table">
 						<div class="cell">
 							<div class="key">{{ $ts.registeredAt }}</div>
@@ -101,6 +101,7 @@ import FormSplit from '@/components/form/split.vue';
 import * as os from '@/os';
 import * as symbols from '@/symbols';
 import { i18n } from '@/i18n';
+import { getProxiedImageUrlNullable } from '@/scripts/media-proxy';
 
 let host = $ref('');
 let state = $ref('federating');
@@ -127,6 +128,10 @@ function getStatus(instance) {
 	if (instance.isSuspended) return 'suspended';
 	if (instance.isNotResponding) return 'error';
 	return 'alive';
+};
+
+function getInstanceIcon(instance): string {
+	return getProxiedImageUrlNullable(instance.iconUrl, 'preview') ?? getProxiedImageUrlNullable(instance.faviconUrl, 'preview') ?? '/client-assets/dummy.png';
 };
 
 defineExpose({

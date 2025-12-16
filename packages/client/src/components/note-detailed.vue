@@ -191,7 +191,7 @@ const isMyNote = $i && ($i.id === appearNote.userId);
 const isMyRenote = $i && ($i.id === note.userId);
 const showContent = ref(false);
 const isDeleted = ref(false);
-const muted = ref(checkWordMute(appearNote, $i, defaultStore.state.mutedWords));
+const muted = ref(checkMute(appearNote, $i, defaultStore.state.mutedWords));
 const translation = ref(null);
 const translating = ref(false);
 const urls = appearNote.text ? extractUrlFromMfm(mfm.parse(appearNote.text)) : null;
@@ -200,6 +200,14 @@ const conversation = ref<misskey.entities.Note[]>([]);
 const replies = ref<misskey.entities.Note[]>([]);
 const enableAbsoluteTime = defaultStore.state.enableAbsoluteTime;
 const showDeleteButtonOnTop = defaultStore.state.showDeleteButtonOnTop;
+
+function checkMute(note: misskey.entities.Note, me: Record<string, any> | null | undefined, mutedWords: Array<string | string[]> | undefined | null): boolean {
+	if (mutedWords == null) return false;
+	if (checkWordMute(note, me, mutedWords)) return true;
+	if (note.reply && (me && (note.userId !== me.id)) && checkWordMute(note.reply, me, mutedWords)) return true;
+	if (note.renote && (me && (note.userId !== me.id)) && checkWordMute(note.renote, me, mutedWords)) return true;
+	return false;
+}
 
 const keymap = {
 	'r': () => reply(true),

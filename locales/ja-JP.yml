@@ -948,6 +948,22 @@ doNotSendNotificationEmailsForAbuseReportToModerator: "通報の通知メール�
 emailToReceiveAbuseReport: "通報通知を受け取るためのメールアドレス"
 emailToReceiveAbuseReportCaption: "通報通知を受け取るためのメールアドレスを指定します。ここの入力欄を空にするとメールサーバーのメールアドレスが使用されます。"
 abuseReportResolvers: "通報リゾルバー"
+cancelFollowRequestConfirm: "{name}へのフォロー申請をキャンセルしますか？"
+rejectFollowRequestConfirm: "{name}からのフォロー申請を拒否しますか？"
+migration: "引っ越し"
+moveTo: "このアカウントを新しいアカウントにリダイレクト"
+moveToLabel: "リダイレクト先のアカウント："
+moveAccount: "リダイレクト実行！"
+cancelMoveAccount: "リダイレクトを取り消す"
+moveAccountDescription: "プロフィールに引っ越し済みの通知が表示され、検索結果から除外されます。
+  引っ越しと異なりフォロワーは引き継がれません。
+  データは自動的に引き継がれません。
+  引っ越した後はデータのエクスポートと再有効化を除きほとんどの機能が利用できなくなります。
+  リダイレクトを設定したアカウントはフォローできません。
+  リダイレクトはいつでもキャンセルできます。
+  リダイレクト先のアカウントをこのように入力してください：@person@server.com"
+movedAccountDescription: "アカウントはリダイレクト設定されているため非アクティブになっています。新しいフォロワーを受け入れていません。"
+migrationConfirm: "本当にこのアカウントを {account} にリダイレクトしますか？"
 
 _emailUnavailable:
   used: "既に使用されています"

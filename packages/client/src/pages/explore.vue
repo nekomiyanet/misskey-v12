@@ -157,16 +157,17 @@ export default defineComponent({
 				sort: '+follower',
 			} },
 			recentlyUpdatedUsersF: { endpoint: 'users', limit: 10, noPaging: true, params: {
-				origin: 'combined',
+				origin: 'remote',
 				sort: '+updatedAt',
 			} },
 			recentlyRegisteredUsersF: { endpoint: 'users', limit: 10, noPaging: true, params: {
-				origin: 'combined',
+				origin: 'remote',
 				sort: '+createdAt',
 			} },
 			searchPagination: {
 				endpoint: 'users/search' as const,
 				limit: 10,
+				offsetMode: true,
 				params: computed(() => (this.searchQuery && this.searchQuery !== '') ? {
 					query: this.searchQuery,
 					origin: this.searchOrigin,

@@ -8,6 +8,7 @@ import { generateMutedUserQuery } from '../../common/generate-muted-user-query.j
 import { Brackets } from 'typeorm';
 import { generateBlockedUserQuery } from '../../common/generate-block-query.js';
 import { generateMutedInstanceQuery } from '../../common/generate-muted-instance-query.js';
+import { generateSuspendedUserQueryForNote } from '../../common/generate-suspended-query.js';
 
 export const meta = {
 	tags: ['users', 'notes'],
@@ -59,6 +60,8 @@ export default define(meta, paramDef, async (ps, me) => {
 		throw e;
 	});
 
+	const isAdminOrModerator = me && (me.isAdmin || me.isModerator);
+
 	//#region Construct query
 	const query = makePaginationQuery(Notes.createQueryBuilder('note'), ps.sinceId, ps.untilId, ps.sinceDate, ps.untilDate)
 		.andWhere('note.userId = :userId', { userId: user.id })
@@ -80,6 +83,9 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	if (me && !me.isAdmin && !me.isModerator) {
 		generateBlockedUserQuery(query, me);
+	}
+	if (!isAdminOrModerator) {
+		generateSuspendedUserQueryForNote(query);
 	}
 
 	if (ps.withFiles) {

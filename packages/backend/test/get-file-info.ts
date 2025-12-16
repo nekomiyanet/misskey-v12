@@ -1,4 +1,4 @@
-import * as assert from 'assert';
+import * as assert from "assert";
 import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
 import { getFileInfo } from '../src/misc/get-file-info.js';

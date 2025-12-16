@@ -1,4 +1,4 @@
-import * as assert from 'assert';
+import * as assert from "assert";
 import * as mfm from 'mfm-js';
 
 import { toHtml } from '../src/mfm/to-html.js';

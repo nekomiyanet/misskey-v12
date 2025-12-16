@@ -1,21 +1,21 @@
 <template>
 <div class="compact" v-if="tickerCompactStyle">
-	<img v-if="instance.faviconUrl" class="icon" :src="instance.faviconUrl"/>
+	<img v-if="faviconUrl" class="icon" :src="faviconUrl"/>
 </div>
 <div v-tooltip="tooltip" class="hpaizdrt" :style="bg" v-if="tickerOriginalStyle">
-	<img v-if="instance.faviconUrl" class="icon" :src="instance.faviconUrl"/>
+	<img v-if="faviconUrl" class="icon" :src="faviconUrl"/>
 	<span class="name">{{ instance.name }}</span>
 	<span v-if="instance.softwareVersion && showTickerSoftWareVersion" class="software">{{ instance.softwareVersion }}</span>
 	<span v-if="instance.softwareName && showTickerSoftWareName" class="software">{{ instance.softwareName }}</span>
 </div>
 <div v-tooltip="tooltip" class="mk-instance-ticker" :class="position" :style="tickerColor" v-if="tickerTaiyStyle">
-	<img v-if="instance.faviconUrl" class="icon" :src="instance.faviconUrl"/>
+	<img v-if="faviconUrl" class="icon" :src="faviconUrl"/>
 	<span class="name">{{ instance.name }}</span>
 	<span v-if="instance.softwareVersion && showTickerSoftWareVersion && ableToShowInstanceDetails" class="software">{{ instance.softwareVersion }}</span>
 	<span v-if="instance.softwareName && showTickerSoftWareName && ableToShowInstanceDetails" class="software">{{ instance.softwareName }}</span>
 </div>
 <div v-tooltip="tooltip" class="root" :style="bg" v-if="tickerCalckeyStyle">
-	<img v-if="instance.faviconUrl" class="icon" :src="instance.faviconUrl"/>
+	<img v-if="faviconUrl" class="icon" :src="faviconUrl"/>
 	<div class="name">{{ instance.name }}</div>
 </div>
 </template>
@@ -29,7 +29,6 @@ import { getProxiedImageUrlNullable } from '@/scripts/media-proxy';
 
 const props = defineProps<{
 	instance?: {
-		faviconUrl?: string | null;
 		name: string | null;
 		themeColor?: string | null;
 		softwareName?: string | null;
@@ -40,12 +39,13 @@ const props = defineProps<{
 
 // if no instance data is given, this is for the local instance
 const instance = props.instance ?? {
-	faviconUrl: getProxiedImageUrlNullable(Instance.iconUrl) ?? getProxiedImageUrlNullable(Instance.faviconUrl) ?? '/favicon.ico',
 	name: instanceName,
 	themeColor: document.querySelector<HTMLMetaElement>('meta[name="theme-color-orig"]')?.content,
 	softwareName: software,
 	softwareVersion: version,
 };
+
+const faviconUrl = computed(() => props.instance ? getProxiedImageUrlNullable(props.instance.faviconUrl, 'preview') : getProxiedImageUrlNullable(Instance.iconUrl, 'preview') ?? getProxiedImageUrlNullable(Instance.faviconUrl, 'preview') ?? '/favicon.ico');
 
 const tooltip = instance.softwareName == null || instance.softwareVersion == null
 	? null

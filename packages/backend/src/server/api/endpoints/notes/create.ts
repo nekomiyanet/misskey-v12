@@ -10,6 +10,7 @@ import { noteVisibilities } from '../../../../types.js';
 import { Channel } from '@/models/entities/channel.js';
 import { MAX_NOTE_TEXT_LENGTH } from '@/const.js';
 import { fetchMeta } from '@/misc/fetch-meta.js';
+import { getSilencedUsers } from '@/services/create-notification.js';
 
 export const meta = {
 	tags: ['notes'],
@@ -209,6 +210,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	}
 
 	let renote: Note | undefined;
+	let requireSilence = false;
 	if (ps.renoteId != null) {
 		// Fetch renote to note
 		renote = await Notes.findOne(ps.renoteId);
@@ -238,9 +240,16 @@ export default define(meta, paramDef, async (ps, user) => {
 			// specified / direct noteはreject
 			throw new ApiError(meta.errors.cannotRenoteDueToVisibility);
 		}
+
+		// Check Renote of Silenced User Notes
+		const silencedUserSet = await getSilencedUsers();
+		if (ps.visibility === 'public' && silencedUserSet.has(renote.userId)) {
+			requireSilence = true;
+		}
 	}
 
 	let reply: Note | undefined;
+	let requireSpecified = false;
 	if (ps.replyId != null) {
 		// Fetch reply
 		reply = await Notes.findOne(ps.replyId);
@@ -263,6 +272,10 @@ export default define(meta, paramDef, async (ps, user) => {
 			if (block) {
 				throw new ApiError(meta.errors.youHaveBeenBlocked);
 			}
+		}
+
+		if (reply.visibility === 'specified' && ps.visibility !== 'specified') {
+			requireSpecified = true;
 		}
 	}
 
@@ -308,7 +321,7 @@ export default define(meta, paramDef, async (ps, user) => {
 		renote,
 		cw: ps.cw,
 		localOnly: ps.localOnly,
-		visibility: ps.visibility,
+		visibility: requireSpecified ? 'specified' : requireSilence ? 'home' : ps.visibility,
 		visibleUsers,
 		channel,
 		apMentions: ps.noExtractMentions ? [] : undefined,

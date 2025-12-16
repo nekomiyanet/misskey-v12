@@ -1,4 +1,5 @@
-import * as assert from 'assert';
+import * as assert from "assert";
+//@ts-ignore
 import { genRsaKeyPair } from '../src/misc/gen-key-pair.js';
 import { createSignedPost, createSignedGet } from '../src/remote/activitypub/ap-request.js';
 import httpSignature from 'http-signature';
