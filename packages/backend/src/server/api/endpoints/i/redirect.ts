@@ -87,6 +87,8 @@ export default define(meta, paramDef, async (ps, user) => {
 	const destination = await getUser(moveTo.id) as ILocalUser | IRemoteUser;
 	const newUri = await Users.isLocalUser(moveTo) ? `${config.url}/users/${moveTo.id}` : destination.uri;
 
+	if (user.id === destination.id) throw new ApiError(meta.errors.destinationAccountForbids);
+
 	if (destination.movedToUri !== null) throw new ApiError(meta.errors.destinationAccountForbids);
 
 	await Users.update(user.id, {
