@@ -18,9 +18,10 @@ export class EmojiRepository extends Repository<Emoji> {
 		if ((emoji.publicUrl != null || emoji.originalUrl != null) && emoji.host != null && config.mediaProxy != null) {
 			emojiUrl = appendQuery(config.mediaProxy, query({
 				url: sanitizeUrl(emoji.publicUrl || emoji.originalUrl)!,
+				emoji: 1,
 			}));
 		} else if ((emoji.publicUrl != null || emoji.originalUrl != null) && emoji.host != null && config.proxyRemoteFiles) {
-			emojiUrl = `${config.url}/proxy/image.webp?${query({
+			emojiUrl = `${config.url}/proxy/emoji.png?${query({
 				url: sanitizeUrl(emoji.publicUrl || emoji.originalUrl)!,
 			})}`;
 		}

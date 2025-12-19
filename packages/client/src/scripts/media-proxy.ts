@@ -1,7 +1,7 @@
 import { query } from '@/scripts/url';
 import { url } from '@/config';
 export function getProxiedImageUrl(imageUrl: string, type?: 'preview'): string {
-	return `${url}/proxy/image.webp?${query({
+	return `${url}/proxy/image.jpeg?${query({
 		url: imageUrl,
 		...(type ? { [type]: "1" } : {}),
 	})}`;
