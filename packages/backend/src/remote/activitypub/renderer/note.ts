@@ -105,7 +105,7 @@ export default async function renderNote(note: Note, dive = true, isTalk = false
 	}));
 
 	const profile = note.userId ? await UserProfiles.findOne({ userId: note.userId }) : null;
-	const userLang = profile.lang ? profile.lang.replace(/-/g, '') : 'ja';
+	const userLang = profile.lang ? profile.lang.toLowerCase().split('-')[0] : 'ja';
 	const contentMap = {
 	  [userLang]: content,
 	};
