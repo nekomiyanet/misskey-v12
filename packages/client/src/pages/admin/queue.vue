@@ -6,6 +6,9 @@
 	<XQueue :connection="connection" domain="deliver">
 		<template #title>Out</template>
 	</XQueue>
+	<XQueue :connection="connection" domain="inboxLazy">
+		<template #title>In(Lazy)</template>
+	</XQueue>
 	<MkButton danger @click="clear()"><i class="fas fa-trash-alt"></i> {{ $ts.clearQueue }}</MkButton>
 </MkSpacer>
 </template>
