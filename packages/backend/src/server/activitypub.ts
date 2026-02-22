@@ -26,7 +26,7 @@ import config from '@/config/index.js';
 import Koa from 'koa';
 import * as crypto from 'node:crypto';
 import { inspect } from 'node:util';
-import { IActivity, isDelete, isUndo } from '@/remote/activitypub/type.js';
+import { IActivity, isDelete, isUndo, isLike, getApId } from '@/remote/activitypub/type.js';
 import { serverLogger } from './index.js';
 import renderFollow from '@/remote/activitypub/renderer/follow.js';
 
@@ -130,6 +130,13 @@ function inbox(ctx: Router.RouterContext) {
 
 	if (isDelete(activity) || isUndo(activity)) {
 		lazy = true;
+	}
+
+	if (isLike(activity)) {
+		const targetHost = new URL(getApId(activity.object)).hostname.toLowerCase();
+		if (targetHost !== config.host) {
+			lazy = true;
+		}
 	}
 
 	if (lazy) {
