@@ -1,5 +1,5 @@
 import Channel from '../channel.js';
-import { Notes } from '@/models/index.js';
+import { Notes, Antennas } from '@/models/index.js';
 import { isMutedUserRelated } from '@/misc/is-muted-user-related.js';
 import { isBlockerUserRelated } from '@/misc/is-blocker-user-related.js';
 import { isBlockeeUserRelated } from '@/misc/is-blockee-user-related.js';
@@ -10,7 +10,7 @@ import { StreamMessages } from '../types.js';
 export default class extends Channel {
 	public readonly chName = 'antenna';
 	public static shouldShare = false;
-	public static requireCredential = false;
+	public static requireCredential = true;
 	private antennaId: string;
 
 	constructor(id: string, connection: Channel['connection']) {
@@ -19,7 +19,17 @@ export default class extends Channel {
 	}
 
 	public async init(params: any) {
+		if (typeof params.antennaId !== 'string') return false;
+		if (!this.user) return false;
+
 		this.antennaId = params.antennaId as string;
+
+		const antennaExists = await Antennas.findOne({
+			id: this.antennaId,
+			userId: this.user.id,
+		});
+
+		if (!antennaExists) return false;
 
 		// Subscribe stream
 		this.subscriber.on(`antennaStream:${this.antennaId}`, this.onEvent);
