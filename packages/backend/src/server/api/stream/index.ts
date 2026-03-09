@@ -7,7 +7,7 @@ import channels from './channels/index.js';
 import { EventEmitter } from 'events';
 import { User } from '@/models/entities/user.js';
 import { Channel as ChannelModel } from '@/models/entities/channel.js';
-import { Users, Followings, Mutings, RenoteMutings, UserProfiles, ChannelFollowings, Blockings } from '@/models/index.js';
+import { Users, Followings, Mutings, RenoteMutings, UserProfiles, ChannelFollowings, Blockings, Notes } from '@/models/index.js';
 import { ApiError } from '../error.js';
 import { AccessToken } from '@/models/entities/access-token.js';
 import { UserProfile } from '@/models/entities/user-profile.js';
@@ -266,8 +266,16 @@ export class Connection {
 	/**
 	 * 投稿購読要求時
 	 */
-	private onSubscribeNote(payload: any) {
+	private async onSubscribeNote(payload: any) {
 		if (!payload.id) return;
+
+		const packed = await Notes.pack(payload.id, this.user, {
+			detail: true,
+		});
+
+		if (packed?.isHidden) {
+			return;
+		}
 
 		if (this.subscribingNotes[payload.id] == null) {
 			this.subscribingNotes[payload.id] = 0;
