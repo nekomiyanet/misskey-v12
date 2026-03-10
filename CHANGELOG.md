@@ -8,6 +8,17 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20260310131622 (2026/03/10)
+### Improvements
+- inboxLazyキューを追加 @mei23 @atsu1125
+
+### Bugfixes
+- メディアプロキシのクエリのファイル拡張子を修正 @atsu1125
+- 言語の連合のフォーマットを修正 @atsu1125
+- インポートファイルの所有者チェックを修正 @mei23 @atsu1125
+- ノートの購読の権限を修正 @mei23 @atsu1125
+- アンテナのストリーミングの権限を修正 @atsu1125
+
 ## 12.108.1-nekomiya-20251218190019 (2025/12/18)
 ### Improvements
 - 連合ページのインスタンスアイコンはプロキシを利用するように @atsu1125
