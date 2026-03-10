@@ -140,7 +140,7 @@ function inbox(ctx: Router.RouterContext) {
 		}
 	}
 
-	if (lazy) {
+	if (lazy && config.enableInboxLazy) {
 		processInboxLazy(ctx.request.body as IActivity, signature);
 	} else {
 		processInbox(ctx.request.body as IActivity, signature);

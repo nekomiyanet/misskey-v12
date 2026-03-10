@@ -98,6 +98,7 @@ export type Source = {
 	disableUrlPreview?: boolean;
 	enableS3Override?: boolean;
 	enableSMTPOverride?: boolean;
+	enableInboxLazy?: boolean;
 };
 
 /**
