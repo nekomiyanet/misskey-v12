@@ -29,7 +29,7 @@ const logger = driveLogger.createSubLogger('register', 'yellow');
 /***
  * Save file
  * @param path Path for original
- * @param name Name for original
+ * @param name Name for original (should be extention corrected)
  * @param type Content-Type for original
  * @param hash Hash for original
  * @param size Size for original
@@ -55,7 +55,7 @@ async function save(file: DriveFile, path: string, name: string, type: string, h
 		}
 
 		// 拡張子からContent-Typeを設定してそうな挙動を示すオブジェクトストレージ (upcloud?) も存在するので、
-		// 許可されているファイル形式でしか拡張子をつけない
+		// 許可されているファイル形式でしかURLに拡張子をつけない
 		if (!FILE_TYPE_BROWSERSAFE.includes(type)) {
 			ext = '';
 		}
@@ -83,7 +83,7 @@ async function save(file: DriveFile, path: string, name: string, type: string, h
 		//#region Uploads
 		logger.info(`uploading original: ${key}`);
 		const uploads = [
-			upload(key, fs.createReadStream(path), type, ext, name),
+			upload(key, fs.createReadStream(path), type, null, name),
 		];
 
 		if (alts.webpublic) {
@@ -99,7 +99,7 @@ async function save(file: DriveFile, path: string, name: string, type: string, h
 			thumbnailUrl = `${ baseUrl }/${ thumbnailKey }`;
 
 			logger.info(`uploading thumbnail: ${thumbnailKey}`);
-			uploads.push(upload(thumbnailKey, alts.thumbnail.data, alts.thumbnail.type, alts.thumbnail.ext));
+			uploads.push(upload(thumbnailKey, alts.thumbnail.data, alts.thumbnail.type, alts.thumbnail.ext, `${name}.thumbnail`));
 		}
 
 		await Promise.all(uploads);
@@ -336,6 +336,8 @@ type AddFileArgs = {
 	uri?: string | null;
 	/** Mark file as sensitive */
 	sensitive?: boolean | null;
+	/** Extension to force */
+	ext?: string | null;
 };
 
 /**
@@ -352,7 +354,8 @@ export async function addFile({
 	isLink = false,
 	url = null,
 	uri = null,
-	sensitive = null
+	sensitive = null,
+	ext = null
 }: AddFileArgs): Promise<DriveFile> {
 	const info = await getFileInfo(path);
 	logger.info(`${JSON.stringify(info)}`);
@@ -362,7 +365,7 @@ export async function addFile({
 		// DriveFile.nameは256文字, validateFileNameは200文字制限であるため、
 		// extを付加してデータベースの文字数制限に当たることはまずない
 		(name && DriveFiles.validateFileName(name)) ? name : 'untitled',
-		info.type.ext
+		ext ?? info.type.ext
 	);
 
 	if (user && !force) {
