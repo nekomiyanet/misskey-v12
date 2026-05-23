@@ -8,6 +8,10 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20260523213405 (2026/05/23)
+### Bugfixes
+- 必要なthemePropsが出力されない問題を修正 @atsu1125
+
 ## 12.108.1-nekomiya-20260521223412 (2026/05/21)
 ### Bugfixes
 - 署名付きGETリクエストにおいてAcceptヘッダを署名の対象から除外 @kakkokari-gtyih
