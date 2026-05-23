@@ -17,6 +17,7 @@ export type CompiledTheme = Record<string, string>;
 const MAX_THEME_REFERENCE_DEPTH = 8;
 
 export const themeProps = Object.keys(lightTheme.props).filter(key => !key.startsWith('X'));
+export const allThemeProps = Object.keys(lightTheme.props);
 
 export const builtinThemes = [
 	require('@/themes/l-light.json5'),
@@ -139,7 +140,7 @@ export function compile(theme: Theme): CompiledTheme {
 	}
 
 	return Object.fromEntries(
-		Object.entries(props).filter(([key]) => themeProps.includes(key)),
+		Object.entries(props).filter(([key]) => allThemeProps.includes(key)),
 	) as CompiledTheme;
 }
 
