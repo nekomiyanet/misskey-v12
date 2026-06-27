@@ -11,6 +11,8 @@ import { randomBytes } from 'node:crypto';
 import { IsNull } from 'typeorm';
 import { limiter } from '../limiter.js';
 import { getIpHash } from '@/misc/get-ip-hash.js';
+import { createHash } from 'node:crypto';
+import { redisClient } from '../../../db/redis.js';
 
 export default async (ctx: Koa.Context) => {
 	ctx.set('Access-Control-Allow-Origin', config.url);
@@ -129,22 +131,70 @@ export default async (ctx: Koa.Context) => {
 			return;
 		}
 
-		const verified = (speakeasy as any).totp.verify({
+		// 判定に用いるタイムスタンプを固定
+		const now = Date.now();
+		const normalizedToken = token.trim();
+		const validationWindow = 1;
+		const timeStep = 30;
+
+		// 固定したタイムスタンプで検証
+		const delta = (speakeasy as any).totp.verifyDelta({
 			secret: profile.twoFactorSecret,
 			encoding: 'base32',
-			token: token,
-			window: 2,
+			token: normalizedToken,
+			step: timeStep,
+			window: validationWindow,
+			time: Math.floor(now / 1000),
 		});
 
-		if (verified) {
-			signin(ctx, user);
-			return;
-		} else {
+		if (!delta) {
 			await fail(403, {
 				id: 'cdf1235b-ac71-46d4-a3a6-84ccce48df6f',
 			});
 			return;
 		}
+
+		const currentStep = Math.floor(now / 1000 / timeStep);
+		const step = currentStep + delta.delta;
+
+		const secretFingerprint = createHash('sha256')
+			.update(profile.twoFactorSecret ?? '')
+			.digest('base64url');
+
+		const usedTokenRedisKey =
+			`2fa:used:${user.id}:${secretFingerprint}:${step}`;
+
+		const ttl = timeStep * (validationWindow * 2 + 1);
+
+		await new Promise<void>((resolve, reject) => {
+			redisClient.set(
+				usedTokenRedisKey,
+				normalizedToken,
+				'EX',
+				ttl,
+				'NX', async (err, reply) => {
+						if (err) {
+								reject(err);
+								return;
+						}
+
+						try {
+								if (reply !== 'OK') {
+										await fail(403, {
+												id: 'cdf1235b-ac71-46d4-a3a6-84ccce48df6f',
+										});
+										resolve();
+										return;
+								}
+
+								signin(ctx, user);
+								resolve();
+						} catch (e) {
+								reject(e);
+						}
+			});
+		});
+		return;
 	} else if (body.credentialId) {
 		if (!same && !profile.usePasswordLessLogin) {
 			await fail(403, {
