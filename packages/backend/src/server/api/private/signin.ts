@@ -157,12 +157,7 @@ export default async (ctx: Koa.Context) => {
 		const currentStep = Math.floor(now / 1000 / timeStep);
 		const step = currentStep + delta.delta;
 
-		const secretFingerprint = createHash('sha256')
-			.update(profile.twoFactorSecret ?? '')
-			.digest('base64url');
-
-		const usedTokenRedisKey =
-			`2fa:used:${user.id}:${secretFingerprint}:${step}`;
+		const usedTokenRedisKey = `2fa:used:${user.id}:${step}`;
 
 		const ttl = timeStep * (validationWindow * 2 + 1);
 
