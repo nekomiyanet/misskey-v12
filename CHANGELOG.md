@@ -8,6 +8,13 @@
 You should also include the user name that made the change.
 -->
 
+## 12.108.1-nekomiya-20260706201327 (2026/07/06)
+### Bugfixes
+- リレー経由で届いたノートがリノートとして表示される問題を修正 @tirr-c @atsu1125
+- PerUserDriveChart がシステム所有ファイル (userId が null) の更新で `"group"` の非NULL制約違反によりクラッシュする問題を修正 @sasagar @syuilo @atsu1125
+- URLプレビューにてデフォルトのHTTPエージェントが利用されないのを修正 @atsu1125
+- TOTPトークンの再利用を抑止 @atsu1125
+
 ## 12.108.1-nekomiya-20260523213405 (2026/05/23)
 ### Bugfixes
 - 必要なthemePropsが出力されない問題を修正 @atsu1125
