@@ -52,7 +52,12 @@ const fetching = ref(true);
 const tick = () => {
 	fetch(`https://api.rss2json.com/v1/api.json?rss_url=${widgetProps.url}`, {}).then(res => {
 		res.json().then(feed => {
-			items.value = feed.items;
+			const feedBaseUrl = new URL(widgetProps.url);
+			items.value = feed.items.filter((item) => {
+				if (!item.link) return false;
+				const itemUrl = new URL(item.link, feedBaseUrl);
+				return ['http:', 'https:'].includes(itemUrl.protocol);
+			});
 			fetching.value = false;
 		});
 	});
