@@ -15,6 +15,7 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { GetFormResultType } from '@/scripts/form';
+import { tryParseUrl } from "@/scripts/url";
 import { useWidgetPropsManager, Widget, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget';
 import * as os from '@/os';
 import MkContainer from '@/components/ui/container.vue';
@@ -55,8 +56,8 @@ const tick = () => {
 			const feedBaseUrl = new URL(widgetProps.url);
 			items.value = feed.items.filter((item) => {
 				if (!item.link) return false;
-				const itemUrl = new URL(item.link, feedBaseUrl);
-				return ['http:', 'https:'].includes(itemUrl.protocol);
+				const itemUrl = tryParseUrl(item.link, feedBaseUrl);
+				return itemUrl != null && ['http:', 'https:'].includes(itemUrl.protocol);
 			});
 			fetching.value = false;
 		});
