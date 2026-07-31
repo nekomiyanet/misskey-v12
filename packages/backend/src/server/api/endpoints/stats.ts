@@ -27,6 +27,14 @@ export const meta = {
 				type: 'number',
 				optional: false, nullable: false,
 			},
+			reactionsCount: {
+				type: 'number',
+				optional: false, nullable: false,
+			},
+			//originalReactionsCount: {
+			//	type: 'number',
+			//	optional: false, nullable: false,
+			//},
 			instances: {
 				type: 'number',
 				optional: false, nullable: false,
