@@ -25,6 +25,8 @@ export interface IObject {
 	sensitive?: boolean;
 	movedTo?: string;
 	alsoKnownAs?: string[];
+	width?: number;
+	height?: number;
 }
 
 /**
