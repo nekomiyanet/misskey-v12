@@ -16,6 +16,7 @@ import { resolvePerson } from '@/remote/activitypub/models/person.js';
 import { LdSignature } from '@/remote/activitypub/misc/ld-signature.js';
 import { StatusError } from '@/misc/fetch.js';
 import { verifySignature } from '@/remote/activitypub/check-fetch.js';
+import config from '@/config/index.js';
 
 const logger = new Logger('inbox');
 
@@ -106,7 +107,7 @@ export default async (job: Bull.Job<InboxJobData>): Promise<string> => {
 	// また、signatureのsignerは、activity.actorと一致する必要がある
 	if (!httpSignatureValidated || authUser.user.uri !== activity.actor) {
 		// 一致しなくても、でもLD-Signatureがありそうならそっちも見る
-		if (activity.signature) {
+		if (!config.ignoreApForwarded && activity.signature) {
 			if (activity.signature.type !== 'RsaSignature2017') {
 				return `skip: unsupported LD-signature type ${activity.signature.type}`;
 			}
@@ -158,7 +159,7 @@ export default async (job: Bull.Job<InboxJobData>): Promise<string> => {
 				return `Blocked request: ${ldHost}`;
 			}
 		} else {
-			return `skip: http-signature verification failed and no LD-Signature. keyId=${signature.keyId}`;
+			return `skip: http-signature verification failed and ${config.ignoreApForwarded ? 'ignoreApForwarded' : 'no LD-Signature'}. keyId=${signature.keyId}`;
 		}
 	}
 

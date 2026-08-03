@@ -99,6 +99,8 @@ export type Source = {
 	enableS3Override?: boolean;
 	enableSMTPOverride?: boolean;
 	enableInboxLazy?: boolean;
+
+	ignoreApForwarded?: boolean;
 };
 
 /**
