@@ -37,6 +37,7 @@ import { getAntennas } from '@/misc/antenna-cache.js';
 import { endedPollNotificationQueue, createDeleteNoteQueue } from '@/queue/queues.js';
 import { fetchMeta } from '@/misc/fetch-meta.js';
 import RE2 from 're2';
+import { DB_MAX_NOTE_TEXT_LENGTH } from '@/misc/hard-limits.js';
 
 type NotificationType = 'reply' | 'renote' | 'quote' | 'mention';
 
@@ -141,6 +142,18 @@ export default async (user: { id: User['id']; username: User['username']; host: 
 	if (data.channel != null) data.visibility = 'public';
 	if (data.channel != null) data.visibleUsers = [];
 	if (data.channel != null) data.localOnly = true;
+
+	// 本文/CW/投票のハードリミット
+	// サロゲートペアは2文字扱い/合字は複数文字扱いでかける
+	if (data.text && data.text.length > DB_MAX_NOTE_TEXT_LENGTH) {
+		throw new Error('text limit exceeded');
+	}
+	if (data.cw && data.cw.length > DB_MAX_NOTE_TEXT_LENGTH) {
+		throw new Error('cw limit exceeded');
+	}
+	if (data.poll && JSON.stringify(data.poll).length > DB_MAX_NOTE_TEXT_LENGTH) {
+		throw new Error('poll limit exceeded');
+	}
 
 	// サイレンス
 	if (user.isSilenced && data.visibility === 'public' && data.channel == null) {
