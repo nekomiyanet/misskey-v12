@@ -385,6 +385,12 @@ export default function() {
 		removeOnComplete: true,
 	});
 
+	systemQueue.add('clean', {
+	}, {
+		repeat: { cron: '0 0 * * *' },
+		removeOnComplete: true,
+	});
+
 	systemQueue.add('checkExpiredMutings', {
 	}, {
 		repeat: { cron: '*/5 * * * *' },

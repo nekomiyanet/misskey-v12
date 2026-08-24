@@ -2,12 +2,14 @@ import Bull from 'bull';
 import { tickCharts } from './tick-charts.js';
 import { resyncCharts } from './resync-charts.js';
 import { cleanCharts } from './clean-charts.js';
+import { clean } from './clean.js';
 import { checkExpiredMutings } from './check-expired-mutings.js';
 
 const jobs = {
 	tickCharts,
 	resyncCharts,
 	cleanCharts,
+	clean,
 	checkExpiredMutings,
 } as Record<string, Bull.ProcessCallbackFunction<Record<string, unknown>> | Bull.ProcessPromiseFunction<Record<string, unknown>>>;
 
