@@ -45,7 +45,7 @@ export default define(meta, paramDef, async (ps, user) => {
 	// Fetch file
 	const file = await DriveFiles.findOne({
 		id: ps.fileId,
-		userId: (user.isAdmin || user.isModerator) ? undefined : user.id,
+		...((user.isAdmin || user.isModerator) ? {} : { userId: user.id }),
 	});
 
 	if (file == null) {
