@@ -62,7 +62,7 @@
 		"ip-cidr": "3.0.4",
 		"json5": "2.2.3",
 		"json5-loader": "4.0.1",
-		"katex": "0.15.2",
+		"katex": "0.16.21",
 		"matter-js": "0.18.0",
 		"mfm-js": "0.23.3",
 		"misskey-js": "0.0.14",
