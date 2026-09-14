@@ -1,7 +1,9 @@
 import * as nodemailer from 'nodemailer';
+import sanitizeHtml from 'sanitize-html';
 import { fetchMeta } from '@/misc/fetch-meta.js';
 import Logger from './logger.js';
 import config from '@/config/index.js';
+import { escapeHtml } from '@/misc/escape-html.js';
 
 export const logger = new Logger('email');
 
@@ -21,6 +23,8 @@ export async function sendEmail(to: string, subject: string, html: string, text:
 	const senderaddress = config.enableSMTPOverride ? (config.smtp.senderaddress || null) : (meta.email || null);
 
 	const enableAuth = configsmtpuser != null && configsmtpuser !== '';
+
+	const sanitizedHtml = sanitizeHtml(html);
 
 	// メールドメインブロックしてたら中断
 	const domain: string = to.split('@')[1];
@@ -43,7 +47,6 @@ export async function sendEmail(to: string, subject: string, html: string, text:
 	} as any);
 
 	try {
-		// TODO: htmlサニタイズ
 		const info = await transporter.sendMail({
 			from: senderaddress!,
 			to: to,
@@ -53,7 +56,7 @@ export async function sendEmail(to: string, subject: string, html: string, text:
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>${ subject }</title>
+		<title>${ escapeHtml(subject) }</title>
 		<style>
 			html {
 				background: #eee;
@@ -114,18 +117,18 @@ export async function sendEmail(to: string, subject: string, html: string, text:
 	<body>
 		<main>
 			<header>
-				<img src="${ meta.logoImageUrl || meta.iconUrl || iconUrl }"/>
+				<img src="${ escapeHtml(meta.logoImageUrl || meta.iconUrl || iconUrl) }"/>
 			</header>
 			<article>
-				<h1>${ subject }</h1>
-				<div>${ html }</div>
+				<h1>${ escapeHtml(subject) }</h1>
+				<div>${ sanitizedHtml }</div>
 			</article>
 			<footer>
-				<a href="${ emailSettingUrl }">${ 'Email setting' }</a>
+				<a href="${ escapeHtml(emailSettingUrl) }">${ 'Email setting' }</a>
 			</footer>
 		</main>
 		<nav>
-			<a href="${ config.url }">${ config.host }</a>
+			<a href="${ escapeHtml(config.url) }">${ escapeHtml(config.host) }</a>
 		</nav>
 	</body>
 </html>`,
