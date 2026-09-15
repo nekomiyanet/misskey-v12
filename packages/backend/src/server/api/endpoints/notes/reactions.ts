@@ -1,7 +1,7 @@
 import define from '../../define.js';
 import { getNote } from '../../common/getters.js';
 import { ApiError } from '../../error.js';
-import { NoteReactions } from '@/models/index.js';
+import { NoteReactions, Notes } from '@/models/index.js';
 import { DeepPartial } from 'typeorm';
 import { NoteReaction } from '@/models/entities/note-reaction.js';
 
@@ -48,6 +48,10 @@ export default define(meta, paramDef, async (ps, user) => {
 		if (e.id === '9725d0ce-ba28-4dde-95a7-2cbb2c15de24') throw new ApiError(meta.errors.noSuchNote);
 		throw e;
 	});
+
+	if (!(await Notes.isVisibleForMe(note, user ? user.id : null))) {
+		throw new ApiError(meta.errors.noSuchNote);
+	}
 
 	const query = {
 		noteId: note.id,
