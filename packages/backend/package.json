@@ -167,7 +167,7 @@
 		"typeorm": "0.2.45",
 		"typescript": "5.8.3",
 		"ulid": "2.3.0",
-		"unzipper": "0.12.3",
+		"unzipper": "0.12.5",
 		"uuid": "8.3.2",
 		"web-push": "3.4.5",
 		"ws": "8.18.0",
