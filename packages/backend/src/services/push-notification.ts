@@ -4,6 +4,7 @@ import { SwSubscriptions } from '@/models/index.js';
 import { fetchMeta } from '@/misc/fetch-meta.js';
 import { Packed } from '@/misc/schema.js';
 import { getNoteSummary } from '@/misc/get-note-summary.js';
+import { getAgentByUrl } from '@/misc/fetch.js';
 
 type notificationType = 'notification' | 'unreadMessagingMessage';
 type notificationBody = Packed<'Notification'> | Packed<'MessagingMessage'>;
@@ -30,6 +31,20 @@ function truncateNotification(notification: Packed<'Notification'>): any {
 	return notification;
 }
 
+export function isValidEndpoint(endpoint: string): boolean {
+	let url: URL;
+	try {
+		url = new URL(endpoint);
+	} catch {
+		return false;
+	}
+
+	if (url.protocol !== 'https:') return false;
+	if (url.username !== '' || url.password !== '') return false;
+
+	return true;
+}
+
 export default async function(userId: string, type: notificationType, body: notificationBody) {
 	const meta = await fetchMeta();
 
@@ -46,6 +61,8 @@ export default async function(userId: string, type: notificationType, body: noti
 	});
 
 	for (const subscription of subscriptions) {
+		if (!isValidEndpoint(subscription.endpoint)) continue;
+
 		const pushSubscription = {
 			endpoint: subscription.endpoint,
 			keys: {
@@ -59,7 +76,7 @@ export default async function(userId: string, type: notificationType, body: noti
 			body: type === 'notification' ? truncateNotification(body as Packed<'Notification'>) : body,
 			userId,
 		}), {
-			proxy: config.proxy,
+			agent: getAgentByUrl(new URL(subscription.endpoint)),
 		}).catch((err: any) => {
 			//swLogger.info(err.statusCode);
 			//swLogger.info(err.headers);
