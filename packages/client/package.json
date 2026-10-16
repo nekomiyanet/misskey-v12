@@ -101,7 +101,7 @@
 		"tsconfig-paths": "3.13.0",
 		"twemoji-parser": "14.0.0",
 		"typescript": "5.8.3",
-		"uuid": "8.3.2",
+		"uuid": "14.0.0",
 		"v-debounce": "0.1.2",
 		"vanilla-tilt": "1.7.2",
 		"vue": "3.2.31",
