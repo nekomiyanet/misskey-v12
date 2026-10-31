@@ -127,7 +127,7 @@
 		"multer": "2.4.0",
 		"nested-property": "4.0.0",
 		"node-fetch": "3.2.10",
-		"nodemailer": "10.0.9",
+		"nodemailer": "10.0.10",
 		"os-utils": "0.0.14",
 		"parse5": "6.0.1",
 		"pg": "8.7.3",
