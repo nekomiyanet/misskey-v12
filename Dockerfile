@@ -1,4 +1,4 @@
-FROM node:22.23.4-trixie AS builder
+FROM node:22.23.5-trixie AS builder
 
 ARG NODE_ENV=production
 
@@ -13,7 +13,7 @@ RUN yarn install
 RUN yarn build
 RUN rm -rf .git
 
-FROM node:22.23.4-trixie-slim AS runner
+FROM node:22.23.5-trixie-slim AS runner
 
 WORKDIR /misskey
 
