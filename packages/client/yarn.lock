@@ -287,10 +287,10 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/gulp-rename@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@types/gulp-rename/-/gulp-rename-2.0.1.tgz#c8228fc2c5c4a7500346ea9ce18f27fa988caef5"
-  integrity sha512-9ZjeS2RHEnmBmTcyi2+oeye3BgCsWhvi4uv3qCnAg8i6plOuRdaeNxjOves0ELysEXYLBl7bCl5fbVs7AZtgTA==
+"@types/gulp-rename@2.0.7":
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/@types/gulp-rename/-/gulp-rename-2.0.7.tgz#ab42e942353a1e9438ea45a10c74dc4003069dcd"
+  integrity sha512-W1xIGdui1w4AB1ylt/b8jrpV1MTNfeKmMFfJXsN/NOtSHjRg2w4Wp9H96J+Ld9tZenTtU0u5LatpGFJvOBN5EA==
   dependencies:
     "@types/node" "*"
     "@types/vinyl" "*"
