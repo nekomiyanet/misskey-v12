@@ -22,7 +22,7 @@ export default async (actor: IRemoteUser, activity: IFollow): Promise<string> =>
 	// relay
 	const match = activity.id?.match(/follow-relay\/(\w+)/);
 	if (match) {
-		return await relayRejected(match[1]);
+		return await relayRejected(match[1], actor);
 	}
 
 	await remoteReject(actor, follower);
