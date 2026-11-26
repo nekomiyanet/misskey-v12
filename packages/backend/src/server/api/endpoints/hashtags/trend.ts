@@ -68,7 +68,7 @@ export default define(meta, paramDef, async () => {
 	const now = new Date(); // 5分単位で丸めた現在日時
 	now.setMinutes(Math.round(now.getMinutes() / 5) * 5, 0, 0);
 
-	const tagNotes = await Notes.createQueryBuilder('note')
+	const localTagNotes = await Notes.createQueryBuilder('note')
 		.where(`note.createdAt > :date`, { date: new Date(now.getTime() - rangeC) })
 		.andWhere(new Brackets(qb => { qb
 			.where(`note.visibility = 'public'`)
@@ -80,31 +80,83 @@ export default define(meta, paramDef, async () => {
 		.cache(60000) // 1 min
 		.getMany();
 
-	if (tagNotes.length === 0) {
-		return [];
-	}
+	// ローカルの投稿からタグを集計
+	const collectTags = (notes: Note[]) => {
+		const tags: {
+			name: string;
+			users: Note['userId'][];
+		}[] = [];
 
-	const tags: {
-		name: string;
-		users: Note['userId'][];
-	}[] = [];
+		for (const note of notes) {
+			for (const tag of note.tags) {
+				if (hiddenTags.includes(tag)) continue;
 
-	for (const note of tagNotes) {
-		for (const tag of note.tags) {
-			if (hiddenTags.includes(tag)) continue;
-
-			const x = tags.find(x => x.name === tag);
-			if (x) {
-				if (!x.users.includes(note.userId)) {
-					x.users.push(note.userId);
+				const x = tags.find(x => x.name === tag);
+				if (x) {
+					if (!x.users.includes(note.userId)) {
+						x.users.push(note.userId);
+					}
+				} else {
+					tags.push({
+						name: tag,
+						users: [note.userId],
+					});
 				}
-			} else {
-				tags.push({
-					name: tag,
-					users: [note.userId],
-				});
 			}
 		}
+
+		return tags;
+	};
+
+	let tags: {
+		name: string;
+		users: Note['userId'][];
+	}[];
+	
+	if (localTagNotes.length === 0) {
+		// ローカル投稿がなければ全体から取得
+		const tagNotes = await Notes.createQueryBuilder('note')
+			.where(`note.createdAt > :date`, { date: new Date(now.getTime() - rangeA) })
+			.andWhere(new Brackets(qb => { qb
+				.where(`note.visibility = 'public'`)
+				.orWhere(`note.visibility = 'home'`);
+			}))
+			.andWhere(`note.tags != '{}'`)
+			.select(['note.tags', 'note.userId'])
+			.cache(60000) // 1 min
+			.getMany();
+
+		if (tagNotes.length === 0) {
+			return [];
+		}
+
+		tags = collectTags(tagNotes);
+	} else {
+		tags = collectTags(localTagNotes);
+	
+		// ローカルのタグが5種類未満なら全体から再集計
+		if (tags.length < max) {
+			const tagNotes = await Notes.createQueryBuilder('note')
+				.where(`note.createdAt > :date`, { date: new Date(now.getTime() - rangeA) })
+				.andWhere(new Brackets(qb => { qb
+					.where(`note.visibility = 'public'`)
+					.orWhere(`note.visibility = 'home'`);
+				}))
+				.andWhere(`note.tags != '{}'`)
+				.select(['note.tags', 'note.userId'])
+				.cache(60000) // 1 min
+				.getMany();
+			
+			if (tagNotes.length === 0) {
+				return [];
+			}
+	
+			tags = collectTags(tagNotes);
+		}
+	}
+
+	if (tags.length === 0) {
+		return [];
 	}
 
 	// タグを人気順に並べ替え
