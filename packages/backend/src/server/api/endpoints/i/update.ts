@@ -12,7 +12,7 @@ import { Users, DriveFiles, UserProfiles, Pages } from '@/models/index.js';
 import { User } from '@/models/entities/user.js';
 import { UserProfile } from '@/models/entities/user-profile.js';
 import { notificationTypes } from '@/types.js';
-import { normalizeForSearch } from '@/misc/normalize-for-search.js';
+import { normalizeTag } from '@/misc/normalize-tag.js';
 import { langmap } from '@/misc/langmap.js';
 
 export const meta = {
@@ -235,7 +235,7 @@ export default define(meta, paramDef, async (ps, _user, token) => {
 	if (newDescription != null) {
 		const tokens = mfm.parse(newDescription);
 		emojis = emojis.concat(extractCustomEmojisFromMfm(tokens!));
-		tags = extractHashtags(tokens!).map(tag => normalizeForSearch(tag)).splice(0, 32);
+		tags = extractHashtags(tokens!).map(tag => normalizeTag(tag)).splice(0, 32);
 	}
 
 	updates.emojis = emojis;

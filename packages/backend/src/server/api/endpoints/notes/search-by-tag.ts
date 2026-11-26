@@ -5,7 +5,7 @@ import { generateMutedUserQuery } from '../../common/generate-muted-user-query.j
 import { generateVisibilityQuery } from '../../common/generate-visibility-query.js';
 import { Brackets } from 'typeorm';
 import { safeForSql } from '@/misc/safe-for-sql.js';
-import { normalizeForSearch } from '@/misc/normalize-for-search.js';
+import { normalizeTag } from '@/misc/normalize-tag.js';
 import { generateBlockedUserQuery, generateBlockingUserQuery } from '../../common/generate-block-query.js';
 import { generateMutedInstanceQuery } from '../../common/generate-muted-instance-query.js';
 import { generateSuspendedUserQueryForNote } from '../../common/generate-suspended-query.js';
@@ -27,10 +27,11 @@ export const meta = {
 export const paramDef = {
 	type: 'object',
 	properties: {
-		tag: { type: 'string' },
+		tag: { type: 'string', maxLength: 128 },
 		query: { type: 'array', items: {
 			type: 'array', items: {
 				type: 'string',
+				maxLength: 128,
 			},
 		} },
 		reply: { type: 'boolean', nullable: true, default: null },
@@ -70,15 +71,15 @@ export default define(meta, paramDef, async (ps, me) => {
 
 	try {
 		if (ps.tag) {
-			if (!safeForSql(normalizeForSearch(ps.tag))) throw 'Injection';
-			query.andWhere(':tag <@ note.tags', { tag: [normalizeForSearch(ps.tag)] });
+			if (!safeForSql(normalizeTag(ps.tag))) throw 'Injection';
+			query.andWhere(':tag <@ note.tags', { tag: [normalizeTag(ps.tag)] });
 		} else {
 			query.andWhere(new Brackets(qb => {
 				for (const tags of ps.query!) {
 					qb.orWhere(new Brackets(qb => {
 						for (const tag of tags) {
-							if (!safeForSql(normalizeForSearch(tag))) throw 'Injection';
-							qb.andWhere(':tag <@ note.tags', { tag: [normalizeForSearch(tag)] });
+							if (!safeForSql(normalizeTag(tag))) throw 'Injection';
+							qb.andWhere(':tag <@ note.tags', { tag: [normalizeTag(tag)] });
 						}
 					}));
 				}

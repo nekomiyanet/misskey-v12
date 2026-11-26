@@ -1,7 +1,7 @@
 import { isMutedUserRelated } from '@/misc/is-muted-user-related.js';
 import Channel from '../channel.js';
 import { Notes } from '@/models/index.js';
-import { normalizeForSearch } from '@/misc/normalize-for-search.js';
+import { normalizeTag } from '@/misc/normalize-tag.js';
 import { isBlockerUserRelated } from '@/misc/is-blocker-user-related.js';
 import { isBlockeeUserRelated } from '@/misc/is-blockee-user-related.js';
 import { Packed } from '@/misc/schema.js';
@@ -18,10 +18,15 @@ export default class extends Channel {
 		this.onNote = this.onNote.bind(this);
 	}
 
-	public async init(params: any) {
-		this.q = params.q;
+	public async init(params: JsonObject): Promise<boolean> {
+		if (!Array.isArray(params.q)) return false;
+		if (!params.q.every((x): x is string[] => (
+			Array.isArray(x) &&
+			x.length >= 1 &&
+			x.every(y => typeof y === 'string' && Array.from(y).length <= 128)
+		))) return false;
 
-		if (this.q == null) return;
+		this.q = params.q.map(tags => tags.map(tag => normalizeTag(tag)));
 
 		// Subscribe stream
 		this.subscriber.on('notesStream', this.onNote);
@@ -30,7 +35,7 @@ export default class extends Channel {
 	private async onNote(note: Packed<'Note'>) {
 		if (note.isHidden) return;
 		const noteTags = note.tags ? note.tags.map((t: string) => t.toLowerCase()) : [];
-		const matched = this.q.some(tags => tags.every(tag => noteTags.includes(normalizeForSearch(tag))));
+		const matched = this.q.some(tags => tags.every(tag => noteTags.includes(tag)));
 		if (!matched) return;
 
 		// Renoteなら再pack

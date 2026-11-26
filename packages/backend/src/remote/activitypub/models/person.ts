@@ -27,7 +27,7 @@ import { UserProfile } from '@/models/entities/user-profile.js';
 import { getConnection } from 'typeorm';
 import { toArray } from '@/prelude/array.js';
 import { fetchInstanceMetadata } from '@/services/fetch-instance-metadata.js';
-import { normalizeForSearch } from '@/misc/normalize-for-search.js';
+import { normalizeTag } from '@/misc/normalize-tag.js';
 import { truncate } from '@/misc/truncate.js';
 import { StatusError } from '@/misc/fetch.js';
 
@@ -167,7 +167,7 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 
 	const { fields } = analyzeAttachments(person.attachment || []);
 
-	const tags = extractApHashtags(person.tag).map(tag => normalizeForSearch(tag)).splice(0, 32);
+	const tags = extractApHashtags(person.tag).splice(0, 32).map(normalizeTag);
 
 	const isBot = getApType(object) === 'Service' || getApType(object) === 'Application';
 
@@ -455,7 +455,7 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 
 	const { fields } = analyzeAttachments(person.attachment || []);
 
-	const tags = extractApHashtags(person.tag).map(tag => normalizeForSearch(tag)).splice(0, 32);
+	const tags = extractApHashtags(person.tag).splice(0, 32).map(normalizeTag);
 
 	const bday = person['vcard:bday']?.match(/^\d{4}-\d{2}-\d{2}/);
 
